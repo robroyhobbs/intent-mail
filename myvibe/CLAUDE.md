@@ -97,6 +97,30 @@ Your projects aren't artifacts frozen in time—they're **living systems** that 
 
 ---
 
+## Brand Assets
+
+### Logo
+- **Icon:** Globe with meridian lines
+- **Wordmark:** "MyVibe" in Playfair Display
+- **Files:**
+  - `assets/myvibe-logo.svg` (icon only)
+  - `assets/myvibe-logo.png` (full logo with wordmark)
+
+### Typography
+| Usage | Font | Notes |
+|-------|------|-------|
+| **Headings & Logo** | Playfair Display | Serif, elegant, creative feel |
+| **Body text** | Inter | Clean, readable (inherited from ArcBlock) |
+| **UI elements** | Lexend | Buttons, labels (inherited from ArcBlock) |
+
+**Google Fonts:** https://fonts.google.com/specimen/Playfair+Display
+
+### Color (Inherited from ArcBlock)
+- Primary: `#4598fa`
+- Secondary: `#00b8db`
+
+---
+
 ## Tech Stack
 
 ```
