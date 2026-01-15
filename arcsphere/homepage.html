@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArcSphere - Your Real-Time Window into the AI-Enabled Internet</title>
+    <meta name="description" content="First mobile app with instant access to Agent Fleets and Skills. Your agents, in your pocket.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --primary-dark: #3a7fd4;
+            --secondary: #00b8db;
+            --secondary-light: #00d3f3;
+            --accent-purple: #8b5cf6;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --success: #28A948;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: var(--bg-white);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 30% 70%, rgba(69, 152, 250, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(0, 184, 219, 0.1) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .hero-logo svg {
+            width: 64px;
+            height: 64px;
+        }
+
+        .hero-logo h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--secondary-light) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.35rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-pitch {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            max-width: 550px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 28px;
+            border-radius: 12px;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .hero-cta-ios {
+            background: white;
+            color: var(--text-dark);
+        }
+
+        .hero-cta-ios:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-cta-android {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-cta-android:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .hero-cta svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            position: relative;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .phone-frame {
+            background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-screen {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 32px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            color: white;
+        }
+
+        .phone-screen-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .phone-screen-icon svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .phone-screen h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .phone-screen p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: var(--bg-light);
+            padding: 32px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 36px;
+            height: 36px;
+            color: white;
+        }
+
+        .feature-icon-blue { background: linear-gradient(135deg, var(--primary), #6366f1); }
+        .feature-icon-cyan { background: linear-gradient(135deg, var(--secondary), #06b6d4); }
+        .feature-icon-purple { background: linear-gradient(135deg, var(--accent-purple), #a855f7); }
+        .feature-icon-green { background: linear-gradient(135deg, var(--success), #22c55e); }
+
+        .feature-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Consumption Layer Section */
+        .consumption {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+
+        .consumption-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .consumption-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .consumption-card:hover {
+            transform: scale(1.02);
+        }
+
+        .consumption-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .consumption-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+        }
+
+        .consumption-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .consumption-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--text-dark) 0%, #1e293b 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-dark);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            background: #0a0f1a;
+            color: white;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer-links h5 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-light);
+        }
+
+        .footer-bottom {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--secondary-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0 40px;
+            }
+
+            .hero-logo h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.15rem;
+            }
+
+            .phone-mockup {
+                max-width: 260px;
+            }
+
+            .phone-screen {
+                height: 340px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="32" cy="32" r="28" stroke="url(#grad1)" stroke-width="3" fill="none"/>
+                        <ellipse cx="32" cy="32" rx="28" ry="12" stroke="url(#grad1)" stroke-width="2" fill="none"/>
+                        <ellipse cx="32" cy="32" rx="12" ry="28" stroke="url(#grad1)" stroke-width="2" fill="none"/>
+                        <circle cx="32" cy="32" r="6" fill="url(#grad1)"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#4598fa"/>
+                                <stop offset="50%" style="stop-color:#00d3f3"/>
+                                <stop offset="100%" style="stop-color:#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h1>ArcSphere</h1>
+                </div>
+                <p class="hero-tagline">Your Real-Time Window into the AI-Enabled Internet</p>
+                <p class="hero-pitch">
+                    First mobile app with instant access to Agent Fleets and Skills.
+                    Your agents, in your pocket.
+                </p>
+                <div class="hero-ctas">
+                    <a href="#" class="hero-cta hero-cta-ios">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                        App Store
+                    </a>
+                    <a href="#" class="hero-cta hero-cta-android">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.606a.5.5 0 0 0-.86.012L14.9 5.73a9.97 9.97 0 0 0-5.8 0L7.337 2.618a.5.5 0 0 0-.86-.012.5.5 0 0 0-.04.5l1.5 2.9A9.96 9.96 0 0 0 2 14h20a9.96 9.96 0 0 0-5.937-8.494l1.5-2.9a.5.5 0 0 0-.04-.5zM7 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm10 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM3 15v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V15H3zm14 0v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-7h-4z"/></svg>
+                        Google Play
+                    </a>
+                </div>
+
+                <div class="phone-mockup">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="phone-screen-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                            </div>
+                            <h3>Agent Fleet</h3>
+                            <p>Your AI crew, ready</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Experience the AI Internet</h2>
+            <p class="section-subtitle">Not just a browser—a window into living, AI-powered content</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Agent Fleet Access</h3>
+                    <p>First mobile interface to your personal AI agents. Monitor, direct, and interact with your agent crew anywhere.</p>
+                    <span class="feature-badge">Coming Soon</span>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    </div>
+                    <h3>Skill Browser</h3>
+                    <p>Browse, discover, and activate AI Skills instantly. No setup, no configuration—just tap and go.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-cyan">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <h3>Action Ring</h3>
+                    <p>Radial touch menu for instant AI actions. AI at your fingertips—literally. Tap, spin, select, done.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon feature-icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                    </div>
+                    <h3>Spatial Navigation</h3>
+                    <p>8×8 grid rendered as 3D sphere. Find any tab in 3 seconds. End tab chaos forever.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consumption Layer Section -->
+    <section class="consumption">
+        <div class="container">
+            <h2 class="section-title">The Consumption Layer</h2>
+            <p class="section-subtitle">Where you experience what the AI ecosystem creates</p>
+
+            <div class="consumption-grid">
+                <div class="consumption-card">
+                    <div class="consumption-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                    </div>
+                    <div>
+                        <h4>From MyVibe</h4>
+                        <p>Live documents, interactive vibes</p>
+                    </div>
+                </div>
+
+                <div class="consumption-card">
+                    <div class="consumption-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </div>
+                    <div>
+                        <h4>From DocSmith</h4>
+                        <p>Living documentation</p>
+                    </div>
+                </div>
+
+                <div class="consumption-card">
+                    <div class="consumption-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div>
+                        <h4>From Agent Fleet</h4>
+                        <p>Persistent agent outputs</p>
+                    </div>
+                </div>
+
+                <div class="consumption-card">
+                    <div class="consumption-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    </div>
+                    <div>
+                        <h4>From AIGNE Hub</h4>
+                        <p>AI service results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Your Agents, In Your Pocket</h2>
+            <p>Download ArcSphere and experience the AI-enabled internet</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    Download for iOS
+                </a>
+                <a href="#" class="cta-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M17.523 2.606a.5.5 0 0 0-.86.012L14.9 5.73a9.97 9.97 0 0 0-5.8 0L7.337 2.618a.5.5 0 0 0-.86-.012.5.5 0 0 0-.04.5l1.5 2.9A9.96 9.96 0 0 0 2 14h20a9.96 9.96 0 0 0-5.937-8.494l1.5-2.9a.5.5 0 0 0-.04-.5zM7 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm10 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM3 15v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V15H3zm14 0v7a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-7h-4z"/></svg>
+                    Download for Android
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>ArcSphere</h4>
+                    <p>The AI-Enabled Internet, Mobile-First</p>
+                </div>
+
+                <div class="footer-links">
+                    <h5>Product Family</h5>
+                    <ul>
+                        <li><a href="#">MyVibe</a> — Ship your vibe</li>
+                        <li><a href="#">DocSmith</a> — Living documentation</li>
+                        <li><a href="#">AIGNE Hub</a> — AI gateway</li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h5>Resources</h5>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a></p>
+                <p>&copy; 2026 ArcBlock. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

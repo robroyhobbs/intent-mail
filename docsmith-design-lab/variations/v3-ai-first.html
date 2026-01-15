@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V3: AI-First</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&family=Audiowide&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4598fa;
+      --secondary: #00b8db;
+      --success: #28A948;
+      --did-accent: #49C3AD;
+      --bg-dark: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-hover: #1a1a24;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b0;
+      --border: rgba(69, 152, 250, 0.15);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); }
+
+    /* V3: AI-FIRST - Conversational, the AI search IS the interface */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* MINIMAL NAV */
+    .mini-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+    }
+
+    .logo {
+      font-family: 'Audiowide', cursive;
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-link {
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: var(--text-primary); }
+
+    /* MAIN CHAT INTERFACE */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      width: 100%;
+    }
+
+    .chat-hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .ai-avatar-large {
+      width: 80px;
+      height: 80px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 24px;
+      box-shadow: 0 20px 60px rgba(69, 152, 250, 0.3);
+    }
+
+    .chat-hero h1 {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .chat-hero p {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    /* CONVERSATION AREA */
+    .conversation {
+      flex: 1;
+      margin-bottom: 24px;
+    }
+
+    .message {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .message-avatar.ai {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .message-avatar.user {
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+    }
+
+    .message-content {
+      flex: 1;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .message-name {
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .message-time {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .message-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .message-text strong {
+      color: var(--text-primary);
+    }
+
+    /* EXAMPLE CARDS IN CHAT */
+    .example-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .example-cards { grid-template-columns: 1fr; }
+    }
+
+    .example-mini {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .example-mini:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .example-mini-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .example-mini-icon {
+      font-size: 20px;
+    }
+
+    .example-mini-title {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .example-mini-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .example-mini-meta {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .mini-tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(69, 152, 250, 0.1);
+      color: var(--primary);
+    }
+
+    /* ACTION BUTTONS IN CHAT */
+    .chat-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      font-family: 'Lexend', sans-serif;
+      font-size: 12px;
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .action-btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .action-btn.primary:hover {
+      background: #5aa5fb;
+    }
+
+    /* INPUT AREA */
+    .input-area {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      transition: all 0.3s;
+    }
+
+    .input-area:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 8px 40px rgba(69, 152, 250, 0.15);
+    }
+
+    .input-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-field {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 15px;
+      padding: 12px 16px;
+      outline: none;
+      resize: none;
+      min-height: 24px;
+      max-height: 120px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .input-field::placeholder { color: var(--text-secondary); }
+
+    .input-hints {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px 8px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      background: var(--bg-hover);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hint:hover {
+      background: var(--bg-dark);
+      color: var(--text-primary);
+    }
+
+    .send-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--primary);
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover {
+      background: #5aa5fb;
+      transform: scale(1.05);
+    }
+
+    /* QUICK CATEGORIES */
+    .categories-strip {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      padding: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cat-chip {
+      font-family: 'Lexend', sans-serif;
+      font-size: 12px;
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cat-chip:hover {
+      border-color: var(--primary);
+      color: var(--text-primary);
+    }
+
+    .cat-count {
+      background: var(--bg-hover);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    /* FOOTER CTA BAR */
+    .footer-bar {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-bar p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .btn-primary {
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      padding: 12px 24px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #5aa5fb;
+    }
+
+    .btn-secondary {
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- MINI NAV -->
+    <nav class="mini-nav">
+      <div class="logo">DocSmith</div>
+      <div class="nav-links">
+        <a href="#" class="nav-link">All Docs</a>
+        <a href="#" class="nav-link">Deploy</a>
+        <a href="#" class="nav-link">Pricing</a>
+      </div>
+    </nav>
+
+    <!-- MAIN CHAT -->
+    <div class="chat-container">
+      <div class="chat-hero">
+        <div class="ai-avatar-large">🤖</div>
+        <h1>Hey, I'm your docs buddy</h1>
+        <p>Ask me anything about our 200+ documented projects</p>
+      </div>
+
+      <div class="conversation">
+        <!-- AI Welcome Message -->
+        <div class="message">
+          <div class="message-avatar ai">🤖</div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-name">DocSmith AI</span>
+              <span class="message-time">just now</span>
+            </div>
+            <div class="message-text">
+              <strong>What brings you here today?</strong> I can help you:
+              <br><br>
+              • Find documentation examples for specific frameworks<br>
+              • Show you how DocSmith handles different project types<br>
+              • Get you started with documenting your own code
+            </div>
+
+            <div class="example-cards">
+              <div class="example-mini">
+                <div class="example-mini-header">
+                  <span class="example-mini-icon">⚛️</span>
+                  <span class="example-mini-title">AIGNE Framework</span>
+                </div>
+                <div class="example-mini-desc">AI agent SDK with TypeScript</div>
+                <div class="example-mini-meta">
+                  <span class="mini-tag">React</span>
+                  <span class="mini-tag">142 pages</span>
+                </div>
+              </div>
+
+              <div class="example-mini">
+                <div class="example-mini-header">
+                  <span class="example-mini-icon">🐍</span>
+                  <span class="example-mini-title">ML Pipeline</span>
+                </div>
+                <div class="example-mini-desc">FastAPI machine learning toolkit</div>
+                <div class="example-mini-meta">
+                  <span class="mini-tag">Python</span>
+                  <span class="mini-tag">89 pages</span>
+                </div>
+              </div>
+
+              <div class="example-mini">
+                <div class="example-mini-header">
+                  <span class="example-mini-icon">📦</span>
+                  <span class="example-mini-title">Enterprise Platform</span>
+                </div>
+                <div class="example-mini-desc">Turborepo monorepo with 15 packages</div>
+                <div class="example-mini-meta">
+                  <span class="mini-tag">Monorepo</span>
+                  <span class="mini-tag">320 pages</span>
+                </div>
+              </div>
+
+              <div class="example-mini">
+                <div class="example-mini-header">
+                  <span class="example-mini-icon">🦀</span>
+                  <span class="example-mini-title">Zed Editor</span>
+                </div>
+                <div class="example-mini-desc">GPU-accelerated editor core</div>
+                <div class="example-mini-meta">
+                  <span class="mini-tag">Rust</span>
+                  <span class="mini-tag">203 pages</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-actions">
+              <button class="action-btn primary">🔗 Connect my repo</button>
+              <button class="action-btn">Browse all examples</button>
+              <button class="action-btn">How does it work?</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <textarea class="input-field" placeholder="Ask me anything..." rows="1"></textarea>
+          <div class="input-hints">
+            <span class="hint">Show me React examples</span>
+            <span class="hint">How do I document APIs?</span>
+            <span class="hint">Monorepo best practices</span>
+          </div>
+        </div>
+        <button class="send-btn">→</button>
+      </div>
+    </div>
+
+    <!-- CATEGORY STRIP -->
+    <div class="categories-strip">
+      <button class="cat-chip">⚛️ React <span class="cat-count">47</span></button>
+      <button class="cat-chip">🐍 Python <span class="cat-count">38</span></button>
+      <button class="cat-chip">🦀 Rust <span class="cat-count">24</span></button>
+      <button class="cat-chip">🐹 Go <span class="cat-count">31</span></button>
+      <button class="cat-chip">📦 Monorepo <span class="cat-count">19</span></button>
+      <button class="cat-chip">🌐 API <span class="cat-count">52</span></button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-bar">
+      <p>Ready to document your project?</p>
+      <button class="btn-primary">Try with your repo</button>
+      <button class="btn-secondary">Deploy your own</button>
+    </div>
+  </div>
+</body>
+</html>

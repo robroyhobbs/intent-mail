@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V4: Story Journey</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&family=Audiowide&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4598fa;
+      --secondary: #00b8db;
+      --success: #28A948;
+      --did-accent: #49C3AD;
+      --bg-dark: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-hover: #1a1a24;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b0;
+      --border: rgba(69, 152, 250, 0.15);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); }
+
+    /* V4: STORY JOURNEY - Narrative scroll, reveals value progressively */
+
+    /* STICKY NAV */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Audiowide', cursive;
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-ghost {
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover { color: var(--text-primary); }
+
+    .btn-primary {
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover { background: #5aa5fb; }
+
+    /* HERO - Full screen with search */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(69, 152, 250, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      font-family: 'Lexend', sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--secondary);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      max-width: 800px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    /* SEARCH - Prominent conversational */
+    .search-hero {
+      width: 100%;
+      max-width: 640px;
+      position: relative;
+    }
+
+    .search-box {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 24px;
+      padding: 8px 8px 8px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(69, 152, 250, 0.1), 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 16px;
+      padding: 16px 0;
+      outline: none;
+    }
+
+    .search-input::placeholder { color: var(--text-secondary); }
+
+    .search-btn {
+      background: var(--primary);
+      border: none;
+      border-radius: 16px;
+      padding: 16px 24px;
+      color: white;
+      font-family: 'Lexend', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .search-btn:hover {
+      background: #5aa5fb;
+    }
+
+    .search-personality {
+      margin-top: 20px;
+      padding: 16px 24px;
+      background: rgba(69, 152, 250, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: none;
+    }
+
+    .search-box:focus-within ~ .search-personality {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-personality .avatar {
+      font-size: 24px;
+    }
+
+    .search-personality p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+      text-align: left;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* STORY SECTION */
+    .story-section {
+      padding: 120px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .story-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .story-header h2 {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .story-header p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* BEFORE/AFTER */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    @media (max-width: 900px) {
+      .comparison {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .comparison-arrow { transform: rotate(90deg); }
+    }
+
+    .comparison-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .comparison-card.before {
+      border-color: rgba(251, 44, 54, 0.3);
+    }
+
+    .comparison-card.after {
+      border-color: rgba(40, 169, 72, 0.3);
+    }
+
+    .comparison-label {
+      font-family: 'Lexend', sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .comparison-card.before .comparison-label { color: var(--error); }
+    .comparison-card.after .comparison-label { color: var(--success); }
+
+    .comparison-title {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .comparison-list {
+      list-style: none;
+    }
+
+    .comparison-list li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comparison-arrow {
+      font-size: 32px;
+      color: var(--primary);
+      text-align: center;
+    }
+
+    /* LIVE EXAMPLES - Horizontal scroll */
+    .examples-scroll {
+      margin-bottom: 80px;
+    }
+
+    .examples-track {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 20px 0;
+      scroll-snap-type: x mandatory;
+    }
+
+    .examples-track::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .examples-track::-webkit-scrollbar-track {
+      background: var(--bg-card);
+      border-radius: 2px;
+    }
+
+    .examples-track::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .example-card {
+      flex-shrink: 0;
+      width: 300px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      scroll-snap-align: start;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .example-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+    }
+
+    .example-preview {
+      height: 140px;
+      background: linear-gradient(135deg, var(--bg-hover) 0%, var(--bg-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+
+    .example-body {
+      padding: 20px;
+    }
+
+    .example-tags {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(69, 152, 250, 0.1);
+      color: var(--primary);
+    }
+
+    .example-title {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .example-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* JOURNEY STEPS */
+    .journey {
+      padding: 80px 0;
+    }
+
+    .journey-step {
+      display: flex;
+      gap: 48px;
+      margin-bottom: 80px;
+      align-items: center;
+    }
+
+    .journey-step:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    @media (max-width: 800px) {
+      .journey-step, .journey-step:nth-child(even) {
+        flex-direction: column;
+        gap: 32px;
+      }
+    }
+
+    .journey-visual {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+
+    .journey-content {
+      flex: 1;
+    }
+
+    .journey-number {
+      font-family: 'Audiowide', cursive;
+      font-size: 48px;
+      color: var(--primary);
+      opacity: 0.3;
+      margin-bottom: 16px;
+    }
+
+    .journey-content h3 {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .journey-content p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .journey-content .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* FINAL CTA */
+    .final-cta {
+      text-align: center;
+      padding: 120px 40px;
+      background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%);
+    }
+
+    .final-cta h2 {
+      font-family: 'Bai Jamjuree', sans-serif;
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .final-cta p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-large {
+      font-family: 'Lexend', sans-serif;
+      font-size: 15px;
+      padding: 16px 32px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-large.primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .btn-large.primary:hover {
+      background: #5aa5fb;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(69, 152, 250, 0.3);
+    }
+
+    .btn-large.secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-large.secondary:hover {
+      border-color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="logo">DocSmith</div>
+    <div class="nav-cta">
+      <button class="btn-ghost">Examples</button>
+      <button class="btn-ghost">Docs</button>
+      <button class="btn-primary">Get Started</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-badge">The Documentation Showcase</span>
+    <h1>See What Great Docs Look Like</h1>
+    <p>Explore 200+ real projects documented by DocSmith. Then create your own.</p>
+
+    <div class="search-hero">
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="What kind of project are you documenting?">
+        <button class="search-btn">
+          <span>✨</span> Ask AI
+        </button>
+      </div>
+      <div class="search-personality">
+        <span class="avatar">🤖</span>
+        <p>Hey! I know this showcase inside out. Try "show me React component libraries" or "how do you handle API docs?"</p>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll to explore</span>
+      <span>↓</span>
+    </div>
+  </section>
+
+  <!-- STORY: THE TRANSFORMATION -->
+  <section class="story-section">
+    <div class="story-header">
+      <h2>The Transformation</h2>
+      <p>What happens when AI understands your code</p>
+    </div>
+
+    <div class="comparison">
+      <div class="comparison-card before">
+        <div class="comparison-label">Before DocSmith</div>
+        <h3 class="comparison-title">Documentation is a burden</h3>
+        <ul class="comparison-list">
+          <li><span>❌</span> Docs always out of date</li>
+          <li><span>❌</span> Hours spent writing by hand</li>
+          <li><span>❌</span> Inconsistent across teams</li>
+          <li><span>❌</span> Single language only</li>
+          <li><span>❌</span> Developers avoid the task</li>
+        </ul>
+      </div>
+
+      <div class="comparison-arrow">→</div>
+
+      <div class="comparison-card after">
+        <div class="comparison-label">With DocSmith</div>
+        <h3 class="comparison-title">Documentation accelerates</h3>
+        <ul class="comparison-list">
+          <li><span>✅</span> Always in sync with code</li>
+          <li><span>✅</span> Generated in minutes</li>
+          <li><span>✅</span> Consistent, professional output</li>
+          <li><span>✅</span> 12 languages supported</li>
+          <li><span>✅</span> Developers focus on building</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LIVE EXAMPLES SCROLL -->
+    <div class="examples-scroll">
+      <div class="story-header">
+        <h2>Live Examples</h2>
+        <p>Real documentation from real projects</p>
+      </div>
+
+      <div class="examples-track">
+        <div class="example-card">
+          <div class="example-preview">⚛️</div>
+          <div class="example-body">
+            <div class="example-tags">
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+            </div>
+            <h3 class="example-title">AIGNE Framework</h3>
+            <p class="example-desc">Functional AI agent SDK</p>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <div class="example-preview">🐍</div>
+          <div class="example-body">
+            <div class="example-tags">
+              <span class="tag">Python</span>
+              <span class="tag">FastAPI</span>
+            </div>
+            <h3 class="example-title">ML Pipeline</h3>
+            <p class="example-desc">Machine learning toolkit</p>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <div class="example-preview">🦀</div>
+          <div class="example-body">
+            <div class="example-tags">
+              <span class="tag">Rust</span>
+              <span class="tag">WASM</span>
+            </div>
+            <h3 class="example-title">Zed Editor</h3>
+            <p class="example-desc">GPU-accelerated editor</p>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <div class="example-preview">📦</div>
+          <div class="example-body">
+            <div class="example-tags">
+              <span class="tag">Monorepo</span>
+              <span class="tag">Turborepo</span>
+            </div>
+            <h3 class="example-title">Enterprise Platform</h3>
+            <p class="example-desc">15-package monorepo</p>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <div class="example-preview">🐹</div>
+          <div class="example-body">
+            <div class="example-tags">
+              <span class="tag">Go</span>
+              <span class="tag">gRPC</span>
+            </div>
+            <h3 class="example-title">Cloud Gateway</h3>
+            <p class="example-desc">Microservices gateway</p>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <div class="example-preview">🌐</div>
+          <div class="example-body">
+            <div class="example-tags">
+              <span class="tag">API</span>
+              <span class="tag">OpenAPI</span>
+            </div>
+            <h3 class="example-title">AIGNE Hub</h3>
+            <p class="example-desc">Multi-provider AI gateway</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOURNEY STEPS -->
+    <div class="journey">
+      <div class="journey-step">
+        <div class="journey-visual">🔗</div>
+        <div class="journey-content">
+          <div class="journey-number">01</div>
+          <h3>Connect Your Repository</h3>
+          <p>Link your GitHub, GitLab, or Bitbucket repo. DocSmith scans your codebase and understands its structure, patterns, and intent automatically.</p>
+          <button class="btn-primary">Connect Now →</button>
+        </div>
+      </div>
+
+      <div class="journey-step">
+        <div class="journey-visual">⚡</div>
+        <div class="journey-content">
+          <div class="journey-number">02</div>
+          <h3>Generate in Minutes</h3>
+          <p>Choose your output formats, languages, and target audience. DocSmith generates comprehensive, structured documentation that stays in sync with every commit.</p>
+        </div>
+      </div>
+
+      <div class="journey-step">
+        <div class="journey-visual">🚀</div>
+        <div class="journey-content">
+          <div class="journey-number">03</div>
+          <h3>Publish & Share</h3>
+          <p>One-click publish to docsmith.aigne.io or deploy your own instance. Share with your team, customers, or the world.</p>
+          <button class="btn-primary">Deploy Your Own →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <h2>Ready to transform your docs?</h2>
+    <p>Connect your repo and generate your first documentation in under 5 minutes.</p>
+    <div class="cta-buttons">
+      <button class="btn-large primary">
+        <span>🔗</span> Try With Your Repo
+      </button>
+      <button class="btn-large secondary">
+        <span>🚀</span> Deploy Your Own
+      </button>
+    </div>
+  </section>
+</body>
+</html>

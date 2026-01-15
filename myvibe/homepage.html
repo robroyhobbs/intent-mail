@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyVibe - Ship Your Vibe | AI Native Engineering for Creators</title>
+    <meta name="description" content="AI Native Engineering for Creators. Describe what you want, AI deploys working UI. From idea to live in minutes.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --primary-dark: #3a7fd4;
+            --secondary: #00b8db;
+            --secondary-light: #00d3f3;
+            --text-dark: #1a1a2e;
+            --text-muted: #64648c;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --success: #28A948;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: var(--bg-white);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 100px;
+            background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%);
+            text-align: center;
+        }
+
+        .hero-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .hero-logo svg {
+            width: 56px;
+            height: 56px;
+            color: var(--text-dark);
+        }
+
+        .hero-logo h1 {
+            font-size: 3.5rem;
+            color: var(--text-dark);
+        }
+
+        .hero-tagline {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-pitch {
+            font-size: 1.35rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 8px;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(69, 152, 250, 0.4);
+        }
+
+        .hero-cta:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(69, 152, 250, 0.5);
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .benefit-card {
+            background: var(--bg-light);
+            padding: 32px;
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .benefit-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+        }
+
+        .benefit-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .benefit-feeling {
+            font-style: italic;
+            color: var(--primary);
+            margin-top: 12px;
+            font-size: 0.95rem;
+        }
+
+        /* The Shift Section */
+        .shift {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+
+        .shift-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .shift-box {
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .shift-before {
+            background: var(--bg-white);
+            border: 2px solid #e5e5e5;
+        }
+
+        .shift-after {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .shift-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .shift-after h3 {
+            color: white;
+        }
+
+        .shift-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .shift-box li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shift-box li::before {
+            content: "→";
+            color: var(--text-muted);
+        }
+
+        .shift-after li::before {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .shift-arrow {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        /* Getting Started Section */
+        .getting-started {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .step {
+            position: relative;
+            padding: 32px;
+            background: var(--bg-light);
+            border-radius: 16px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -16px;
+            left: 32px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .step h3 {
+            margin-top: 8px;
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+
+        .step p {
+            color: var(--text-muted);
+        }
+
+        .step code {
+            display: block;
+            background: var(--text-dark);
+            color: var(--secondary-light);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            background: var(--text-dark);
+            color: white;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.95rem;
+        }
+
+        .footer-links h5 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-light);
+        }
+
+        .footer-bottom {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--secondary-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0 80px;
+            }
+
+            .hero-logo h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-pitch {
+                font-size: 1.15rem;
+            }
+
+            .shift-container {
+                grid-template-columns: 1fr;
+            }
+
+            .shift-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                </svg>
+                <h1>MyVibe</h1>
+            </div>
+            <p class="hero-tagline">Ship Your Vibe</p>
+            <p class="hero-pitch">
+                AI Native Engineering for creators. Describe what you want, and AI generates deployable UI—not just designs.
+                One-click publish with real data connections. From "I want this" to "it's live" in minutes.
+            </p>
+            <a href="#getting-started" class="hero-cta">Ship Your First Vibe</a>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Why Creators Love MyVibe</h2>
+            <p class="section-subtitle">The satisfying part of building, without the frustrating parts</p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h3>No Developer Handoff</h3>
+                    <p>AI deploys working UI directly. No more "here's a design, now rebuild it in code."</p>
+                    <p class="benefit-feeling">"I don't need a developer anymore"</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3>Live in Minutes</h3>
+                    <p>Describe → Generate → Deploy. Real data connections, real functionality, instantly.</p>
+                    <p class="benefit-feeling">"Wait, it's live already?"</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <h3>Iterate Without Fear</h3>
+                    <p>Built-in A/B testing, versioning, and instant rollback. Experiment freely.</p>
+                    <p class="benefit-feeling">"I can try anything"</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    </div>
+                    <h3>Built-in Virality</h3>
+                    <p>Share your vibes with beautiful previews. Your work deserves an audience.</p>
+                    <p class="benefit-feeling">"Look what I built!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Shift Section -->
+    <section class="shift">
+        <div class="container">
+            <h2 class="section-title">The Shift</h2>
+            <p class="section-subtitle">From AI-assisted to AI-native</p>
+
+            <div class="shift-container">
+                <div class="shift-box shift-before">
+                    <h3>Before</h3>
+                    <ul>
+                        <li>AI generates design draft</li>
+                        <li>Developer rewrites in code</li>
+                        <li>Manual Git/CI workflow</li>
+                        <li>Static output, no data</li>
+                        <li>Weeks to iterate</li>
+                    </ul>
+                </div>
+
+                <div class="shift-arrow">→</div>
+
+                <div class="shift-box shift-after">
+                    <h3>With MyVibe</h3>
+                    <ul>
+                        <li>Describe what you want</li>
+                        <li>AI deploys working UI</li>
+                        <li>One-click publish</li>
+                        <li>Live data connections</li>
+                        <li>Minutes to iterate</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="getting-started" id="getting-started">
+        <div class="container">
+            <h2 class="section-title">Get Started</h2>
+            <p class="section-subtitle">From idea to live in three steps</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Describe Your Vibe</h3>
+                    <p>Use natural language to describe what you want. Be as specific or creative as you like.</p>
+                    <code>"I want a hero section for creators, with a carousel of featured vibes and a bold CTA..."</code>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Review & Refine</h3>
+                    <p>AI generates a deployable panel. Preview it, tweak the description, iterate until it's perfect.</p>
+                    <code>Panel generated → Preview at /home?variant=draft-01</code>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Ship It</h3>
+                    <p>One click to publish. Your vibe is live with real data, shareable links, and built-in analytics.</p>
+                    <code>✓ Published → myvibe.so/your-vibe</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>MyVibe</h4>
+                    <p>AI Native Engineering for Creators</p>
+                </div>
+
+                <div class="footer-links">
+                    <h5>Product Family</h5>
+                    <ul>
+                        <li><a href="#">ArcSphere</a> — AI-enabled browsing</li>
+                        <li><a href="#">DocSmith</a> — Living documentation</li>
+                        <li><a href="#">AIGNE Hub</a> — AI gateway</li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h5>Resources</h5>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Examples</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a></p>
+                <p>&copy; 2026 ArcBlock. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSmith Showcase - Design Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&family=Audiowide&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4598fa;
+      --secondary: #00b8db;
+      --success: #28A948;
+      --warning: #ff9300;
+      --error: #fb2c36;
+      --did-accent: #49C3AD;
+      --bg-dark: #0a0a0f;
+      --bg-card: #12121a;
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    .lab-header {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+      border-bottom: 1px solid rgba(69, 152, 250, 0.2);
+      padding: 24px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .lab-header h1 {
+      font-family: 'Audiowide', cursive;
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .lab-header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .variations-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .var-btn {
+      padding: 10px 20px;
+      border: 1px solid rgba(69, 152, 250, 0.3);
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'Lexend', sans-serif;
+      font-size: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .var-btn:hover {
+      border-color: var(--primary);
+      background: rgba(69, 152, 250, 0.1);
+    }
+
+    .var-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .variation-frame {
+      width: 100%;
+      height: calc(100vh - 140px);
+      border: none;
+    }
+
+    .compare-mode {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      background: var(--bg-dark);
+    }
+
+    .compare-mode iframe {
+      height: 50vh;
+      border: 1px solid rgba(69, 152, 250, 0.2);
+    }
+
+    .variation-label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-family: 'Lexend', sans-serif;
+      font-size: 12px;
+      z-index: 10;
+    }
+
+    .compare-container {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+  <header class="lab-header">
+    <h1>DESIGN LAB</h1>
+    <p>DocSmith Showcase Page - 5 Distinct Variations</p>
+    <nav class="variations-nav">
+      <button class="var-btn active" onclick="showVariation(1)">V1: Command Center</button>
+      <button class="var-btn" onclick="showVariation(2)">V2: Gallery Flow</button>
+      <button class="var-btn" onclick="showVariation(3)">V3: AI-First</button>
+      <button class="var-btn" onclick="showVariation(4)">V4: Story Journey</button>
+      <button class="var-btn" onclick="showVariation(5)">V5: Dashboard Grid</button>
+      <button class="var-btn" onclick="showCompare()" style="margin-left: auto; border-color: var(--secondary);">Compare All</button>
+    </nav>
+  </header>
+
+  <main id="content">
+    <iframe id="variation-frame" class="variation-frame" src="variations/v1-command-center.html"></iframe>
+  </main>
+
+  <script>
+    function showVariation(num) {
+      const files = {
+        1: 'v1-command-center.html',
+        2: 'v2-gallery-flow.html',
+        3: 'v3-ai-first.html',
+        4: 'v4-story-journey.html',
+        5: 'v5-dashboard-grid.html'
+      };
+
+      document.getElementById('content').innerHTML =
+        `<iframe class="variation-frame" src="variations/${files[num]}"></iframe>`;
+
+      document.querySelectorAll('.var-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === num - 1);
+      });
+    }
+
+    function showCompare() {
+      document.getElementById('content').innerHTML = `
+        <div class="compare-mode">
+          <div class="compare-container">
+            <span class="variation-label">V1: Command Center</span>
+            <iframe src="variations/v1-command-center.html"></iframe>
+          </div>
+          <div class="compare-container">
+            <span class="variation-label">V2: Gallery Flow</span>
+            <iframe src="variations/v2-gallery-flow.html"></iframe>
+          </div>
+          <div class="compare-container">
+            <span class="variation-label">V3: AI-First</span>
+            <iframe src="variations/v3-ai-first.html"></iframe>
+          </div>
+          <div class="compare-container">
+            <span class="variation-label">V4: Story Journey</span>
+            <iframe src="variations/v4-story-journey.html"></iframe>
+          </div>
+        </div>
+      `;
+
+      document.querySelectorAll('.var-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.var-btn')[5].classList.add('active');
+    }
+  </script>
+</body>
+</html>

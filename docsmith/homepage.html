@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocSmith - AI-Native DocOps Platform | Documentation as Accelerator</title>
+    <meta name="description" content="AI-Native DocOps Platform. Living documentation that evolves with your code. Your code changes, your docs follow.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --primary-dark: #3a7fd4;
+            --secondary: #00b8db;
+            --secondary-light: #00d3f3;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --bg-light: #f1f5f9;
+            --bg-white: #ffffff;
+            --success: #28A948;
+            --code-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: var(--bg-white);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Audiowide', sans-serif;
+            font-weight: 400;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+        }
+
+        h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 120px;
+            background: linear-gradient(180deg, var(--code-bg) 0%, #1a2744 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(69, 152, 250, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 184, 219, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(69, 152, 250, 0.2);
+            border: 1px solid rgba(69, 152, 250, 0.4);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.85rem;
+            color: var(--secondary-light);
+            margin-bottom: 24px;
+        }
+
+        .hero-logo h1 {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, var(--secondary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .hero-pitch {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .hero-cta-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(69, 152, 250, 0.4);
+        }
+
+        .hero-cta-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .hero-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .hero-cta-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .benefit-card {
+            background: var(--bg-light);
+            padding: 32px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateX(4px);
+        }
+
+        .benefit-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .benefit-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .benefit-tag {
+            display: inline-block;
+            background: rgba(69, 152, 250, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* The Shift Section */
+        .shift {
+            padding: 100px 0;
+            background: var(--bg-light);
+        }
+
+        .comparison-table {
+            max-width: 900px;
+            margin: 60px auto 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--code-bg);
+            color: white;
+        }
+
+        .comparison-header div {
+            padding: 20px 32px;
+            font-family: 'Audiowide', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .comparison-header div:first-child {
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-bottom: 1px solid var(--bg-light);
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-row div {
+            padding: 16px 32px;
+            font-size: 0.95rem;
+        }
+
+        .comparison-row div:first-child {
+            color: var(--text-muted);
+            border-right: 1px solid var(--bg-light);
+        }
+
+        .comparison-row div:last-child {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Getting Started Section */
+        .getting-started {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .install-block {
+            max-width: 700px;
+            margin: 60px auto 0;
+            background: var(--code-bg);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .install-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .install-header span {
+            color: rgba(255,255,255,0.6);
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .install-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .install-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .install-dots span:nth-child(1) { background: #ff5f56; }
+        .install-dots span:nth-child(2) { background: #ffbd2e; }
+        .install-dots span:nth-child(3) { background: #27ca40; }
+
+        .install-code {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            line-height: 2;
+        }
+
+        .install-code .comment {
+            color: #64748b;
+        }
+
+        .install-code .command {
+            color: var(--secondary-light);
+        }
+
+        .install-code .prompt {
+            color: var(--success);
+        }
+
+        /* Differentiator Section */
+        .differentiator {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .differentiator h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .differentiator p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            background: var(--code-bg);
+            color: white;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-brand h4 {
+            font-family: 'Audiowide', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .footer-links h5 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-light);
+        }
+
+        .footer-bottom {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--secondary-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 0 100px;
+            }
+
+            .hero-logo h1 {
+                font-size: 2.25rem;
+            }
+
+            .comparison-header,
+            .comparison-row {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-header div:first-child,
+            .comparison-row div:first-child {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">AIGNE Product</span>
+                <div class="hero-logo">
+                    <h1>DocSmith</h1>
+                </div>
+                <p class="hero-tagline">Documentation as Accelerator, Not Burden</p>
+                <p class="hero-pitch">
+                    AI-Native DocOps platform that transforms documentation from a static burden into living documentation—dynamic knowledge that evolves with your code, serves both humans and AI, and stays perpetually current.
+                </p>
+                <div class="hero-ctas">
+                    <a href="#getting-started" class="hero-cta hero-cta-primary">Get Started</a>
+                    <a href="https://github.com/AIGNE-io/aigne-doc-smith" class="hero-cta hero-cta-secondary">View on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentiator -->
+    <section class="differentiator">
+        <div class="container">
+            <h2>Repeatability, Not Randomness</h2>
+            <p>Same codebase → Same documentation. Every time. Diverse teams get consistent information. Changes are tracked and auditable.</p>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Why DocSmith</h2>
+            <p class="section-subtitle">AI-native means AI is the foundation, not a feature</p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>Agentic Source Analysis</h3>
+                    <p>Not just parsing—semantic understanding of code structure, API signatures, dependencies, and documentation gaps.</p>
+                    <span class="benefit-tag">Deep Understanding</span>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>Multi-Dimensional Output</h3>
+                    <p>One source generates docs by format (API, PDF, manual), language (12 supported), and audience (devs, admins, users).</p>
+                    <span class="benefit-tag">SSOT → Many Outputs</span>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>Source-Driven Updates</h3>
+                    <p>Code changes trigger doc regeneration. No manual sync. No stale documentation. Ever.</p>
+                    <span class="benefit-tag">Always Current</span>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>Workspace Isolation</h3>
+                    <p>Independent documentation workspaces that don't pollute your source repos. Clean, portable, team-friendly.</p>
+                    <span class="benefit-tag">No Source Pollution</span>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>Trusted & Auditable</h3>
+                    <p>Full version history, DID/VC integration for compliance, and git-native workflows.</p>
+                    <span class="benefit-tag">Enterprise Ready</span>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>Extensible Skills</h3>
+                    <p>Add AI capabilities for new document types, custom formats, and domain-specific adaptations.</p>
+                    <span class="benefit-tag">Customizable</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Shift Section -->
+    <section class="shift">
+        <div class="container">
+            <h2 class="section-title">The Transformation</h2>
+            <p class="section-subtitle">From static burden to living accelerator</p>
+
+            <div class="comparison-table">
+                <div class="comparison-header">
+                    <div>Traditional Docs</div>
+                    <div>Living Docs (DocSmith)</div>
+                </div>
+                <div class="comparison-row">
+                    <div>Write once, update manually</div>
+                    <div>Evolves with code changes</div>
+                </div>
+                <div class="comparison-row">
+                    <div>Static snapshots</div>
+                    <div>Dynamic, always current</div>
+                </div>
+                <div class="comparison-row">
+                    <div>Human-only audience</div>
+                    <div>Serves humans AND AI</div>
+                </div>
+                <div class="comparison-row">
+                    <div>Separate from code</div>
+                    <div>Breathes with codebase</div>
+                </div>
+                <div class="comparison-row">
+                    <div>Published then forgotten</div>
+                    <div>Continuously regenerated</div>
+                </div>
+                <div class="comparison-row">
+                    <div>Random AI outputs</div>
+                    <div>Repeatable, consistent results</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="getting-started" id="getting-started">
+        <div class="container">
+            <h2 class="section-title">Get Started</h2>
+            <p class="section-subtitle">Install and generate your first docs in minutes</p>
+
+            <div class="install-block">
+                <div class="install-header">
+                    <div class="install-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span>Terminal</span>
+                </div>
+                <div class="install-code">
+                    <div><span class="comment"># Install AIGNE CLI</span></div>
+                    <div><span class="prompt">$</span> <span class="command">npm install -g @aigne/cli</span></div>
+                    <br>
+                    <div><span class="comment"># Navigate to your project</span></div>
+                    <div><span class="prompt">$</span> <span class="command">cd your-project</span></div>
+                    <br>
+                    <div><span class="comment"># Generate documentation interactively</span></div>
+                    <div><span class="prompt">$</span> <span class="command">aigne doc create --interactive</span></div>
+                    <br>
+                    <div><span class="comment"># Or see all options</span></div>
+                    <div><span class="prompt">$</span> <span class="command">aigne doc --help</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>DocSmith</h4>
+                    <p>AI-Native DocOps Platform</p>
+                </div>
+
+                <div class="footer-links">
+                    <h5>Product Family</h5>
+                    <ul>
+                        <li><a href="#">MyVibe</a> — Ship your vibe</li>
+                        <li><a href="#">ArcSphere</a> — AI-enabled browsing</li>
+                        <li><a href="#">AIGNE Hub</a> — AI gateway</li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h5>Resources</h5>
+                    <ul>
+                        <li><a href="https://github.com/AIGNE-io/aigne-doc-smith">GitHub</a></li>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Examples</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a></p>
+                <p>&copy; 2026 ArcBlock. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
