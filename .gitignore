@@ -1,0 +1,53 @@
+# Node
+node_modules/
+.npm/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Test coverage
+coverage/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Large media (optional - comment out if you want to track)
+# *.mp4
+# *.mov
+# *.zip
+
+# Product directories that have their own repos
+# Uncomment these if you don't want to track them here
+# aigne-framework/
+# aigne-hub/
+# aigne-doc-smith/
