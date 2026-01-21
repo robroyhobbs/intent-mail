@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSmith - Stop Writing Docs. Start Shipping.</title>
+  <meta name="description" content="AI-native documentation that syncs with your code automatically. Same input, same output. Every team, same truth. Hours saved every week.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DocSmith - Documentation That Actually Stays Current">
+  <meta property="og:description" content="Your code changes, your docs follow. Automatically. No more outdated documentation, no more manual syncing, no more translation bottlenecks.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://docsmith.arcblock.io">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       ArcBlock Brand Design System + Dark Mode
+       ======================================== */
+    :root {
+      /* Primary Brand Colors */
+      --arcblock-primary: #4598fa;
+      --arcblock-secondary: #00b8db;
+      --arcblock-accent-did: #49C3AD;
+
+      /* Semantic Colors */
+      --color-success: #28A948;
+      --color-warning: #ff9300;
+      --color-error: #fb2c36;
+
+      /* Type Scale */
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --text-2xl: 1.5rem;
+      --text-3xl: 1.875rem;
+      --text-4xl: 2.25rem;
+      --text-5xl: 3rem;
+      --text-6xl: 3.75rem;
+
+      /* Typography */
+      --font-heading: 'Bai Jamjuree', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-ui: 'Lexend', sans-serif;
+      --font-product: 'Poppins', sans-serif;
+
+      /* Spacing */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+    }
+
+    /* Light Theme (Default) */
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: #fafafa;
+      --bg-tertiary: #f4f4f5;
+      --bg-inverse: #18181b;
+      --surface-elevated: #ffffff;
+      --surface-card: #ffffff;
+      --text-primary: #18181b;
+      --text-secondary: #52525b;
+      --text-tertiary: #71717a;
+      --text-inverse: #ffffff;
+      --border-default: #e4e4e7;
+      --border-subtle: #f4f4f5;
+    }
+
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --bg-primary: #09090b;
+      --bg-secondary: #18181b;
+      --bg-tertiary: #27272a;
+      --bg-inverse: #fafafa;
+      --surface-elevated: #18181b;
+      --surface-card: #27272a;
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --text-tertiary: #71717a;
+      --text-inverse: #18181b;
+      --border-default: #3f3f46;
+      --border-subtle: #27272a;
+    }
+
+    /* ========================================
+       Base Styles
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.625;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
+
+    h1 { font-size: var(--text-5xl); font-weight: 700; }
+    h2 { font-size: var(--text-4xl); }
+    h3 { font-size: var(--text-2xl); }
+    h4 { font-size: var(--text-xl); }
+
+    p { margin-bottom: var(--space-4); color: var(--text-secondary); }
+
+    a {
+      color: var(--arcblock-primary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    a:hover { color: #3a85e0; }
+
+    img { max-width: 100%; height: auto; }
+
+    /* ========================================
+       Layout
+       ======================================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    .container-narrow {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    /* ========================================
+       Navigation
+       ======================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-default);
+      padding: var(--space-4) 0;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-product);
+      font-size: var(--text-xl);
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--arcblock-primary) 0%, var(--arcblock-secondary) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: var(--text-sm);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .nav-links a {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      border-radius: 100px;
+      padding: var(--space-1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-base);
+      transition: all 0.2s ease;
+      color: var(--text-tertiary);
+    }
+
+    .theme-toggle-btn.active {
+      background: var(--surface-elevated);
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* ========================================
+       Buttons
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-ui);
+      font-weight: 500;
+      font-size: var(--text-sm);
+      padding: var(--space-3) var(--space-6);
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--arcblock-primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #3a85e0;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(69, 152, 250, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--arcblock-primary);
+      border: 1px solid var(--arcblock-primary);
+    }
+    .btn-secondary:hover {
+      background: rgba(69, 152, 250, 0.1);
+      color: var(--arcblock-primary);
+    }
+
+    .btn-large {
+      padding: var(--space-4) var(--space-8);
+      font-size: var(--text-base);
+    }
+
+    /* ========================================
+       Hero Section - Benefits Focused
+       ======================================== */
+    .hero {
+      padding: calc(var(--space-24) + 80px) 0 var(--space-20);
+      background: var(--bg-secondary);
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: rgba(69, 152, 250, 0.1);
+      color: var(--arcblock-primary);
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      padding: var(--space-2) var(--space-4);
+      border-radius: 100px;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 auto var(--space-6);
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--arcblock-primary) 0%, var(--arcblock-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: var(--text-xl);
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto var(--space-8);
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--space-12);
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      color: var(--arcblock-primary);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .hero-stat-label {
+      font-family: var(--font-ui);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    /* ========================================
+       Pain Points Section
+       ======================================== */
+    .pain-points {
+      padding: var(--space-24) 0;
+      background: var(--bg-primary);
+      transition: background-color 0.3s ease;
+    }
+
+    .pain-points-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-12);
+    }
+
+    .pain-points-header h2 {
+      margin-bottom: var(--space-4);
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .pain-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: var(--space-6);
+      display: flex;
+      gap: var(--space-4);
+      transition: all 0.3s ease;
+    }
+
+    .pain-card .icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(251, 44, 54, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-2xl);
+      flex-shrink: 0;
+    }
+
+    .pain-card h4 {
+      margin-bottom: var(--space-2);
+      font-size: var(--text-lg);
+    }
+
+    .pain-card p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    /* ========================================
+       Benefits Section
+       ======================================== */
+    .benefits {
+      padding: var(--space-24) 0;
+      background: var(--bg-secondary);
+      transition: background-color 0.3s ease;
+    }
+
+    .benefits-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-16);
+    }
+
+    .benefits-header h2 {
+      margin-bottom: var(--space-4);
+    }
+
+    .benefits-header p {
+      font-size: var(--text-lg);
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-8);
+    }
+
+    .benefit-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+      padding: var(--space-8);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .benefit-card:hover {
+      border-color: var(--arcblock-primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(69, 152, 250, 0.15);
+    }
+
+    .benefit-card .icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--arcblock-primary) 0%, var(--arcblock-secondary) 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-3xl);
+      margin: 0 auto var(--space-6);
+    }
+
+    .benefit-card h3 {
+      margin-bottom: var(--space-3);
+      font-size: var(--text-xl);
+    }
+
+    .benefit-card p {
+      margin-bottom: var(--space-4);
+      font-size: var(--text-sm);
+    }
+
+    .benefit-card .metric {
+      font-family: var(--font-heading);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--arcblock-primary);
+    }
+
+    .benefit-card .metric-label {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ========================================
+       How It Works Section
+       ======================================== */
+    .how-it-works {
+      padding: var(--space-24) 0;
+      background: var(--bg-primary);
+      transition: background-color 0.3s ease;
+    }
+
+    .how-it-works-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-16);
+    }
+
+    .how-it-works-header h2 {
+      margin-bottom: var(--space-4);
+    }
+
+    .workflow-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .workflow-step {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: var(--space-6);
+      text-align: center;
+      min-width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .workflow-step .step-number {
+      width: 40px;
+      height: 40px;
+      background: var(--arcblock-primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      margin: 0 auto var(--space-3);
+    }
+
+    .workflow-step h4 {
+      margin-bottom: var(--space-2);
+      font-size: var(--text-base);
+    }
+
+    .workflow-step p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .workflow-arrow {
+      font-size: var(--text-2xl);
+      color: var(--text-tertiary);
+    }
+
+    /* ========================================
+       Features Section (Secondary)
+       ======================================== */
+    .features {
+      padding: var(--space-24) 0;
+      background: var(--bg-inverse);
+      color: var(--text-inverse);
+      transition: background-color 0.3s ease;
+    }
+
+    [data-theme="dark"] .features {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .features-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-16);
+    }
+
+    .features-header h2 {
+      color: inherit;
+      margin-bottom: var(--space-4);
+    }
+
+    .features-header p {
+      color: inherit;
+      opacity: 0.7;
+      font-size: var(--text-lg);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: var(--space-6);
+      transition: all 0.2s ease;
+    }
+
+    [data-theme="dark"] .feature-card {
+      background: var(--surface-card);
+      border-color: var(--border-default);
+    }
+
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--arcblock-primary);
+    }
+
+    .feature-card .icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(69, 152, 250, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--arcblock-primary);
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-4);
+    }
+
+    .feature-card h3 {
+      color: inherit;
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-3);
+    }
+
+    .feature-card p {
+      color: inherit;
+      opacity: 0.7;
+      font-size: var(--text-sm);
+      margin: 0;
+    }
+
+    /* ========================================
+       Social Proof / ROI Section
+       ======================================== */
+    .roi-section {
+      padding: var(--space-24) 0;
+      background: var(--bg-secondary);
+      transition: background-color 0.3s ease;
+    }
+
+    .roi-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-16);
+    }
+
+    .roi-header h2 {
+      margin-bottom: var(--space-4);
+    }
+
+    .roi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+
+    .roi-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: var(--space-6);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .roi-card .value {
+      font-family: var(--font-heading);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      color: var(--arcblock-primary);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .roi-card .label {
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+    }
+
+    .roi-card .description {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+
+    /* ========================================
+       Personas Section
+       ======================================== */
+    .personas {
+      padding: var(--space-24) 0;
+      background: var(--bg-primary);
+      transition: background-color 0.3s ease;
+    }
+
+    .personas-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-12);
+    }
+
+    .personas-header h2 {
+      margin-bottom: var(--space-4);
+    }
+
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .persona-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: var(--space-6);
+      transition: all 0.3s ease;
+    }
+
+    .persona-card:hover {
+      border-color: var(--arcblock-primary);
+    }
+
+    .persona-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .persona-avatar {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--arcblock-primary) 0%, var(--arcblock-secondary) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xl);
+    }
+
+    .persona-info h4 {
+      margin-bottom: var(--space-1);
+      font-size: var(--text-base);
+    }
+
+    .persona-info span {
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .persona-pain {
+      background: rgba(251, 44, 54, 0.05);
+      border-left: 3px solid var(--color-error);
+      padding: var(--space-3) var(--space-4);
+      margin-bottom: var(--space-4);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .persona-pain p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .persona-solution {
+      background: rgba(40, 169, 72, 0.05);
+      border-left: 3px solid var(--color-success);
+      padding: var(--space-3) var(--space-4);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .persona-solution p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    /* ========================================
+       CTA Section
+       ======================================== */
+    .cta-section {
+      padding: var(--space-24) 0;
+      background: linear-gradient(135deg, var(--arcblock-primary) 0%, var(--arcblock-secondary) 100%);
+      text-align: center;
+      color: white;
+    }
+
+    .cta-section h2 {
+      color: white;
+      margin-bottom: var(--space-4);
+    }
+
+    .cta-section p {
+      font-size: var(--text-lg);
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 600px;
+      margin: 0 auto var(--space-8);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-section .btn-primary {
+      background: white;
+      color: var(--arcblock-primary);
+    }
+    .cta-section .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--arcblock-primary);
+    }
+
+    .cta-section .btn-secondary {
+      border-color: white;
+      color: white;
+    }
+    .cta-section .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    footer {
+      background: var(--bg-inverse);
+      color: var(--text-inverse);
+      padding: var(--space-16) 0 var(--space-8);
+      transition: background-color 0.3s ease;
+    }
+
+    [data-theme="dark"] footer {
+      background: #000;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: var(--space-12);
+      margin-bottom: var(--space-12);
+    }
+
+    .footer-brand .logo {
+      color: inherit;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-brand p {
+      font-size: var(--text-sm);
+      opacity: 0.6;
+      margin: 0;
+      color: inherit;
+    }
+
+    .footer-links h4 {
+      font-size: var(--text-sm);
+      font-family: var(--font-ui);
+      margin-bottom: var(--space-4);
+      color: inherit;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: var(--space-2);
+    }
+
+    .footer-links a {
+      color: inherit;
+      opacity: 0.6;
+      font-size: var(--text-sm);
+    }
+    .footer-links a:hover {
+      opacity: 1;
+      color: var(--arcblock-primary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: var(--space-8);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--text-sm);
+      opacity: 0.6;
+    }
+
+    .footer-bottom a {
+      color: inherit;
+      opacity: 0.8;
+    }
+
+    /* ========================================
+       Responsive
+       ======================================== */
+    @media (max-width: 1024px) {
+      .benefits-grid,
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .roi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: var(--text-4xl); }
+      h2 { font-size: var(--text-3xl); }
+
+      .nav-links a:not(.btn) {
+        display: none;
+      }
+
+      .hero {
+        padding: calc(var(--space-20) + 60px) 0 var(--space-16);
+      }
+
+      .hero-subtitle {
+        font-size: var(--text-lg);
+      }
+
+      .hero-stats {
+        gap: var(--space-8);
+      }
+
+      .pain-grid,
+      .benefits-grid,
+      .features-grid,
+      .personas-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .roi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .workflow-visual {
+        flex-direction: column;
+      }
+
+      .workflow-arrow {
+        transform: rotate(90deg);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: var(--space-4);
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">
+        <span class="logo-icon">D</span>
+        DocSmith
+      </a>
+      <div class="nav-links">
+        <a href="#benefits">Benefits</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#features">Features</a>
+        <a href="/docs">Docs</a>
+
+        <!-- Theme Toggle -->
+        <div class="theme-toggle" role="group" aria-label="Theme toggle">
+          <button class="theme-toggle-btn active" data-theme="light" aria-label="Light mode" title="Light mode">☀️</button>
+          <button class="theme-toggle-btn" data-theme="dark" aria-label="Dark mode" title="Dark mode">🌙</button>
+        </div>
+
+        <a href="#" class="btn btn-primary">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section - Benefits Focused -->
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">AI-Native DocOps Platform</span>
+      <h1>Stop Chasing Outdated Docs.<br><span class="highlight">Start Shipping Faster.</span></h1>
+      <p class="hero-subtitle">
+        Your code changes. Your docs follow. Automatically.<br>
+        No more manual syncing. No more "docs are wrong." No more translation bottlenecks.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary btn-large">Start Free Trial</a>
+        <a href="#" class="btn btn-secondary btn-large">See It In Action</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">10+</div>
+          <div class="hero-stat-label">Hours saved weekly</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">12</div>
+          <div class="hero-stat-label">Languages supported</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">100%</div>
+          <div class="hero-stat-label">Source-aligned accuracy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pain Points Section -->
+  <section class="pain-points">
+    <div class="container">
+      <div class="pain-points-header">
+        <h2>Sound Familiar?</h2>
+        <p class="lead" style="color: var(--text-secondary);">Documentation debt is killing your velocity. Your team knows it. Your users feel it.</p>
+      </div>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="icon">😤</div>
+          <div>
+            <h4>"The docs are wrong again"</h4>
+            <p>Code ships, docs don't update. Users get frustrated. Support tickets pile up. Trust erodes.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="icon">⏰</div>
+          <div>
+            <h4>"Who has time to write docs?"</h4>
+            <p>Engineers would rather code. Tech writers are bottlenecked. Documentation becomes everyone's last priority.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="icon">🌍</div>
+          <div>
+            <h4>"Translation takes forever"</h4>
+            <p>Global users, but English-only docs. Manual translation is expensive, slow, and inconsistent.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <div class="icon">🔍</div>
+          <div>
+            <h4>"Which version is correct?"</h4>
+            <p>Docs in wikis, READMEs, Notion, and Confluence. Different versions, different truths. Chaos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits" id="benefits">
+    <div class="container">
+      <div class="benefits-header">
+        <h2>What You Actually Get</h2>
+        <p>Not features. Outcomes. Real results that impact your team and your bottom line.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="icon">⏱️</div>
+          <h3>Time Back</h3>
+          <p>Stop spending hours syncing docs with code. Automated updates mean your team focuses on building, not documenting.</p>
+          <div class="metric">10+ hrs</div>
+          <div class="metric-label">Saved per week</div>
+        </div>
+        <div class="benefit-card">
+          <div class="icon">🎯</div>
+          <h3>Docs You Can Trust</h3>
+          <p>Same codebase = same docs. Every time. No more "AI randomness." Your engineering, product, and support teams work from one truth.</p>
+          <div class="metric">100%</div>
+          <div class="metric-label">Repeatable accuracy</div>
+        </div>
+        <div class="benefit-card">
+          <div class="icon">🌐</div>
+          <h3>Global Reach, Instantly</h3>
+          <p>One command, 12 languages. Professional-grade translation that scales with your product, not your translation budget.</p>
+          <div class="metric">12</div>
+          <div class="metric-label">Languages in minutes</div>
+        </div>
+        <div class="benefit-card">
+          <div class="icon">📉</div>
+          <h3>Fewer Support Tickets</h3>
+          <p>When docs match reality, users self-serve. Fewer "how do I..." questions. Lower support costs. Happier customers.</p>
+          <div class="metric">-40%</div>
+          <div class="metric-label">Support volume</div>
+        </div>
+        <div class="benefit-card">
+          <div class="icon">🚀</div>
+          <h3>Ship Faster</h3>
+          <p>Documentation stops being the bottleneck. Release when code is ready, not when docs catch up.</p>
+          <div class="metric">2x</div>
+          <div class="metric-label">Faster releases</div>
+        </div>
+        <div class="benefit-card">
+          <div class="icon">✅</div>
+          <h3>Audit-Ready</h3>
+          <p>Full traceability. Know exactly what generated what, when, and why. Compliance without the spreadsheets.</p>
+          <div class="metric">100%</div>
+          <div class="metric-label">Change traceability</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="how-it-works-header">
+        <h2>How It Works</h2>
+        <p style="color: var(--text-secondary);">Point DocSmith at your code. Get docs that stay current. It's that straightforward.</p>
+      </div>
+      <div class="workflow-visual">
+        <div class="workflow-step">
+          <div class="step-number">1</div>
+          <h4>Connect Your Code</h4>
+          <p>Point to your repo or upload files</p>
+        </div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step">
+          <div class="step-number">2</div>
+          <h4>AI Understands</h4>
+          <p>Semantic analysis of your codebase</p>
+        </div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step">
+          <div class="step-number">3</div>
+          <h4>Docs Generate</h4>
+          <p>Multiple formats, languages, audiences</p>
+        </div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step">
+          <div class="step-number">4</div>
+          <h4>Stay In Sync</h4>
+          <p>Code changes trigger doc updates</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Personas Section -->
+  <section class="personas">
+    <div class="container">
+      <div class="personas-header">
+        <h2>Built For Your Role</h2>
+        <p style="color: var(--text-secondary);">Whether you're shipping code or managing teams, DocSmith solves your documentation problems.</p>
+      </div>
+      <div class="personas-grid">
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-avatar">👩‍💻</div>
+            <div class="persona-info">
+              <h4>Engineering Lead</h4>
+              <span>Team productivity</span>
+            </div>
+          </div>
+          <div class="persona-pain">
+            <p>"My team hates writing docs. They're always outdated anyway."</p>
+          </div>
+          <div class="persona-solution">
+            <p><strong>With DocSmith:</strong> Docs sync automatically with code. No more nagging. No more outdated pages. Engineers stay focused on building.</p>
+          </div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-avatar">🌍</div>
+            <div class="persona-info">
+              <h4>DevRel Professional</h4>
+              <span>Global documentation</span>
+            </div>
+          </div>
+          <div class="persona-pain">
+            <p>"Manual translation takes months and is never consistent."</p>
+          </div>
+          <div class="persona-solution">
+            <p><strong>With DocSmith:</strong> 12 languages, one command. Consistent terminology across all versions. Global reach without the translation agency bills.</p>
+          </div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-avatar">📊</div>
+            <div class="persona-info">
+              <h4>Product Manager</h4>
+              <span>Release velocity</span>
+            </div>
+          </div>
+          <div class="persona-pain">
+            <p>"Docs are always the bottleneck. We can't ship until they're ready."</p>
+          </div>
+          <div class="persona-solution">
+            <p><strong>With DocSmith:</strong> Docs generate as code ships. No more waiting. No more "docs will follow." Release when you're ready.</p>
+          </div>
+        </div>
+        <div class="persona-card">
+          <div class="persona-header">
+            <div class="persona-avatar">🔒</div>
+            <div class="persona-info">
+              <h4>Technical Leader</h4>
+              <span>Compliance & audit</span>
+            </div>
+          </div>
+          <div class="persona-pain">
+            <p>"Auditors want to know what changed when. I have no idea."</p>
+          </div>
+          <div class="persona-solution">
+            <p><strong>With DocSmith:</strong> Full version history. Complete audit trail. Know exactly what generated what, when, and from which source.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section (Secondary) -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-header">
+        <h2>Under The Hood</h2>
+        <p>For the technically curious. Here's what makes DocSmith different.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">🧠</div>
+          <h3>Agentic Understanding</h3>
+          <p>Not templates or regex. Semantic comprehension of code structure, patterns, and relationships.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📄</div>
+          <h3>Multi-Format Output</h3>
+          <p>One source generates API docs, guides, PDFs, presentations. Same truth, different shapes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔄</div>
+          <h3>Source-Driven Sync</h3>
+          <p>Git-integrated. Code changes trigger targeted updates. No manual intervention.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🌐</div>
+          <h3>12 Languages</h3>
+          <p>Professional-grade translation. Consistent terminology. Not machine-translated gibberish.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔐</div>
+          <h3>DID/VC Compliance</h3>
+          <p>Enterprise-grade identity and verification. Built for regulated industries.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📦</div>
+          <h3>Blocklet Deployment</h3>
+          <p>Self-hostable. Deploy to your infrastructure. Full data sovereignty.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI Section -->
+  <section class="roi-section">
+    <div class="container">
+      <div class="roi-header">
+        <h2>The ROI Is Clear</h2>
+        <p style="color: var(--text-secondary);">Documentation debt has real costs. DocSmith delivers real returns.</p>
+      </div>
+      <div class="roi-grid">
+        <div class="roi-card">
+          <div class="value">10+</div>
+          <div class="label">Hours saved weekly</div>
+          <p class="description">Per engineer on doc maintenance</p>
+        </div>
+        <div class="roi-card">
+          <div class="value">-40%</div>
+          <div class="label">Support tickets</div>
+          <p class="description">When docs match reality</p>
+        </div>
+        <div class="roi-card">
+          <div class="value">2x</div>
+          <div class="label">Faster releases</div>
+          <p class="description">Docs stop being the bottleneck</p>
+        </div>
+        <div class="roi-card">
+          <div class="value">$0</div>
+          <div class="label">Translation agency fees</div>
+          <p class="description">12 languages, built-in</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Fix Documentation Forever?</h2>
+      <p>Join engineering teams who stopped fighting docs and started shipping faster.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary btn-large">Start Free Trial</a>
+        <a href="#" class="btn btn-secondary btn-large">Schedule Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-icon">D</span>
+            DocSmith
+          </a>
+          <p>AI-native documentation that stays current. Part of the AIGNE ecosystem by ArcBlock.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="#">Roadmap</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Reference</a></li>
+            <li><a href="#">Examples</a></li>
+            <li><a href="#">Community</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="https://arcblock.io">ArcBlock</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 ArcBlock. All rights reserved.</p>
+        <div>
+          <a href="#">Privacy</a> · <a href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    // Theme Toggle Functionality
+    const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+    // Apply initial theme
+    html.setAttribute('data-theme', initialTheme);
+    updateToggleButtons(initialTheme);
+
+    // Add click handlers
+    themeToggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const theme = btn.getAttribute('data-theme');
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        updateToggleButtons(theme);
+      });
+    });
+
+    function updateToggleButtons(theme) {
+      themeToggleBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-theme') === theme);
+      });
+    }
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem('theme')) {
+        const newTheme = e.matches ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        updateToggleButtons(newTheme);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSmith — Documentation as Engineering, Not Writing</title>
+  <meta name="description" content="AI-native DocOps platform. Docs emerge from your codebase with full provenance, version control, and repeatability. Same input, same output. Every time.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DocSmith — Documentation as Engineering, Not Writing">
+  <meta property="og:description" content="The DocOps platform where documentation is a byproduct of engineering, not a manual task.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts: Poppins (actual DocSmith brand) + Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       DocSmith / AIGNE Brand Design System
+       CORRECTED: Teal palette, Poppins font
+       ======================================== */
+    :root {
+      /* AIGNE/DocSmith Brand Colors */
+      --brand-primary-light: #02A996;
+      --brand-primary-dark: #00C3AD;
+      --brand-secondary-light: #00ADCE;
+      --brand-secondary-dark: #39C5E5;
+
+      /* Semantic Colors */
+      --color-success: #388E4A;
+      --color-warning: #FF990A;
+      --color-error: #DA3036;
+
+      /* Typography */
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Roboto', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Spacing */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 8rem;
+    }
+
+    [data-theme="dark"] {
+      --brand-primary: #00C3AD;
+      --brand-secondary: #39C5E5;
+      --bg: #111113;
+      --bg-elevated: #18181b;
+      --bg-card: #1f1f23;
+      --text: #ffffff;
+      --text-muted: #a1a1aa;
+      --text-subtle: #71717a;
+      --border: #27272a;
+      --border-subtle: #1f1f23;
+    }
+
+    [data-theme="light"] {
+      --brand-primary: #02A996;
+      --brand-secondary: #00ADCE;
+      --bg: #ffffff;
+      --bg-elevated: #fafafa;
+      --bg-card: #ffffff;
+      --text: #1b1b1d;
+      --text-muted: #52525b;
+      --text-subtle: #a1a1aa;
+      --border: #e4e4e7;
+      --border-subtle: #f4f4f5;
+    }
+
+    /* ========================================
+       Reset & Base
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    h1 { font-size: clamp(2.25rem, 6vw, 3.5rem); }
+    h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+    h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); }
+
+    p { color: var(--text-muted); }
+
+    a {
+      color: var(--brand-primary);
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* ========================================
+       Navigation
+       ======================================== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-sm) 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: var(--text); }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover { border-color: var(--brand-primary); }
+
+    /* ========================================
+       Buttons
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.875rem 1.75rem;
+      border-radius: 10px;
+      font-family: var(--font-heading);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(2, 169, 150, 0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+
+    /* ========================================
+       Hero
+       ======================================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 0 var(--space-2xl);
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 30%, rgba(0, 195, 173, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--brand-primary);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      max-width: 800px;
+      margin: 0 auto var(--space-md);
+    }
+
+    .hero h1 .highlight {
+      color: var(--brand-primary);
+    }
+
+    .hero-subtitle {
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto var(--space-xl);
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========================================
+       Stats Strip
+       ======================================== */
+    .stats {
+      padding: var(--space-xl) 0;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--brand-primary);
+      line-height: 1;
+      margin-bottom: var(--space-xs);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-subtle);
+    }
+
+    /* ========================================
+       Why DocSmith Section
+       ======================================== */
+    .why-section {
+      padding: var(--space-3xl) 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    .section-header h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-header p {
+      font-size: 1.0625rem;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .why-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-lg);
+      transition: all 0.3s ease;
+    }
+
+    .why-card:hover {
+      border-color: var(--brand-primary);
+      transform: translateY(-4px);
+    }
+
+    .why-card .icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, rgba(0, 195, 173, 0.15), rgba(57, 197, 229, 0.1));
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      margin-bottom: var(--space-sm);
+    }
+
+    .why-card h3 {
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+    }
+
+    .why-card p {
+      font-size: 0.9375rem;
+      margin: 0;
+    }
+
+    /* ========================================
+       Showcase Section
+       ======================================== */
+    .showcase {
+      padding: var(--space-3xl) 0;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .showcase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .showcase-card:hover {
+      border-color: var(--brand-primary);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .showcase-preview {
+      height: 160px;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-elevated) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-preview::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 195, 173, 0.05), rgba(57, 197, 229, 0.03));
+    }
+
+    .showcase-preview .logo-placeholder {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .showcase-content {
+      padding: var(--space-md);
+    }
+
+    .showcase-content h3 {
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+    }
+
+    .showcase-content p {
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    .showcase-content .type {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--brand-primary);
+      background: rgba(0, 195, 173, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-top: var(--space-sm);
+    }
+
+    .showcase-cta {
+      text-align: center;
+    }
+
+    /* ========================================
+       Workflow Section
+       ======================================== */
+    .workflow {
+      padding: var(--space-3xl) 0;
+    }
+
+    .workflow-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-xl);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .workflow-steps {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+      flex-wrap: wrap;
+    }
+
+    .workflow-step {
+      text-align: center;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .workflow-step .version {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: var(--space-xs);
+    }
+
+    .workflow-step.active .version {
+      background: var(--brand-primary);
+      border-color: var(--brand-primary);
+      color: white;
+    }
+
+    .workflow-step .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .workflow-arrow {
+      color: var(--text-subtle);
+      font-size: 1.25rem;
+    }
+
+    .workflow-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--border);
+    }
+
+    .workflow-feature {
+      text-align: center;
+    }
+
+    .workflow-feature .icon {
+      font-size: 1.25rem;
+      margin-bottom: var(--space-xs);
+    }
+
+    .workflow-feature h4 {
+      font-size: 0.875rem;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .workflow-feature p {
+      font-size: 0.8125rem;
+      margin: 0;
+    }
+
+    /* ========================================
+       Tech Foundation Section
+       ======================================== */
+    .tech-section {
+      padding: var(--space-3xl) 0;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-lg);
+    }
+
+    .tech-card .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand-primary);
+      background: rgba(0, 195, 173, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: var(--space-sm);
+    }
+
+    .tech-card h3 {
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+    }
+
+    .tech-card p {
+      font-size: 0.9375rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .tech-list {
+      list-style: none;
+    }
+
+    .tech-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xs);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xs);
+    }
+
+    .tech-list li::before {
+      content: '→';
+      color: var(--brand-primary);
+      font-weight: 600;
+    }
+
+    /* ========================================
+       CTA Section
+       ======================================== */
+    .cta-section {
+      padding: var(--space-3xl) 0;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-section > .container > p {
+      font-size: 1.0625rem;
+      max-width: 500px;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    .footer {
+      padding: var(--space-xl) 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .footer-link {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--brand-primary); }
+
+    .footer-copy {
+      font-size: 0.875rem;
+      color: var(--text-subtle);
+    }
+
+    /* ========================================
+       Animations
+       ======================================== */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========================================
+       Responsive
+       ======================================== */
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .why-grid,
+      .showcase-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tech-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workflow-features {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-link { display: none; }
+
+      .hero {
+        min-height: auto;
+        padding: 120px 0 var(--space-xl);
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-md);
+      }
+
+      .workflow-steps {
+        flex-direction: column;
+      }
+
+      .workflow-arrow {
+        transform: rotate(90deg);
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: var(--space-md);
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark">D</span>
+        DocSmith
+      </a>
+      <div class="nav-right">
+        <a href="#showcase" class="nav-link">Showcase</a>
+        <a href="#workflow" class="nav-link">How It Works</a>
+        <a href="https://docsmith.aigne.io/en/docs" class="nav-link">Docs</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <a href="https://docsmith.aigne.io" class="btn btn-primary">Get Started →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        AI-Native DocOps Platform
+      </div>
+      <h1>Documentation as <span class="highlight">engineering</span>, not writing.</h1>
+      <p class="hero-subtitle">
+        Docs emerge from your codebase with full provenance and version control.
+        Same input, same output. Every time. No AI randomness—just deterministic, repeatable results.
+      </p>
+      <div class="hero-cta">
+        <a href="https://docsmith.aigne.io" class="btn btn-primary">Start Free →</a>
+        <a href="#showcase" class="btn btn-outline">See Examples</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid animate">
+        <div>
+          <div class="stat-value">12</div>
+          <div class="stat-label">Languages supported</div>
+        </div>
+        <div>
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Repeatable output</div>
+        </div>
+        <div>
+          <div class="stat-value">60s</div>
+          <div class="stat-label">To get started</div>
+        </div>
+        <div>
+          <div class="stat-value">0</div>
+          <div class="stat-label">Config required</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why DocSmith -->
+  <section class="why-section">
+    <div class="container">
+      <div class="section-header animate">
+        <h2>Why Choose DocSmith?</h2>
+        <p>Not another AI writing tool. A fundamentally different approach where docs are engineering artifacts with provenance.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card animate">
+          <div class="icon">🧠</div>
+          <h3>Intelligent Generation</h3>
+          <p>AI understands your codebase semantically—not just parsing syntax, but comprehending architecture, patterns, and intent.</p>
+        </div>
+        <div class="why-card animate">
+          <div class="icon">🌍</div>
+          <h3>Global Language Support</h3>
+          <p>12 languages from one command. Professional-grade translation with consistent terminology. Global reach without the agency.</p>
+        </div>
+        <div class="why-card animate">
+          <div class="icon">🔌</div>
+          <h3>Flexible LLM Integration</h3>
+          <p>Works with multiple LLM providers through AIGNE Hub. Choose the model that fits your needs, swap anytime.</p>
+        </div>
+        <div class="why-card animate">
+          <div class="icon">🔄</div>
+          <h3>Automatic Updates</h3>
+          <p>Code changes trigger doc regeneration. Your docs evolve with your product. No manual syncing ever again.</p>
+        </div>
+        <div class="why-card animate">
+          <div class="icon">⚡</div>
+          <h3>Zero Configuration</h3>
+          <p>Point at your repo, get docs. No complex setup, no config files, no learning curve. Works in 60 seconds.</p>
+        </div>
+        <div class="why-card animate">
+          <div class="icon">🚀</div>
+          <h3>One-Click Publishing</h3>
+          <p>Deploy to your own domain instantly. Beautiful, responsive doc sites with search, versioning, and dark mode built-in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase -->
+  <section class="showcase" id="showcase">
+    <div class="container">
+      <div class="section-header animate">
+        <h2>See DocSmith in Action</h2>
+        <p>Real documentation sites generated and maintained with DocSmith. From developer tools to SDKs to product guides.</p>
+      </div>
+      <div class="showcase-grid">
+        <a href="https://docs.arcblock.io" class="showcase-card animate" target="_blank">
+          <div class="showcase-preview">
+            <span class="logo-placeholder">ArcBlock</span>
+          </div>
+          <div class="showcase-content">
+            <h3>ArcBlock Documentation</h3>
+            <p>Complete developer documentation for the ArcBlock platform and ecosystem.</p>
+            <span class="type">Developer Docs</span>
+          </div>
+        </a>
+        <a href="https://aigne.io/docs" class="showcase-card animate" target="_blank">
+          <div class="showcase-preview">
+            <span class="logo-placeholder">AIGNE</span>
+          </div>
+          <div class="showcase-content">
+            <h3>AIGNE Framework</h3>
+            <p>AI-native software engineering framework documentation and guides.</p>
+            <span class="type">Framework Docs</span>
+          </div>
+        </a>
+        <a href="https://did-connect.io/docs" class="showcase-card animate" target="_blank">
+          <div class="showcase-preview">
+            <span class="logo-placeholder">DID Connect</span>
+          </div>
+          <div class="showcase-content">
+            <h3>DID Connect</h3>
+            <p>Integration guides for decentralized identity authentication.</p>
+            <span class="type">SDK Reference</span>
+          </div>
+        </a>
+      </div>
+      <div class="showcase-cta animate">
+        <a href="https://docsmith.aigne.io/en/showcase/" class="btn btn-outline">View All Examples →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section class="workflow" id="workflow">
+    <div class="container">
+      <div class="section-header animate">
+        <h2>The Smith Workflow</h2>
+        <p>Version-controlled collaboration. Every iteration is atomic, diffable, and fully auditable.</p>
+      </div>
+      <div class="workflow-visual animate">
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <div class="version">V0</div>
+            <div class="label">Your Code</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step active">
+            <div class="version">V1</div>
+            <div class="label">Generated</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="version">V1.5</div>
+            <div class="label">Feedback</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="version">V2</div>
+            <div class="label">Refined</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="version">∞</div>
+            <div class="label">Iterate</div>
+          </div>
+        </div>
+        <div class="workflow-features">
+          <div class="workflow-feature">
+            <div class="icon">🔒</div>
+            <h4>Source Never Modified</h4>
+            <p>Your original code stays untouched</p>
+          </div>
+          <div class="workflow-feature">
+            <div class="icon">📋</div>
+            <h4>Batch Feedback</h4>
+            <p>Global, local, or direct patches</p>
+          </div>
+          <div class="workflow-feature">
+            <div class="icon">📊</div>
+            <h4>Full Diff View</h4>
+            <p>See exactly what changed, why</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Foundation -->
+  <section class="tech-section">
+    <div class="container">
+      <div class="section-header animate">
+        <h2>Built for the AI-Native Era</h2>
+        <p>DocSmith is powered by foundational technologies designed for the future of software engineering.</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card animate">
+          <span class="badge">Foundation</span>
+          <h3>Agentic File System (AFS)</h3>
+          <p>Documents as semantic files with version history, diff capability, and identity. Not opaque blobs—structured knowledge.</p>
+          <ul class="tech-list">
+            <li>Full provenance for every piece of content</li>
+            <li>View projections for different audiences</li>
+            <li>Native version/diff/history at system level</li>
+            <li>Ready for agent memory and reasoning</li>
+          </ul>
+        </div>
+        <div class="tech-card animate">
+          <span class="badge">Architecture</span>
+          <h3>AI-Native Engineering (AINE)</h3>
+          <p>Documentation isn't written—it emerges as a byproduct of engineering state. Replayable, traceable, always in sync.</p>
+          <ul class="tech-list">
+            <li>Docs and code share the same source</li>
+            <li>Deterministic, reproducible output</li>
+            <li>AI as collaborator, not chatbot</li>
+            <li>Future-proof for agent integration</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container animate">
+      <h2>Ready to transform your docs?</h2>
+      <p>Start generating documentation that actually stays current. Free to try, zero configuration.</p>
+      <div class="cta-buttons">
+        <a href="https://docsmith.aigne.io" class="btn btn-primary">Start Free →</a>
+        <a href="https://docsmith.aigne.io/en/docs" class="btn btn-outline">Read the Docs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <a href="https://docsmith.aigne.io/en/docs" class="footer-link">Documentation</a>
+        <a href="https://docsmith.aigne.io/en/showcase" class="footer-link">Showcase</a>
+        <a href="https://aigne.io" class="footer-link">AIGNE</a>
+        <a href="https://arcblock.io" class="footer-link">ArcBlock</a>
+        <a href="https://github.com/ArcBlock" class="footer-link">GitHub</a>
+      </div>
+      <div class="footer-copy">© 2026 ArcBlock. Part of the AIGNE ecosystem.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Theme Toggle
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const icon = toggle.querySelector('.theme-icon');
+
+    const saved = localStorage.getItem('docsmith-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+
+    html.dataset.theme = initial;
+    icon.textContent = initial === 'dark' ? '☀️' : '🌙';
+
+    toggle.addEventListener('click', () => {
+      const current = html.dataset.theme;
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('docsmith-theme', next);
+      icon.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Scroll Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

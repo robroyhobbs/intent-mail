@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — ArcSphere</title>
+    <meta name="description" content="Free to explore. Credits for AI power. Experience the AI internet.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --secondary: #00b8db;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --bg-deep: #050510;
+            --bg-card: #0f0f1a;
+            --bg-elevated: #18182a;
+            --text-primary: #ffffff;
+            --text-secondary: #9898b0;
+            --text-dim: #555570;
+            --gradient-1: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-2: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 clamp(20px, 5vw, 60px);
+        }
+
+        /* Background orbs */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: 10%;
+            right: -5%;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-purple);
+            bottom: 30%;
+            left: -5%;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(5, 5, 16, 0.9);
+            backdrop-filter: blur(20px);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-sphere {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--primary), var(--secondary), var(--accent-purple));
+            box-shadow: 0 0 20px rgba(69, 152, 250, 0.4);
+        }
+
+        .logo-text {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--gradient-1) !important;
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .pricing-hero {
+            padding: 160px 0 80px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pricing-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+        }
+
+        .pricing-hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pricing-hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Pricing Cards */
+        .pricing-section {
+            padding: 40px 0 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(69, 152, 250, 0.3);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-purple);
+        }
+
+        .pricing-card.featured::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-2);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .plan-price .currency {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .plan-price .amount {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .plan-price .period {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+
+        .plan-cta {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+
+        .plan-cta.primary {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .plan-cta.primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(69, 152, 250, 0.3);
+        }
+
+        .plan-cta.secondary {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .plan-cta.secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .plan-features {
+            list-style: none;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features .check {
+            width: 20px;
+            height: 20px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .plan-features .check svg {
+            width: 12px;
+            height: 12px;
+            color: white;
+        }
+
+        /* Credits Section */
+        .credits-section {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 60px;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .credits-header h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            margin-bottom: 16px;
+        }
+
+        .credits-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .credit-card {
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .credit-amount {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .credit-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .credit-savings {
+            font-size: 0.8rem;
+            color: var(--accent-pink);
+            font-weight: 500;
+        }
+
+        /* What Credits Do */
+        .usage-section {
+            margin-bottom: 80px;
+        }
+
+        .usage-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .usage-header h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            margin-bottom: 16px;
+        }
+
+        .usage-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .usage-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .usage-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .usage-card:nth-child(1) .usage-icon { background: var(--gradient-1); }
+        .usage-card:nth-child(2) .usage-icon { background: var(--gradient-2); }
+        .usage-card:nth-child(3) .usage-icon { background: linear-gradient(135deg, #10b981, #06b6d4); }
+
+        .usage-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .usage-card .credits {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .usage-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 80px 0;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .faq-header h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .faq-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .faq-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Download CTA */
+        .download-cta {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .download-cta h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .download-cta p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            color: var(--bg-deep);
+            padding: 14px 28px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255,255,255,0.15);
+        }
+
+        .btn-download svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            padding: 60px 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .footer-bottom a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--primary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .credits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .usage-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .credits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .credits-section {
+                padding: 40px 24px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <a href="landing.html" class="logo">
+                    <div class="logo-sphere"></div>
+                    <span class="logo-text">ArcSphere</span>
+                </a>
+                <div class="nav-links">
+                    <a href="landing.html#features">Features</a>
+                    <a href="pricing.html" class="active">Pricing</a>
+                    <a href="#">Support</a>
+                    <a href="#" class="nav-cta">Download</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="pricing-hero">
+        <div class="container">
+            <h1>Free to explore. <span class="gradient-text">Credits for power.</span></h1>
+            <p>Browse the AI internet for free. Use credits when you need AI superpowers.</p>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-name">Free</div>
+                    <div class="plan-price">
+                        <span class="currency">$</span>
+                        <span class="amount">0</span>
+                        <span class="period">/forever</span>
+                    </div>
+                    <p class="plan-description">Full access to ArcSphere. Browse, explore, and experience the AI internet.</p>
+                    <a href="#" class="plan-cta secondary">Download Free</a>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>50 credits included</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Skill Browser access</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Spatial tab management</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Action Ring</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>DID authentication</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="plan-name">Pro</div>
+                    <div class="plan-price">
+                        <span class="currency">$</span>
+                        <span class="amount">9</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="plan-description">For power users who want more AI capabilities and Agent Fleet access.</p>
+                    <a href="#" class="plan-cta primary">Upgrade to Pro</a>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span><strong>1,000 credits/month</strong></span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Agent Fleet access</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Premium Skills</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Priority AI models</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Cloud sync</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Priority support</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="credits-section">
+                <div class="credits-header">
+                    <h2>Need more credits?</h2>
+                    <p>Buy credits anytime. Use them for AI chat, Skills, and Agent interactions.</p>
+                </div>
+                <div class="credits-grid">
+                    <div class="credit-card">
+                        <div class="credit-amount">200</div>
+                        <div class="credit-price">$2</div>
+                        <div class="credit-savings">$0.01 / credit</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="credit-amount">1,000</div>
+                        <div class="credit-price">$8</div>
+                        <div class="credit-savings">Save 20%</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="credit-amount">3,000</div>
+                        <div class="credit-price">$20</div>
+                        <div class="credit-savings">Save 33%</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="credit-amount">10,000</div>
+                        <div class="credit-price">$50</div>
+                        <div class="credit-savings">Save 50%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-header">
+                    <h2>What can credits do?</h2>
+                    <p>Credits power the AI features in ArcSphere</p>
+                </div>
+                <div class="usage-grid">
+                    <div class="usage-card">
+                        <div class="usage-icon">💬</div>
+                        <h3>AI Chat</h3>
+                        <div class="credits">~1-5 credits per message</div>
+                        <p>Context-aware conversations with your browsing history.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">✨</div>
+                        <h3>Skills</h3>
+                        <div class="credits">~5-20 credits per use</div>
+                        <p>Activate Skills to summarize, translate, or analyze content.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">🤖</div>
+                        <h3>Agent Tasks</h3>
+                        <div class="credits">~10-50 credits per task</div>
+                        <p>Direct your Agent Fleet to research, monitor, or create.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-header">
+                <h2>Questions & Answers</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Is ArcSphere really free?</h3>
+                    <p>Yes! All core features—browsing, Skill Browser, Action Ring, Spatial Tabs—are completely free. You only need credits when using AI-powered features.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What are credits used for?</h3>
+                    <p>Credits power AI operations: chatting with AI, using Skills, and directing your Agent Fleet. Basic browsing and navigation don't use credits.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do credits expire?</h3>
+                    <p>Purchased credits never expire. Monthly Pro credits reset each billing cycle, but any purchased credits remain in your account forever.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What's Agent Fleet access?</h3>
+                    <p>Agent Fleet is your personal crew of AI agents. Pro users get mobile access to monitor, direct, and interact with their agents from anywhere.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I upgrade anytime?</h3>
+                    <p>Yes. Upgrade to Pro anytime from within the app. Your credits and features activate immediately.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is there a family plan?</h3>
+                    <p>Not yet, but it's on our roadmap. For now, each user needs their own account and credits.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="download-cta">
+        <div class="container">
+            <h2>Ready to explore?</h2>
+            <p>Download ArcSphere free and get 50 credits to start.</p>
+            <div class="download-buttons">
+                <a href="#" class="btn-download">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    App Store
+                </a>
+                <a href="#" class="btn-download">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35m13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27m3.35-4.31c.34.27.59.69.59 1.19s-.22.9-.57 1.18l-2.29 1.32-2.5-2.5 2.5-2.5 2.27 1.31M6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/></svg>
+                    Google Play
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a> · © 2026 ArcSphere</p>
+                <div class="footer-links">
+                    <a href="landing.html">Home</a>
+                    <a href="#">Support</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

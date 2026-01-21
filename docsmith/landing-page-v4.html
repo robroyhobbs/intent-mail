@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSmith — Documentation as Engineering, Not Writing</title>
+  <meta name="description" content="AI-native DocOps platform. Docs emerge from your codebase with full provenance, version control, and repeatability. Same input, same output. Every time.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DocSmith — Documentation as Engineering, Not Writing">
+  <meta property="og:description" content="The DocOps platform where documentation is a byproduct of engineering, not a manual task.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       Design System
+       ======================================== */
+    :root {
+      --brand-primary: #4598fa;
+      --brand-secondary: #00b8db;
+      --brand-accent: #49C3AD;
+
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 8rem;
+    }
+
+    [data-theme="dark"] {
+      --bg: #08080a;
+      --bg-elevated: #111113;
+      --bg-card: #16161a;
+      --text: #fafaf9;
+      --text-muted: #a1a1aa;
+      --text-subtle: #52525b;
+      --border: #27272a;
+      --border-subtle: #1c1c1f;
+    }
+
+    [data-theme="light"] {
+      --bg: #fafaf9;
+      --bg-elevated: #ffffff;
+      --bg-card: #ffffff;
+      --text: #09090b;
+      --text-muted: #52525b;
+      --text-subtle: #a1a1aa;
+      --border: #e4e4e7;
+      --border-subtle: #f4f4f5;
+    }
+
+    /* ========================================
+       Reset & Base
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); }
+    h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
+    h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+    p { color: var(--text-muted); }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* ========================================
+       Navigation
+       ======================================== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-sm) 0;
+      background: rgba(8, 8, 10, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    [data-theme="light"] .nav {
+      background: rgba(250, 250, 249, 0.9);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: var(--text); }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover { border-color: var(--brand-primary); }
+
+    /* ========================================
+       Buttons
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.875rem 1.75rem;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #3a85e0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(69, 152, 250, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--text-muted);
+      background: var(--bg-elevated);
+    }
+
+    /* ========================================
+       Hero
+       ======================================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 0 var(--space-2xl);
+      position: relative;
+    }
+
+    /* Grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border-subtle) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 70%);
+      opacity: 0.6;
+    }
+
+    /* Gradient orb */
+    .hero-orb {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(69, 152, 250, 0.12) 0%, transparent 60%);
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-eyebrow .status {
+      width: 8px;
+      height: 8px;
+      background: var(--brand-accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 auto var(--space-md);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      max-width: 650px;
+      margin: 0 auto var(--space-xl);
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========================================
+       Paradigm Section
+       ======================================== */
+    .paradigm {
+      padding: var(--space-3xl) 0;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .paradigm-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    .paradigm-header h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .paradigm-header p {
+      font-size: 1.125rem;
+    }
+
+    .paradigm-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+
+    .paradigm-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-lg);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .paradigm-card:hover {
+      border-color: var(--brand-primary);
+      transform: translateY(-4px);
+    }
+
+    .paradigm-card.highlight {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(69, 152, 250, 0.08), rgba(0, 184, 219, 0.05));
+      border-color: rgba(69, 152, 250, 0.3);
+    }
+
+    .paradigm-card .icon {
+      font-size: 1.75rem;
+      margin-bottom: var(--space-sm);
+    }
+
+    .paradigm-card h3 {
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+    }
+
+    .paradigm-card p {
+      font-size: 0.9375rem;
+      margin: 0;
+    }
+
+    .paradigm-card .tag {
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand-primary);
+      background: rgba(69, 152, 250, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+    }
+
+    /* ========================================
+       Differentiators Section
+       ======================================== */
+    .diff-section {
+      padding: var(--space-3xl) 0;
+    }
+
+    .diff-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    .diff-header h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .diff-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-lg);
+      transition: all 0.3s ease;
+    }
+
+    .diff-card:hover {
+      border-color: var(--brand-primary);
+    }
+
+    .diff-card .number {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--brand-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .diff-card h3 {
+      margin-bottom: var(--space-xs);
+      color: var(--text);
+    }
+
+    .diff-card p {
+      font-size: 0.9375rem;
+      margin: 0;
+    }
+
+    /* ========================================
+       Workflow Section
+       ======================================== */
+    .workflow {
+      padding: var(--space-3xl) 0;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .workflow-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    .workflow-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-xl);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .workflow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+      flex-wrap: wrap;
+    }
+
+    .workflow-step {
+      text-align: center;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .workflow-step .version {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: var(--space-xs);
+    }
+
+    .workflow-step.active .version {
+      background: var(--brand-primary);
+      border-color: var(--brand-primary);
+      color: white;
+    }
+
+    .workflow-step .label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .workflow-arrow {
+      color: var(--text-subtle);
+      font-size: 1.25rem;
+    }
+
+    .workflow-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--border);
+    }
+
+    .workflow-feature {
+      text-align: center;
+    }
+
+    .workflow-feature .icon {
+      font-size: 1.5rem;
+      margin-bottom: var(--space-xs);
+    }
+
+    .workflow-feature h4 {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .workflow-feature p {
+      font-size: 0.8125rem;
+      margin: 0;
+    }
+
+    /* ========================================
+       Architecture Section
+       ======================================== */
+    .arch-section {
+      padding: var(--space-3xl) 0;
+    }
+
+    .arch-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .arch-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-lg);
+    }
+
+    .arch-layer {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: var(--space-sm);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+    }
+
+    .arch-layer:last-child {
+      margin-bottom: 0;
+    }
+
+    .arch-layer .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .arch-layer.afs .dot { background: var(--brand-primary); }
+    .arch-layer.docsmith .dot { background: var(--brand-secondary); }
+    .arch-layer.output .dot { background: var(--brand-accent); }
+
+    .arch-content h3 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .arch-content p {
+      font-size: 1rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .arch-list {
+      list-style: none;
+    }
+
+    .arch-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xs);
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xs);
+    }
+
+    .arch-list li::before {
+      content: '→';
+      color: var(--brand-primary);
+      font-weight: 600;
+    }
+
+    /* ========================================
+       CTA Section
+       ======================================== */
+    .cta-section {
+      padding: var(--space-3xl) 0;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elevated) 100%);
+    }
+
+    .cta-section h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-section > .container > p {
+      font-size: 1.125rem;
+      max-width: 500px;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    .footer {
+      padding: var(--space-xl) 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .footer-link {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover { color: var(--text); }
+
+    .footer-copy {
+      font-size: 0.875rem;
+      color: var(--text-subtle);
+    }
+
+    /* ========================================
+       Animations
+       ======================================== */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========================================
+       Responsive
+       ======================================== */
+    @media (max-width: 900px) {
+      .paradigm-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .paradigm-card.highlight {
+        grid-column: span 1;
+      }
+
+      .diff-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .arch-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+
+      .workflow-features {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-link { display: none; }
+
+      .hero {
+        min-height: auto;
+        padding: 120px 0 var(--space-xl);
+      }
+
+      .workflow-diagram {
+        flex-direction: column;
+      }
+
+      .workflow-arrow {
+        transform: rotate(90deg);
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: var(--space-md);
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark">D</span>
+        DocSmith
+      </a>
+      <div class="nav-right">
+        <a href="#paradigm" class="nav-link">DocOps</a>
+        <a href="#workflow" class="nav-link">Workflow</a>
+        <a href="/docs" class="nav-link">Docs</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <a href="#" class="btn btn-primary">Get Started →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-orb"></div>
+    <div class="container hero-content">
+      <div class="hero-eyebrow">
+        <span class="status"></span>
+        AI-Native DocOps Platform
+      </div>
+      <h1>Documentation as <em>engineering</em>,<br>not writing.</h1>
+      <p class="hero-subtitle">
+        Docs aren't written—they emerge from your codebase. With full provenance,
+        git-native versioning, and repeatable results. Same input, same output. Every time.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary">Start Free Trial →</a>
+        <a href="#" class="btn btn-ghost">See How It Works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paradigm Section -->
+  <section class="paradigm" id="paradigm">
+    <div class="container">
+      <div class="paradigm-header animate">
+        <h2>The DocOps Paradigm</h2>
+        <p>Documentation isn't a task on your backlog. It's a byproduct of engineering state—replayable, traceable, and always in sync.</p>
+      </div>
+      <div class="paradigm-grid">
+        <div class="paradigm-card highlight animate">
+          <span class="tag">Core Philosophy</span>
+          <div class="icon">🌱</div>
+          <h3>Docs Have Provenance</h3>
+          <p>Every piece of documentation traces back to its source. Know exactly what code, comments, and context generated each section. Full audit trail, always.</p>
+        </div>
+        <div class="paradigm-card animate">
+          <div class="icon">🔄</div>
+          <h3>Replayable Results</h3>
+          <p>Same codebase + same config = identical docs. No AI randomness. Run it today, run it next month—same output.</p>
+        </div>
+        <div class="paradigm-card animate">
+          <div class="icon">📦</div>
+          <h3>Code & Docs: Same Source</h3>
+          <p>Your documentation lives alongside your code. When code changes, docs regenerate. One truth, automatically synchronized.</p>
+        </div>
+        <div class="paradigm-card animate">
+          <div class="icon">🧠</div>
+          <h3>Agent Memory</h3>
+          <p>Docs become context for AI agents. Your documentation isn't just for humans—it's structured knowledge that AI systems can reason over.</p>
+        </div>
+        <div class="paradigm-card animate">
+          <div class="icon">🔀</div>
+          <h3>Git-Native Workflow</h3>
+          <p>Every version is a commit. Every change is diffable. Review doc changes like code changes. Merge, branch, rollback.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Differentiators Section -->
+  <section class="diff-section" id="diff">
+    <div class="container">
+      <div class="diff-header animate">
+        <h2>Why DocSmith Is Different</h2>
+        <p>Not another AI writing tool. A fundamentally different approach to how documentation exists in your engineering workflow.</p>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card animate">
+          <div class="number">01</div>
+          <h3>Structure-First</h3>
+          <p>Content lives as semantic structure, not formatted text. AI generates visuals within your theme. You own the meaning, not the pixels.</p>
+        </div>
+        <div class="diff-card animate">
+          <div class="number">02</div>
+          <h3>Deterministic Output</h3>
+          <p>Other AI tools give different results each run. DocSmith is reproducible. Same input = same output. Trust your docs.</p>
+        </div>
+        <div class="diff-card animate">
+          <div class="number">03</div>
+          <h3>AI as Collaborator</h3>
+          <p>Not a chatbot. A peer. Batch your feedback, receive versioned updates. Work with AI like you work with teammates—async, structured, reviewable.</p>
+        </div>
+        <div class="diff-card animate">
+          <div class="number">04</div>
+          <h3>12 Languages Built-In</h3>
+          <p>Professional-grade translation from one command. Consistent terminology across all versions. Global reach without the agency.</p>
+        </div>
+        <div class="diff-card animate">
+          <div class="number">05</div>
+          <h3>Self-Hostable</h3>
+          <p>Deploy DocSmith on your infrastructure as a Blocklet. Full data sovereignty. No vendor lock-in. Your docs, your servers.</p>
+        </div>
+        <div class="diff-card animate">
+          <div class="number">06</div>
+          <h3>Future-Proof Architecture</h3>
+          <p>Built on AFS (Agentic File System) and AINE principles. Ready for the AI-native era where docs, agents, and code converge.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow Section -->
+  <section class="workflow" id="workflow">
+    <div class="container">
+      <div class="workflow-header animate">
+        <h2>The Smith Workflow</h2>
+        <p>Version-controlled collaboration. Every iteration is atomic, diffable, and auditable.</p>
+      </div>
+      <div class="workflow-visual animate">
+        <div class="workflow-diagram">
+          <div class="workflow-step">
+            <div class="version">V0</div>
+            <div class="label">Your Input</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step active">
+            <div class="version">V1</div>
+            <div class="label">Generated</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="version">V1.5</div>
+            <div class="label">Your Feedback</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="version">V2</div>
+            <div class="label">Refined</div>
+          </div>
+          <div class="workflow-arrow">→</div>
+          <div class="workflow-step">
+            <div class="version">...</div>
+            <div class="label">Iterate</div>
+          </div>
+        </div>
+        <div class="workflow-features">
+          <div class="workflow-feature">
+            <div class="icon">🔒</div>
+            <h4>Original Untouched</h4>
+            <p>AI never modifies your source</p>
+          </div>
+          <div class="workflow-feature">
+            <div class="icon">📋</div>
+            <h4>Batch Feedback</h4>
+            <p>Global, local, or direct patches</p>
+          </div>
+          <div class="workflow-feature">
+            <div class="icon">📊</div>
+            <h4>Diff View</h4>
+            <p>See exactly what changed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Section -->
+  <section class="arch-section" id="arch">
+    <div class="container">
+      <div class="arch-header animate">
+        <h2>Built on Solid Foundations</h2>
+        <p>DocSmith is powered by AFS—the Agentic File System that makes AI-native engineering possible.</p>
+      </div>
+      <div class="arch-grid">
+        <div class="arch-visual animate">
+          <div class="arch-layer afs">
+            <span class="dot"></span>
+            <span>AFS — Agentic File System</span>
+          </div>
+          <div class="arch-layer docsmith">
+            <span class="dot"></span>
+            <span>DocSmith — DocOps Engine</span>
+          </div>
+          <div class="arch-layer output">
+            <span class="dot"></span>
+            <span>Output — Docs, Sites, Guides</span>
+          </div>
+        </div>
+        <div class="arch-content animate">
+          <h3>Everything is a File. Everything has Identity.</h3>
+          <p>AFS treats documentation as semantic files with version history, diff capability, and mount points—not opaque blobs of text.</p>
+          <ul class="arch-list">
+            <li>Documents as AFS files with full provenance</li>
+            <li>View projections for different audiences</li>
+            <li>Version/diff/history at the system level</li>
+            <li>Blocklets mount docs alongside code</li>
+            <li>Ready for Agent Fleet integration</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container animate">
+      <h2>Ready to transform your docs?</h2>
+      <p>Join engineering teams building documentation that actually stays current.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Start Free Trial →</a>
+        <a href="#" class="btn btn-ghost">Read the Docs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <a href="/docs" class="footer-link">Documentation</a>
+        <a href="/pricing" class="footer-link">Pricing</a>
+        <a href="https://arcblock.io" class="footer-link">ArcBlock</a>
+        <a href="https://github.com/ArcBlock" class="footer-link">GitHub</a>
+      </div>
+      <div class="footer-copy">© 2026 ArcBlock. Part of the AIGNE ecosystem.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Theme Toggle
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const icon = toggle.querySelector('.theme-icon');
+
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+
+    html.dataset.theme = initial;
+    icon.textContent = initial === 'dark' ? '☀️' : '🌙';
+
+    toggle.addEventListener('click', () => {
+      const current = html.dataset.theme;
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      icon.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Scroll Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

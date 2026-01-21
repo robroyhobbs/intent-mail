@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DocSmith — Documentation That Keeps Up</title>
+  <meta name="description" content="Your code changes. Your docs follow. Automatically. Stop the manual sync. Start shipping.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DocSmith — Documentation That Keeps Up">
+  <meta property="og:description" content="Your code changes. Your docs follow. Automatically.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts: Distinctive pairing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       Design System — Editorial Industrial
+       ======================================== */
+    :root {
+      /* ArcBlock Brand (preserved) */
+      --brand-primary: #4598fa;
+      --brand-secondary: #00b8db;
+      --brand-accent: #49C3AD;
+
+      /* Editorial Palette */
+      --ink: #0a0a0a;
+      --paper: #fafaf9;
+      --smoke: #78716c;
+      --chalk: #e7e5e4;
+      --highlight: #4598fa;
+      --success: #22c55e;
+
+      /* Typography */
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Spacing */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2.5rem;
+      --space-xl: 4rem;
+      --space-2xl: 6rem;
+      --space-3xl: 10rem;
+    }
+
+    /* Theme Variables */
+    [data-theme="dark"] {
+      --bg: #0a0a0a;
+      --bg-elevated: #141414;
+      --bg-subtle: #1a1a1a;
+      --text: #fafaf9;
+      --text-muted: #a8a29e;
+      --text-subtle: #57534e;
+      --border: #292524;
+      --border-subtle: #1c1917;
+    }
+
+    [data-theme="light"] {
+      --bg: #fafaf9;
+      --bg-elevated: #ffffff;
+      --bg-subtle: #f5f5f4;
+      --text: #0a0a0a;
+      --text-muted: #57534e;
+      --text-subtle: #a8a29e;
+      --border: #e7e5e4;
+      --border-subtle: #f5f5f4;
+    }
+
+    /* ========================================
+       Reset & Base
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    /* ========================================
+       Typography
+       ======================================== */
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: clamp(2.5rem, 8vw, 5rem); }
+    h2 { font-size: clamp(2rem, 5vw, 3.5rem); }
+    h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+
+    p {
+      color: var(--text-muted);
+      font-size: 1.125rem;
+      max-width: 65ch;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* ========================================
+       Layout
+       ======================================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .section {
+      padding: var(--space-3xl) 0;
+    }
+
+    /* ========================================
+       Navigation
+       ======================================== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-sm) 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--brand-primary);
+    }
+
+    /* ========================================
+       Buttons
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.875rem 1.75rem;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #3a85e0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(69, 152, 250, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--text-muted);
+      background: var(--bg-elevated);
+    }
+
+    .btn-arrow {
+      transition: transform 0.2s;
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ========================================
+       Hero Section
+       ======================================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border-subtle) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+      opacity: 0.5;
+    }
+
+    /* Gradient orb */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(69, 152, 250, 0.15) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: 0.5rem 1rem;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-eyebrow .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-md);
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--brand-primary);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      margin-bottom: var(--space-xl);
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+
+    /* ========================================
+       Metrics Strip
+       ======================================== */
+    .metrics {
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-xl) 0;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      text-align: center;
+    }
+
+    .metric {
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .metric:nth-child(1) { animation-delay: 0.1s; }
+    .metric:nth-child(2) { animation-delay: 0.2s; }
+    .metric:nth-child(3) { animation-delay: 0.3s; }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: var(--space-xs);
+    }
+
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ========================================
+       Problem/Solution Section
+       ======================================== */
+    .transform {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+    }
+
+    .transform-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .transform-card.before {
+      border-color: rgba(251, 44, 54, 0.3);
+    }
+
+    .transform-card.before::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #fb2c36, transparent);
+    }
+
+    .transform-card.after {
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    .transform-card.after::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, transparent);
+    }
+
+    .transform-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-md);
+    }
+
+    .transform-card.before .transform-label { color: #fb2c36; }
+    .transform-card.after .transform-label { color: #22c55e; }
+
+    .transform-card h3 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .transform-card p {
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .transform-arrow {
+      font-size: 2rem;
+      color: var(--text-subtle);
+    }
+
+    /* ========================================
+       How It Works
+       ======================================== */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .step {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: var(--space-lg);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      border-color: var(--brand-primary);
+      transform: translateY(-4px);
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--brand-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .step h3 {
+      margin-bottom: var(--space-xs);
+    }
+
+    .step p {
+      font-size: 0.9375rem;
+      margin: 0;
+    }
+
+    /* Connecting lines */
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -1rem;
+      width: calc(var(--space-md));
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ========================================
+       Social Proof
+       ======================================== */
+    .proof {
+      text-align: center;
+    }
+
+    .proof-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-lg);
+      opacity: 0.5;
+    }
+
+    .proof-logo {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+    }
+
+    .proof-quote {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .proof-quote blockquote {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: var(--space-md);
+    }
+
+    .proof-quote cite {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: normal;
+    }
+
+    /* ========================================
+       Final CTA
+       ======================================== */
+    .final-cta {
+      text-align: center;
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .final-cta h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .final-cta p {
+      margin: 0 auto var(--space-lg);
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    .footer {
+      padding: var(--space-xl) 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .footer-link {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--text);
+    }
+
+    .footer-copy {
+      font-size: 0.875rem;
+      color: var(--text-subtle);
+    }
+
+    /* ========================================
+       Animations
+       ======================================== */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Scroll animations */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========================================
+       Responsive
+       ======================================== */
+    @media (max-width: 900px) {
+      .transform {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+
+      .transform-arrow {
+        transform: rotate(90deg);
+        justify-self: center;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .step:not(:last-child)::after {
+        display: none;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-link {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 120px;
+        padding-bottom: var(--space-xl);
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: var(--space-md);
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark">D</span>
+        DocSmith
+      </a>
+      <div class="nav-right">
+        <a href="#how" class="nav-link">How It Works</a>
+        <a href="/docs" class="nav-link">Docs</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀️</span>
+        </button>
+        <a href="#" class="btn btn-primary">Start Free <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-eyebrow">
+        <span class="dot"></span>
+        AI-Native Documentation
+      </div>
+      <h1>Your code changes.<br><em>Your docs follow.</em></h1>
+      <p class="hero-subtitle">
+        Stop manually syncing documentation. DocSmith generates accurate,
+        up-to-date docs directly from your codebase—automatically.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary">Start Free Trial <span class="btn-arrow">→</span></a>
+        <a href="#" class="btn btn-ghost">Watch Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics -->
+  <section class="metrics">
+    <div class="container">
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-value">10+ hrs</div>
+          <div class="metric-label">Saved weekly per team</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">12</div>
+          <div class="metric-label">Languages, one command</div>
+        </div>
+        <div class="metric">
+          <div class="metric-value">100%</div>
+          <div class="metric-label">Source-aligned accuracy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem/Solution -->
+  <section class="section">
+    <div class="container">
+      <div class="transform animate-on-scroll">
+        <div class="transform-card before">
+          <div class="transform-label">Before</div>
+          <h3>Docs that lie</h3>
+          <p>Code ships Monday. Docs update... eventually. Users hit outdated examples. Support tickets pile up. Trust erodes.</p>
+        </div>
+        <div class="transform-arrow">→</div>
+        <div class="transform-card after">
+          <div class="transform-label">After</div>
+          <h3>Docs that track</h3>
+          <p>Code ships. Docs regenerate from source. Same input, same output. Every team works from one truth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section" id="how">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: var(--space-xl);" class="animate-on-scroll">Three steps. Zero maintenance.</h2>
+      <div class="steps">
+        <div class="step animate-on-scroll">
+          <div class="step-number">01</div>
+          <h3>Connect</h3>
+          <p>Point DocSmith at your repo. We read your code, comments, and structure.</p>
+        </div>
+        <div class="step animate-on-scroll">
+          <div class="step-number">02</div>
+          <h3>Generate</h3>
+          <p>AI produces docs, guides, and API references. Multiple formats, 12 languages.</p>
+        </div>
+        <div class="step animate-on-scroll">
+          <div class="step-number">03</div>
+          <h3>Stay synced</h3>
+          <p>Code changes trigger updates. Your docs evolve with your product.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="section proof">
+    <div class="container animate-on-scroll">
+      <div class="proof-logos">
+        <span class="proof-logo">ArcBlock</span>
+        <span class="proof-logo">AIGNE</span>
+        <span class="proof-logo">DID Labs</span>
+      </div>
+      <div class="proof-quote">
+        <blockquote>"We went from dreading doc updates to not thinking about them at all. DocSmith just handles it."</blockquote>
+        <cite>— Engineering Lead, ArcBlock</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section final-cta">
+    <div class="container animate-on-scroll">
+      <h2>Ready to fix docs forever?</h2>
+      <p>Free trial. No credit card. Cancel anytime.</p>
+      <a href="#" class="btn btn-primary">Start Free Trial <span class="btn-arrow">→</span></a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-links">
+        <a href="/docs" class="footer-link">Documentation</a>
+        <a href="/pricing" class="footer-link">Pricing</a>
+        <a href="https://arcblock.io" class="footer-link">ArcBlock</a>
+      </div>
+      <div class="footer-copy">© 2026 ArcBlock</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Theme Toggle
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const icon = toggle.querySelector('.theme-icon');
+
+    // Check saved preference or system preference
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved || (prefersDark ? 'dark' : 'light');
+
+    html.dataset.theme = initial;
+    icon.textContent = initial === 'dark' ? '☀️' : '🌙';
+
+    toggle.addEventListener('click', () => {
+      const current = html.dataset.theme;
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      icon.textContent = next === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Scroll Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

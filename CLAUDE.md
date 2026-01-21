@@ -2,6 +2,23 @@
 
 > AI-Native Engineering Company - Building system-level infrastructure for an AI-native era.
 
+## Active Loading Policy (ALP)
+
+This workspace uses the `arcblock-context` plugin for comprehensive product knowledge.
+
+**On-demand context loading:**
+```
+/arcblock-context              # Show available topics
+/arcblock-context <topic>      # Load specific context
+/arcblock-context all          # Load full overview
+```
+
+**Common topics:** `arcsphere`, `afs`, `aine`, `docsmith`, `aigne`, `paymentkit`, `agent-fleet`, `strategy`
+
+**Auto-loading triggers:** When discussing specific products or technical concepts, load the relevant context first using `/arcblock-context <topic>`.
+
+---
+
 ## Company Identity
 
 **What we are:** An AI-Native Engineering company building foundational infrastructure for a future where AI is a first-class system participant.
@@ -619,7 +636,7 @@ npm run deploy            # Deploy
 **Installation:**
 ```bash
 claude
-/plugin marketplace add git@github.com:ArcBlock/agent-skills.git
+/plugin marketplace add https://github.com/ArcBlock/agent-skills.git
 /plugin install arcblock-context@arcblock-agent-skills
 ```
 

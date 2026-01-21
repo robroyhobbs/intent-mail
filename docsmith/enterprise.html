@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise — DocSmith</title>
+    <meta name="description" content="Enterprise-grade documentation for teams that need compliance, security, and scale. SSO, audit trails, and dedicated support.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --secondary: #00b8db;
+            --accent: #00ff9d;
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a25;
+            --text-primary: #ffffff;
+            --text-secondary: #8888a0;
+            --text-dim: #555566;
+            --border: #2a2a3a;
+            --grid-line: rgba(69, 152, 250, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Audiowide', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 60px);
+            position: relative;
+            z-index: 1;
+        }
+
+        code, .mono {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            font-family: 'Audiowide', sans-serif;
+            font-weight: 400;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--primary) !important;
+            color: var(--bg-dark) !important;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-cta:hover {
+            background: var(--secondary) !important;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(ellipse, rgba(69, 152, 250, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: var(--bg-dark);
+            padding: 16px 32px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 16px 24px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        /* Trust badges */
+        .trust-section {
+            padding: 80px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .trust-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .trust-header p {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge-icon {
+            width: 64px;
+            height: 64px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .badge-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Features */
+        .features {
+            padding: 120px 0;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .features-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .features-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Compliance */
+        .compliance {
+            padding: 120px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+        }
+
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .compliance-content h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .compliance-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .compliance-list {
+            list-style: none;
+        }
+
+        .compliance-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .compliance-list .check {
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .compliance-visual {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .audit-log {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 2;
+        }
+
+        .audit-line {
+            display: flex;
+            gap: 16px;
+        }
+
+        .audit-time {
+            color: var(--text-dim);
+            min-width: 80px;
+        }
+
+        .audit-event {
+            color: var(--primary);
+        }
+
+        .audit-user {
+            color: var(--accent);
+        }
+
+        .audit-detail {
+            color: var(--text-secondary);
+        }
+
+        /* Deployment options */
+        .deployment {
+            padding: 120px 0;
+        }
+
+        .deployment-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .deployment-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .deployment-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .deployment-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .deployment-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 36px;
+            text-align: center;
+        }
+
+        .deployment-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .deployment-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .deployment-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            background: var(--bg-elevated);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        /* Support */
+        .support {
+            padding: 120px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .support-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .support-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .support-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .support-features {
+            list-style: none;
+        }
+
+        .support-features li {
+            color: var(--text-secondary);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .support-features li:last-child {
+            border-bottom: none;
+        }
+
+        .support-features .included {
+            color: var(--accent);
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 120px 0;
+            text-align: center;
+        }
+
+        .cta-card {
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .cta-card h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .cta-card p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 60px 0 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-content p {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .footer-content a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            color: var(--primary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .features-grid,
+            .deployment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .compliance-grid,
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-ctas {
+                flex-direction: column;
+            }
+
+            .trust-badges {
+                gap: 32px;
+            }
+
+            .cta-card {
+                padding: 48px 24px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <a href="landing.html" class="logo">
+                    <div class="logo-icon">DS</div>
+                    <span class="logo-text">Doc<span>Smith</span></span>
+                </a>
+                <div class="nav-links">
+                    <a href="landing.html#features">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="enterprise.html" class="active">Enterprise</a>
+                    <a href="#contact" class="nav-cta">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">Enterprise</div>
+            <h1>Documentation at <span class="highlight">enterprise scale</span></h1>
+            <p>Security, compliance, and dedicated support for organizations that need documentation infrastructure they can trust.</p>
+            <div class="hero-ctas">
+                <a href="#contact" class="btn-primary">
+                    Contact Sales
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#features" class="btn-secondary">See Features</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <div class="container">
+            <div class="trust-header">
+                <p>Enterprise-grade compliance & security</p>
+            </div>
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <div class="badge-icon">🔒</div>
+                    <span class="badge-label">SOC 2 Type II</span>
+                </div>
+                <div class="trust-badge">
+                    <div class="badge-icon">🛡️</div>
+                    <span class="badge-label">GDPR Compliant</span>
+                </div>
+                <div class="trust-badge">
+                    <div class="badge-icon">🔐</div>
+                    <span class="badge-label">SSO / SAML</span>
+                </div>
+                <div class="trust-badge">
+                    <div class="badge-icon">📋</div>
+                    <span class="badge-label">Audit Logs</span>
+                </div>
+                <div class="trust-badge">
+                    <div class="badge-icon">🏛️</div>
+                    <span class="badge-label">DID / VC Ready</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="features-header">
+                <h2>Built for enterprise needs</h2>
+                <p>Everything teams need to manage documentation at scale with confidence</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔑</div>
+                    <h3>Single Sign-On (SSO)</h3>
+                    <p>SAML 2.0 and OAuth integration with your identity provider. Okta, Azure AD, Google Workspace, and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Role-Based Access</h3>
+                    <p>Granular permissions for teams, projects, and documentation sets. Control who can view, edit, and publish.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Audit Logging</h3>
+                    <p>Complete audit trail of every action. Who changed what, when, and why. Exportable for compliance reviews.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Version Control</h3>
+                    <p>Full history of every document version. Diff views, rollback capabilities, and branch management.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Multi-Region</h3>
+                    <p>Data residency options for EU, US, and APAC. Meet local compliance requirements where your teams operate.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>API Access</h3>
+                    <p>Full REST API for integration with your existing tools. CI/CD pipelines, custom workflows, and automation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="compliance">
+        <div class="container">
+            <div class="compliance-grid">
+                <div class="compliance-content">
+                    <h2>Full audit trail for every change</h2>
+                    <p>Every documentation change is tracked with who made it, when, and what changed. Meet compliance requirements with confidence.</p>
+                    <ul class="compliance-list">
+                        <li><span class="check">✓</span> Complete action history for all users</li>
+                        <li><span class="check">✓</span> Exportable logs for compliance reviews</li>
+                        <li><span class="check">✓</span> Real-time alerts for sensitive changes</li>
+                        <li><span class="check">✓</span> Integration with SIEM tools</li>
+                        <li><span class="check">✓</span> Retention policies you control</li>
+                    </ul>
+                </div>
+                <div class="compliance-visual">
+                    <div class="audit-log">
+                        <div class="audit-line">
+                            <span class="audit-time">14:23:01</span>
+                            <span class="audit-event">DOC_UPDATE</span>
+                            <span class="audit-user">sarah.chen</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time"></span>
+                            <span class="audit-detail">→ api-reference.md v2.4.1</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time">14:22:45</span>
+                            <span class="audit-event">APPROVE</span>
+                            <span class="audit-user">mike.torres</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time"></span>
+                            <span class="audit-detail">→ release-notes v3.0</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time">14:21:12</span>
+                            <span class="audit-event">GENERATE</span>
+                            <span class="audit-user">docsmith-ci</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time"></span>
+                            <span class="audit-detail">→ 47 docs, 12 languages</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time">14:20:03</span>
+                            <span class="audit-event">MERGE</span>
+                            <span class="audit-user">github-bot</span>
+                        </div>
+                        <div class="audit-line">
+                            <span class="audit-time"></span>
+                            <span class="audit-detail">→ main ← feature/auth-v2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="deployment">
+        <div class="container">
+            <div class="deployment-header">
+                <h2>Flexible deployment options</h2>
+                <p>Choose the deployment model that fits your security requirements</p>
+            </div>
+            <div class="deployment-options">
+                <div class="deployment-card">
+                    <div class="deployment-icon">☁️</div>
+                    <h3>Cloud Hosted</h3>
+                    <p>Fully managed SaaS with automatic updates, 99.9% uptime SLA, and zero maintenance overhead.</p>
+                </div>
+                <div class="deployment-card">
+                    <div class="deployment-icon">🏢</div>
+                    <h3>Dedicated Instance</h3>
+                    <p>Your own isolated environment with dedicated resources, custom domains, and enhanced security controls.</p>
+                </div>
+                <div class="deployment-card">
+                    <div class="deployment-icon">🖥️</div>
+                    <h3>Self-Hosted</h3>
+                    <p>Deploy on your infrastructure—AWS, Azure, GCP, or on-premise. Full control over data and network.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="support">
+        <div class="container">
+            <div class="support-grid">
+                <div class="support-card">
+                    <h3>🎯 Dedicated Support</h3>
+                    <p>A named support engineer who knows your setup, your team, and your documentation needs.</p>
+                    <ul class="support-features">
+                        <li><span class="included">✓</span> Named account manager</li>
+                        <li><span class="included">✓</span> Priority response SLA</li>
+                        <li><span class="included">✓</span> Quarterly business reviews</li>
+                        <li><span class="included">✓</span> Custom training sessions</li>
+                    </ul>
+                </div>
+                <div class="support-card">
+                    <h3>🚀 Professional Services</h3>
+                    <p>Expert help with migration, integration, and custom workflows to get your team up and running fast.</p>
+                    <ul class="support-features">
+                        <li><span class="included">✓</span> Migration assistance</li>
+                        <li><span class="included">✓</span> Custom integration development</li>
+                        <li><span class="included">✓</span> Workflow optimization</li>
+                        <li><span class="included">✓</span> Best practices consulting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <div class="cta-card">
+                <h2>Ready to scale your docs?</h2>
+                <p>Talk to our team about your requirements. We'll show you how DocSmith fits your workflow.</p>
+                <div class="cta-buttons">
+                    <a href="mailto:enterprise@arcblock.io" class="btn-primary">
+                        Contact Sales
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="pricing.html" class="btn-secondary">View Pricing</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a></p>
+                <div class="footer-links">
+                    <a href="landing.html">Home</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="#">Docs</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

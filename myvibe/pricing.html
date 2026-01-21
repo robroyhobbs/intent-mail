@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — MyVibe</title>
+    <meta name="description" content="Start free, pay as you grow. Credits-based pricing for AI-powered creation.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --secondary: #00b8db;
+            --accent-warm: #ff6b4a;
+            --accent-peach: #ffb088;
+            --text-dark: #1a1a2e;
+            --text-light: #6b6b80;
+            --bg-cream: #fdfbf7;
+            --bg-white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 500;
+            line-height: 1.15;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 60px);
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo span {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-dark);
+        }
+
+        .nav-cta {
+            background: var(--text-dark);
+            color: white !important;
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-warm) !important;
+        }
+
+        /* Hero */
+        .pricing-hero {
+            padding: 160px 0 80px;
+            text-align: center;
+        }
+
+        .pricing-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .pricing-hero h1 em {
+            font-style: italic;
+            color: var(--accent-warm);
+        }
+
+        .pricing-hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Pricing Cards */
+        .pricing-section {
+            padding: 40px 0 100px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+
+        .pricing-card {
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 40px;
+            position: relative;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-warm);
+        }
+
+        .pricing-card.featured::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-warm);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 100px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .plan-price .currency {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .plan-price .amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .plan-price .period {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .plan-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+            min-height: 48px;
+        }
+
+        .plan-cta {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+
+        .plan-cta.primary {
+            background: var(--text-dark);
+            color: white;
+        }
+
+        .plan-cta.primary:hover {
+            background: var(--accent-warm);
+        }
+
+        .plan-cta.secondary {
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            border: 1px solid #eee;
+        }
+
+        .plan-cta.secondary:hover {
+            border-color: var(--text-dark);
+        }
+
+        .plan-features {
+            list-style: none;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features .check {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .plan-features .check svg {
+            width: 12px;
+            height: 12px;
+            color: white;
+        }
+
+        /* Credits Section */
+        .credits-section {
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 60px;
+            margin-bottom: 80px;
+        }
+
+        .credits-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .credits-header h2 {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .credits-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .credit-card {
+            background: var(--bg-cream);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .credit-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .credit-price {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .credit-savings {
+            font-size: 0.85rem;
+            color: var(--accent-warm);
+            font-weight: 500;
+        }
+
+        /* Usage Examples */
+        .usage-section {
+            margin-bottom: 80px;
+        }
+
+        .usage-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .usage-header h2 {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .usage-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .usage-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .usage-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-peach), var(--accent-warm));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .usage-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .usage-card .credits {
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .usage-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 80px 0;
+            background: var(--bg-white);
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .faq-header h2 {
+            font-size: clamp(2rem, 3vw, 2.5rem);
+            margin-bottom: 16px;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item h3 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .faq-item p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent-warm);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255, 107, 74, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-cream);
+            padding: 60px 0 40px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent-warm);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-warm);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .credits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .usage-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .credits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .credits-section {
+                padding: 40px 24px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <a href="landing.html" class="logo">
+                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="16" cy="16" r="14"/>
+                        <path d="M16 2a20 20 0 0 0 0 28 20 20 0 0 0 0-28"/>
+                        <path d="M2 16h28"/>
+                    </svg>
+                    <span>MyVibe</span>
+                </a>
+                <div class="nav-links">
+                    <a href="landing.html#features">Features</a>
+                    <a href="pricing.html" style="color: var(--text-dark);">Pricing</a>
+                    <a href="#">Docs</a>
+                    <a href="#" class="nav-cta">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="pricing-hero">
+        <div class="container">
+            <h1>Start free, scale as you <em>grow</em></h1>
+            <p>Pay only for what you use. No subscriptions, no surprises. Credits power everything.</p>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-name">Free</div>
+                    <div class="plan-price">
+                        <span class="currency">$</span>
+                        <span class="amount">0</span>
+                        <span class="period">/forever</span>
+                    </div>
+                    <p class="plan-description">Perfect for trying out MyVibe and building your first vibes.</p>
+                    <a href="#" class="plan-cta secondary">Start Free</a>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>100 credits included</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>3 published vibes</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Basic AI generation</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>MyVibe subdomain</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Community support</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="plan-name">Creator</div>
+                    <div class="plan-price">
+                        <span class="currency">$</span>
+                        <span class="amount">19</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="plan-description">For creators shipping vibes regularly. Includes credits + production features.</p>
+                    <a href="#" class="plan-cta primary">Start Creating</a>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span><strong>2,000 credits/month</strong></span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Unlimited published vibes</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Custom domain</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>A/B testing & versioning</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Analytics dashboard</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Priority support</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="plan-name">Team</div>
+                    <div class="plan-price">
+                        <span class="currency">$</span>
+                        <span class="amount">79</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <p class="plan-description">For teams building together. Shared credits, collaboration, and more control.</p>
+                    <a href="#" class="plan-cta secondary">Contact Sales</a>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span><strong>10,000 credits/month</strong></span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Up to 10 team members</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Team collaboration</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>SSO / SAML authentication</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Advanced analytics</span>
+                        </li>
+                        <li>
+                            <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                            <span>Dedicated support</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="credits-section">
+                <div class="credits-header">
+                    <h2>Need more credits?</h2>
+                    <p>Buy credits anytime. They never expire and can be used across all your vibes.</p>
+                </div>
+                <div class="credits-grid">
+                    <div class="credit-card">
+                        <div class="credit-amount">500</div>
+                        <div class="credit-price">$5</div>
+                        <div class="credit-savings">$0.01 / credit</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="credit-amount">2,500</div>
+                        <div class="credit-price">$20</div>
+                        <div class="credit-savings">Save 20%</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="credit-amount">7,500</div>
+                        <div class="credit-price">$50</div>
+                        <div class="credit-savings">Save 33%</div>
+                    </div>
+                    <div class="credit-card">
+                        <div class="credit-amount">20,000</div>
+                        <div class="credit-price">$100</div>
+                        <div class="credit-savings">Save 50%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="usage-section">
+                <div class="usage-header">
+                    <h2>What can credits do?</h2>
+                    <p>Here's how credits translate to real work</p>
+                </div>
+                <div class="usage-grid">
+                    <div class="usage-card">
+                        <div class="usage-icon">🎨</div>
+                        <h3>Generate a page</h3>
+                        <div class="credits">~10-50 credits</div>
+                        <p>Describe what you want, get a fully deployed page with real UI.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">🔄</div>
+                        <h3>Iterate a design</h3>
+                        <div class="credits">~5-20 credits</div>
+                        <p>Refine, adjust, and tweak your vibes until they're perfect.</p>
+                    </div>
+                    <div class="usage-card">
+                        <div class="usage-icon">📊</div>
+                        <h3>Add data connections</h3>
+                        <div class="credits">~20-40 credits</div>
+                        <p>Connect your vibes to real data sources and APIs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-header">
+                <h2>Questions & Answers</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>What are credits?</h3>
+                    <p>Credits are the universal currency for AI operations in MyVibe. Every time the AI generates, iterates, or deploys something for you, it uses credits. Think of them like tokens that power the magic.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do credits expire?</h3>
+                    <p>No! Credits you purchase never expire. Monthly credits from plans reset each billing cycle, but any purchased credits stay in your account forever.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I upgrade or downgrade anytime?</h3>
+                    <p>Yes. You can change plans at any time. Upgrades take effect immediately, downgrades at the end of your billing cycle. Unused monthly credits don't carry over.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What happens if I run out of credits?</h3>
+                    <p>Your published vibes stay live. You just won't be able to generate new content or make AI-powered changes until you add more credits or your monthly allowance resets.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is there a free trial?</h3>
+                    <p>The Free plan is your trial—forever. You get 100 credits to start and can publish up to 3 vibes. No credit card required.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How do team credits work?</h3>
+                    <p>Team credits are shared across all team members. Any team member can use credits from the shared pool, and admins can see usage by member.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to ship your vibe?</h2>
+            <p>Start free, no credit card required.</p>
+            <a href="#" class="cta-btn">
+                Start Creating
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a> · © 2026 MyVibe</p>
+                <div class="footer-links">
+                    <a href="landing.html">Home</a>
+                    <a href="#">Docs</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

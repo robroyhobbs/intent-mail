@@ -44,10 +44,28 @@ temp/
 # Large media (optional - comment out if you want to track)
 # *.mp4
 # *.mov
-# *.zip
+*.zip
+
+# Claude local settings (machine-specific)
+.claude/
 
 # Product directories that have their own repos
-# Uncomment these if you don't want to track them here
-# aigne-framework/
-# aigne-hub/
-# aigne-doc-smith/
+aigne-framework-src/
+aigne-hub-main/
+vibe-hub-main/
+arcblock-idd/
+
+# Design iterations (keep final versions only)
+docsmith-design-lab/variations/
+
+# Temporary strategy files
+strategy/
+
+# Shared resources (tracked separately)
+shared/
+
+# Email system (separate project)
+email-system/
+
+# Personal files
+xoi/

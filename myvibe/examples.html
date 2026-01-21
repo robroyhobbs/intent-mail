@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples — MyVibe</title>
+    <meta name="description" content="Explore what creators have built with MyVibe. Landing pages, portfolios, dashboards, and more—all described into existence.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=Lexend:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4598fa;
+            --secondary: #00b8db;
+            --accent-warm: #ff6b4a;
+            --accent-peach: #ffb088;
+            --text-dark: #1a1a2e;
+            --text-light: #6b6b80;
+            --bg-cream: #fdfbf7;
+            --bg-white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 24px 0;
+            background: rgba(253, 251, 247, 0.9);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 40px rgba(0,0,0,0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo span {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-dark);
+        }
+
+        .nav-cta {
+            background: var(--text-dark);
+            color: white !important;
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-warm) !important;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 180px 0 80px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-white);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--accent-warm);
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent-warm);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter */
+        .filter-section {
+            padding: 40px 0 60px;
+            position: sticky;
+            top: 80px;
+            background: var(--bg-cream);
+            z-index: 50;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: var(--bg-white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            color: var(--text-dark);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .filter-tab.active {
+            background: var(--text-dark);
+            color: white;
+        }
+
+        /* Gallery */
+        .gallery {
+            padding: 0 0 100px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .example-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .example-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+        }
+
+        .example-preview {
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-preview::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.03) 100%);
+        }
+
+        /* Preview content mockups */
+        .preview-landing {
+            background: linear-gradient(135deg, var(--accent-peach) 0%, var(--accent-warm) 100%);
+        }
+
+        .preview-portfolio {
+            background: linear-gradient(135deg, var(--text-dark) 0%, #2a2a4e 100%);
+        }
+
+        .preview-dashboard {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .preview-blog {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .preview-saas {
+            background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+        }
+
+        .preview-ecommerce {
+            background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+        }
+
+        .example-preview .mockup {
+            position: absolute;
+            inset: 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        .mockup-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .mockup-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+        }
+
+        .mockup-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mockup-line {
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+        }
+
+        .mockup-line.short { width: 40%; }
+        .mockup-line.medium { width: 70%; }
+        .mockup-line.long { width: 90%; }
+
+        .example-info {
+            padding: 24px;
+        }
+
+        .example-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-warm);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .example-title {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+
+        .example-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .example-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .example-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .author-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .author-name {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .example-views {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Featured */
+        .featured-section {
+            padding: 80px 0;
+            background: var(--bg-white);
+            margin-bottom: 80px;
+        }
+
+        .featured-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .featured-header h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .featured-header p {
+            color: var(--text-light);
+        }
+
+        .featured-card {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: center;
+            background: var(--bg-cream);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .featured-preview {
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, var(--accent-warm), var(--accent-peach));
+            position: relative;
+        }
+
+        .featured-preview .mockup {
+            position: absolute;
+            inset: 32px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .featured-content {
+            padding: 48px 48px 48px 0;
+        }
+
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-warm);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .featured-content h3 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .featured-content p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .featured-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--text-dark);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .featured-cta:hover {
+            background: var(--accent-warm);
+            transform: translateY(-2px);
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            background: var(--text-dark);
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 1.15rem;
+            opacity: 0.8;
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent-warm);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-family: 'Lexend', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            background: white;
+            color: var(--text-dark);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-cream);
+            padding: 60px 0 40px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-content p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .footer-content a {
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            color: var(--accent-warm);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .featured-card {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-content {
+                padding: 32px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-inner">
+                <a href="landing.html" class="logo">
+                    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="16" cy="16" r="14"/>
+                        <path d="M16 2a20 20 0 0 0 0 28 20 20 0 0 0 0-28"/>
+                        <path d="M2 16h28"/>
+                    </svg>
+                    <span>MyVibe</span>
+                </a>
+                <div class="nav-links">
+                    <a href="landing.html#features">Features</a>
+                    <a href="examples.html" class="active">Examples</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="#" class="nav-cta">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">Gallery</div>
+            <h1>See what creators have <em>shipped</em></h1>
+            <p>From landing pages to dashboards, discover what's possible when you describe your vision and let AI deploy it.</p>
+        </div>
+    </section>
+
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Examples</button>
+                <button class="filter-tab" data-filter="landing">Landing Pages</button>
+                <button class="filter-tab" data-filter="portfolio">Portfolios</button>
+                <button class="filter-tab" data-filter="dashboard">Dashboards</button>
+                <button class="filter-tab" data-filter="blog">Blogs</button>
+                <button class="filter-tab" data-filter="saas">SaaS</button>
+                <button class="filter-tab" data-filter="ecommerce">E-commerce</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="gallery">
+        <div class="container">
+            <div class="gallery-grid">
+                <!-- Landing Pages -->
+                <div class="example-card" data-category="landing">
+                    <div class="example-preview preview-landing">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Landing Page</span>
+                        <h3 class="example-title">Product Launch Hero</h3>
+                        <p class="example-description">A bold hero section with animated gradients and social proof. Created with one prompt.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">JM</div>
+                                <span class="author-name">Jordan M.</span>
+                            </div>
+                            <span class="example-views">2.3k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="portfolio">
+                    <div class="example-preview preview-portfolio">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line medium"></div>
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line long"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Portfolio</span>
+                        <h3 class="example-title">Designer Portfolio</h3>
+                        <p class="example-description">Minimal dark theme portfolio with hover effects and smooth transitions.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">SK</div>
+                                <span class="author-name">Sarah K.</span>
+                            </div>
+                            <span class="example-views">1.8k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="dashboard">
+                    <div class="example-preview preview-dashboard">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line medium"></div>
+                                <div class="mockup-line short"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Dashboard</span>
+                        <h3 class="example-title">Analytics Dashboard</h3>
+                        <p class="example-description">Real-time data dashboard with charts and KPI cards. Connects to live APIs.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">AT</div>
+                                <span class="author-name">Alex T.</span>
+                            </div>
+                            <span class="example-views">3.1k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="blog">
+                    <div class="example-preview preview-blog">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Blog</span>
+                        <h3 class="example-title">Personal Blog</h3>
+                        <p class="example-description">Clean, readable blog layout with newsletter signup and social sharing.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">MR</div>
+                                <span class="author-name">Mike R.</span>
+                            </div>
+                            <span class="example-views">1.2k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="saas">
+                    <div class="example-preview preview-saas">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line medium"></div>
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line short"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">SaaS</span>
+                        <h3 class="example-title">Startup Landing</h3>
+                        <p class="example-description">SaaS homepage with pricing table, feature grid, and testimonials.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">LP</div>
+                                <span class="author-name">Lisa P.</span>
+                            </div>
+                            <span class="example-views">2.7k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="ecommerce">
+                    <div class="example-preview preview-ecommerce">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">E-commerce</span>
+                        <h3 class="example-title">Product Showcase</h3>
+                        <p class="example-description">Product display page with gallery, variants, and add-to-cart functionality.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">DW</div>
+                                <span class="author-name">David W.</span>
+                            </div>
+                            <span class="example-views">1.9k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="landing">
+                    <div class="example-preview preview-landing">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line medium"></div>
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line long"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Landing Page</span>
+                        <h3 class="example-title">Event Registration</h3>
+                        <p class="example-description">Conference landing with speaker cards, schedule, and registration form.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">NC</div>
+                                <span class="author-name">Nina C.</span>
+                            </div>
+                            <span class="example-views">980 views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="portfolio">
+                    <div class="example-preview preview-portfolio">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Portfolio</span>
+                        <h3 class="example-title">Developer Portfolio</h3>
+                        <p class="example-description">Tech-forward portfolio with project cards, GitHub integration, and skills grid.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">RJ</div>
+                                <span class="author-name">Ryan J.</span>
+                            </div>
+                            <span class="example-views">2.1k views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-card" data-category="dashboard">
+                    <div class="example-preview preview-dashboard">
+                        <div class="mockup">
+                            <div class="mockup-bar">
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                                <div class="mockup-dot"></div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line long"></div>
+                                <div class="mockup-line short"></div>
+                                <div class="mockup-line medium"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-info">
+                        <span class="example-category">Dashboard</span>
+                        <h3 class="example-title">Social Media Dashboard</h3>
+                        <p class="example-description">Multi-platform analytics with engagement metrics and post scheduling.</p>
+                        <div class="example-meta">
+                            <div class="example-author">
+                                <div class="author-avatar">EH</div>
+                                <span class="author-name">Emma H.</span>
+                            </div>
+                            <span class="example-views">1.5k views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <div class="container">
+            <div class="featured-header">
+                <h2>Featured Vibe</h2>
+                <p>This week's standout creation</p>
+            </div>
+            <div class="featured-card">
+                <div class="featured-preview">
+                    <div class="mockup"></div>
+                </div>
+                <div class="featured-content">
+                    <span class="featured-badge">Staff Pick</span>
+                    <h3>Complete Startup Kit</h3>
+                    <p>A full landing page with hero, features, pricing, testimonials, and FAQ—all generated from a single conversation. Includes A/B test variants for the hero section.</p>
+                    <a href="#" class="featured-cta">
+                        View Example
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to ship yours?</h2>
+            <p>Start with a description. End with a deployed vibe.</p>
+            <a href="#" class="cta-btn">
+                Start Creating
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>Built by <a href="https://arcblock.io">ArcBlock</a></p>
+                <div class="footer-links">
+                    <a href="landing.html">Home</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="#">Docs</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const exampleCards = document.querySelectorAll('.example-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Filter cards
+                const filter = tab.dataset.filter;
+                exampleCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

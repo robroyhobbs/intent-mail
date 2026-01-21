@@ -125,7 +125,11 @@
       <button class="var-btn" onclick="showVariation(3)">V3: AI-First</button>
       <button class="var-btn" onclick="showVariation(4)">V4: Story Journey</button>
       <button class="var-btn" onclick="showVariation(5)">V5: Dashboard Grid</button>
+      <button class="var-btn" onclick="showVariation(6)">V6: Synthesized</button>
+      <button class="var-btn" onclick="showVariation(7)" style="border-color: #bf00ff; color: #bf00ff;">✦ V3 Refined</button>
+      <button class="var-btn" onclick="showVariation(8)" style="border-color: var(--success); color: var(--success);">★ V6 Refined</button>
       <button class="var-btn" onclick="showCompare()" style="margin-left: auto; border-color: var(--secondary);">Compare All</button>
+      <button class="var-btn" onclick="showSideBySide()" style="border-color: var(--secondary);">Side-by-Side</button>
     </nav>
   </header>
 
@@ -140,7 +144,10 @@
         2: 'v2-gallery-flow.html',
         3: 'v3-ai-first.html',
         4: 'v4-story-journey.html',
-        5: 'v5-dashboard-grid.html'
+        5: 'v5-dashboard-grid.html',
+        6: 'v6-synthesized.html',
+        7: 'v3-refined.html',
+        8: 'v6-refined.html'
       };
 
       document.getElementById('content').innerHTML =
@@ -174,7 +181,85 @@
       `;
 
       document.querySelectorAll('.var-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.var-btn')[5].classList.add('active');
+      document.querySelectorAll('.var-btn')[6].classList.add('active');
+    }
+
+    function showSideBySide() {
+      const picker = `
+        <div style="padding: 40px; text-align: center;">
+          <h2 style="font-family: 'Bai Jamjuree', sans-serif; margin-bottom: 24px;">Pick 2 Variations to Compare</h2>
+          <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;">
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="1" class="compare-check"> V1: Command Center
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="2" class="compare-check"> V2: Gallery Flow
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="3" class="compare-check"> V3: AI-First
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="4" class="compare-check"> V4: Story Journey
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="5" class="compare-check"> V5: Dashboard Grid
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="6" class="compare-check"> V6: Synthesized
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: rgba(191, 0, 255, 0.1); border: 1px solid #bf00ff; border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="7" class="compare-check"> ✦ V3 Refined
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: rgba(40, 169, 72, 0.1); border: 1px solid var(--success); border-radius: 10px; cursor: pointer;">
+              <input type="checkbox" value="8" class="compare-check"> ★ V6 Refined
+            </label>
+          </div>
+          <button onclick="loadSideBySide()" style="padding: 14px 32px; background: var(--primary); color: white; border: none; border-radius: 10px; font-family: 'Lexend', sans-serif; cursor: pointer;">Compare Selected</button>
+        </div>
+      `;
+      document.getElementById('content').innerHTML = picker;
+      document.querySelectorAll('.var-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.var-btn')[7].classList.add('active');
+    }
+
+    function loadSideBySide() {
+      const files = {
+        1: 'v1-command-center.html',
+        2: 'v2-gallery-flow.html',
+        3: 'v3-ai-first.html',
+        4: 'v4-story-journey.html',
+        5: 'v5-dashboard-grid.html',
+        6: 'v6-synthesized.html',
+        7: 'v3-refined.html',
+        8: 'v6-refined.html'
+      };
+      const names = {
+        1: 'V1: Command Center',
+        2: 'V2: Gallery Flow',
+        3: 'V3: AI-First',
+        4: 'V4: Story Journey',
+        5: 'V5: Dashboard Grid',
+        6: 'V6: Synthesized',
+        7: '✦ V3 Refined',
+        8: '★ V6 Refined'
+      };
+      const checked = Array.from(document.querySelectorAll('.compare-check:checked')).map(c => c.value);
+      if (checked.length !== 2) {
+        alert('Please select exactly 2 variations');
+        return;
+      }
+      document.getElementById('content').innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 140px);">
+          <div style="position: relative; border-right: 2px solid var(--primary);">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 6px; font-family: 'Lexend', sans-serif; font-size: 12px; z-index: 10;">${names[checked[0]]}</span>
+            <iframe src="variations/${files[checked[0]]}" style="width: 100%; height: 100%; border: none;"></iframe>
+          </div>
+          <div style="position: relative;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 6px; font-family: 'Lexend', sans-serif; font-size: 12px; z-index: 10;">${names[checked[1]]}</span>
+            <iframe src="variations/${files[checked[1]]}" style="width: 100%; height: 100%; border: none;"></iframe>
+          </div>
+        </div>
+      `;
     }
   </script>
 </body>
