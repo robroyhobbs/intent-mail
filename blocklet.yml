@@ -10,7 +10,7 @@ author:
   email: support@arcblock.io
   url: https://www.arcblock.io
 
-community: https://github.com/ArcBlock/email-kit
+community: https://github.com/robroyhobbs/intent-mail
 
 main: .blocklet/api/api/index.js
 
@@ -66,6 +66,34 @@ environments:
     description: SMTP password
     required: false
     secure: true
+  # PaymentKit & Billing
+  - name: EMAIL_REQUIRE_CREDITS
+    description: Enable credit-based billing (true/false)
+    required: false
+    default: "false"
+  - name: EMAIL_CREDIT_RATE
+    description: Credits charged per email sent
+    required: false
+    default: "0.01"
+  - name: AI_INPUT_TOKEN_RATE
+    description: Credits per 1K AI input tokens
+    required: false
+    default: "0.001"
+  - name: AI_OUTPUT_TOKEN_RATE
+    description: Credits per 1K AI output tokens
+    required: false
+    default: "0.003"
+  - name: PAYMENT_LIVE_MODE
+    description: Use PaymentKit live mode (true/false)
+    required: false
+    default: "false"
+  - name: PAYMENT_CREDIT_PRICE_ID
+    description: PaymentKit price ID for credit purchases
+    required: false
+  - name: USAGE_REPORT_THROTTLE_MS
+    description: Batch usage reporting interval in milliseconds
+    required: false
+    default: "5000"
 
 capabilities:
   clusterMode: false
