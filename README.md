@@ -8,80 +8,214 @@
 
 ---
 
-IntentMail transforms how you send emails by separating **what you want to say** (intents) from **how it looks** (templates) and **who you are** (brands). AI generates contextually appropriate content while maintaining brand consistency.
+## What is Intent-Based Email?
+
+Traditional email systems hardcode copy into templates. Every change requires a developer. Marketing becomes bottlenecked by engineering sprints.
+
+**IntentMail separates concerns:**
+
+| Layer | Who Owns It | Example |
+|-------|-------------|---------|
+| **Intent** | Product | "welcome", "password-reset", "invoice" |
+| **Brand** | Marketing | Voice, tone, phrases to use/avoid |
+| **Content** | AI | Generated text matching intent + brand |
 
 ```
-"Send a welcome email to john@example.com"
-     ↓
-AI generates personalized subject, body, and CTA
-     ↓
-Email sent with your brand voice and style
+Traditional:
+  subject: "Welcome to Acme, ${userName}!"
+  body: "Thanks for signing up. Click here to get started..."
+  → Hardcoded. Change requires deploy.
+
+Intent-Based:
+  intent: "welcome"
+  data: { userName: "John" }
+  → AI generates on-brand content. Marketing edits prompts, not code.
 ```
 
-## Why IntentMail?
+---
 
-| Traditional Email | IntentMail |
-|-------------------|-----------|
-| Write copy for every email | Define intent once, AI handles the words |
-| Inconsistent brand voice | Consistent voice across all communications |
-| Hardcoded templates | Dynamic, context-aware content |
-| One-size-fits-all | Personalized for each recipient |
+## Why Intent-Based?
+
+### For Product/Engineering
+
+```javascript
+// Before: Hardcoded strings everywhere
+await sendEmail({
+  to: user.email,
+  subject: `Welcome to Acme, ${user.name}!`,
+  html: `<h1>Thanks for joining!</h1><p>Hi ${user.name}...</p>`
+});
+
+// After: Intent-driven
+await sendEmail({
+  intent: 'welcome',
+  to: user.email,
+  data: { userName: user.name }
+});
+```
+
+- Define **what** emails exist, not **how** they read
+- No copy changes in code
+- Consistent API across all email types
+
+### For Marketing
+
+- Edit brand voice without developer help
+- Customize prompts via UI
+- Preview emails instantly
+- A/B test messaging without deploys
+- Consistent voice across all touchpoints
+
+### The Tradeoff Matrix
+
+| Challenge | Traditional | Intent-Based |
+|-----------|-------------|--------------|
+| Copy change | Dev ticket → sprint → deploy | Edit prompt, instant |
+| New email type | Build template, write copy | Define intent + data |
+| Brand consistency | Manual enforcement | AI enforces guidelines |
+| Personalization | Complex conditionals | AI adapts naturally |
+| A/B testing | Code changes per variant | AI generates variations |
+
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      YOUR APP                                │
+│                                                              │
+│   POST /api/v1/send                                         │
+│   { intent: "welcome", to: "user@example.com", data: {} }   │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                       INTENTMAIL                             │
+│                                                              │
+│   Intent          Brand           Template                   │
+│   "welcome"   +   voice/tone  +   layout     →  Email       │
+│                                                              │
+│                         │                                    │
+│                         ▼                                    │
+│              ┌─────────────────────┐                        │
+│              │     Claude AI       │                        │
+│              │  Generates content  │                        │
+│              └─────────────────────┘                        │
+│                         │                                    │
+│                         ▼                                    │
+│              ┌─────────────────────┐                        │
+│              │   Email Provider    │                        │
+│              │  Resend / SMTP      │                        │
+│              └─────────────────────┘                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## Features
 
-- **Intent-Driven Architecture** - Define email purposes (welcome, password-reset, invoice), let AI handle the words
-- **AI Content Generation** - Claude generates subject lines, body content, and CTAs based on context
-- **Multi-Brand Support** - Manage distinct brand voices, colors, and visual identities
-- **Developer API** - RESTful V1 API with API key authentication
-- **Rate Limiting** - Per-key rate limits with tier-based quotas
-- **Usage Tracking** - Monitor email sends, AI token usage, and costs
-- **Credit-Based Billing** - PaymentKit integration for monetization (optional)
-- **Blocklet Ready** - Deploy to Blocklet Server or run standalone
+- **Intent-Driven** - Define email purposes, AI handles the words
+- **Multi-Brand** - Manage distinct brand voices and styles
+- **AI Generation** - Claude generates subject, body, CTAs
+- **Developer API** - REST API with key auth, rate limiting, usage tracking
+- **Credit Billing** - Optional PaymentKit integration for monetization
+- **Blocklet Ready** - Deploy standalone or to Blocklet Server
 
-## Quick Start
+---
 
-### Installation
+## Deployment Options
+
+### Option 1: Standalone (No Blocklet Server)
+
+Run as a regular Node.js/Express server anywhere.
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/robroyhobbs/intent-mail.git
 cd intent-mail
 
-# Install dependencies
+# Install
 npm install
 
-# Configure environment
+# Configure
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env:
+#   ANTHROPIC_API_KEY=sk-ant-xxx
+#   EMAIL_PROVIDER=resend
+#   RESEND_API_KEY=re_xxx
 
-# Start development server
-npm run dev
+# Run
+npm run dev          # Development (localhost:3030)
+npm run build        # Production build
+npm start            # Production server
 ```
 
-### Environment Setup
+**Deploy anywhere:** Heroku, Railway, Render, AWS, GCP, your own server.
+
+### Option 2: Blocklet Server
+
+Deploy as a Blocklet for additional features (DID auth, PaymentKit, inter-blocklet communication).
 
 ```bash
-# Required: AI Generation
-ANTHROPIC_API_KEY=sk-ant-...
+# Build and bundle
+npm run bundle
 
-# Required: Email Provider (choose one)
+# Deploy to your Blocklet Server
+blocklet deploy .blocklet/bundle --endpoint https://your-server.com
+
+# Or upload manually via Blocklet Server dashboard
+```
+
+**Blocklet Server Benefits:**
+- Component calls between Blocklets (no API keys needed)
+- DID-based authentication
+- PaymentKit credit billing
+- Centralized secrets management
+- Automatic HTTPS
+
+### Option 3: Blocklet Store
+
+Once published, install directly from Blocklet Store with one click.
+
+---
+
+## Quick Start
+
+### 1. Configure Environment
+
+```bash
+# Required
+ANTHROPIC_API_KEY=sk-ant-xxx      # AI content generation
+
+# Email Provider (choose one)
 EMAIL_PROVIDER=resend
-RESEND_API_KEY=re_...
+RESEND_API_KEY=re_xxx
 
-# Or use SMTP
+# Or SMTP
 EMAIL_PROVIDER=smtp
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your@gmail.com
 SMTP_PASS=your_app_password
+
+# Optional
+DEFAULT_FROM_EMAIL=hello@yourcompany.com
+DEFAULT_FROM_NAME=Your Company
 ```
 
-### Send Your First Email
+### 2. Start the Server
 
 ```bash
-# 1. Create an API key via the web UI at http://localhost:3030
+npm run dev
+```
 
-# 2. Send an email
+### 3. Create an API Key
+
+Open http://localhost:3030, go to Settings → API Keys, create a key.
+
+### 4. Send Your First Email
+
+```bash
 curl -X POST http://localhost:3030/api/v1/send \
   -H "x-api-key: ek_live_your_api_key" \
   -H "Content-Type: application/json" \
@@ -95,7 +229,7 @@ curl -X POST http://localhost:3030/api/v1/send \
   }'
 ```
 
-### Preview Without Sending
+### 5. Preview Without Sending
 
 ```bash
 curl -X POST http://localhost:3030/api/v1/send/preview \
@@ -108,217 +242,125 @@ curl -X POST http://localhost:3030/api/v1/send/preview \
   }'
 ```
 
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Your Application                          │
-│                                                              │
-│   POST /api/v1/send                                         │
-│   { brand: "acme", intent: "welcome", to: "...", data: {} } │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       IntentMail                              │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │   Intent    │  │    Brand    │  │  Template   │         │
-│  │   Layer     │  │    Layer    │  │   Layer     │         │
-│  │             │  │             │  │             │         │
-│  │  welcome    │  │  voice      │  │  layouts    │         │
-│  │  invoice    │  │  colors     │  │  slots      │         │
-│  │  alert      │  │  logo       │  │  styles     │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-│                              │                               │
-│                              ▼                               │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │                    AI Layer                          │   │
-│  │         Claude generates contextual content          │   │
-│  │    subject lines • body copy • CTAs • greetings     │   │
-│  └─────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Email Provider                            │
-│              Resend • SMTP • Console (dev)                  │
-└─────────────────────────────────────────────────────────────┘
-```
+---
 
 ## API Reference
 
-### V1 API (API Key Auth)
-
-All V1 endpoints require an API key via `x-api-key` header or `Authorization: Bearer <key>`.
+### Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/v1/send` | POST | Send an email |
-| `/api/v1/send/preview` | POST | Preview email without sending |
+| `/api/v1/send/preview` | POST | Preview without sending |
 | `/api/v1/send/batch` | POST | Send to multiple recipients |
-| `/api/v1/keys` | GET | List your API keys |
-| `/api/v1/keys` | POST | Create a new API key |
-| `/api/v1/keys/:id` | DELETE | Revoke an API key |
-| `/api/v1/usage` | GET | Get usage statistics |
-| `/api/v1/usage/history` | GET | Get usage history |
-| `/api/v1/brands` | GET | List available brands |
-| `/api/v1/intents` | GET | List available intents |
+| `/api/v1/keys` | GET/POST | Manage API keys |
+| `/api/v1/keys/:id` | DELETE | Revoke a key |
+| `/api/v1/usage` | GET | Usage statistics |
+| `/api/v1/brands` | GET | List brands |
+| `/api/v1/intents` | GET | List intents |
+
+### Authentication
+
+```bash
+# Header (recommended)
+x-api-key: ek_live_your_api_key
+
+# Or Bearer token
+Authorization: Bearer ek_live_your_api_key
+```
 
 ### Rate Limits
 
-| Tier | Requests/Minute | Daily Limit | Use Case |
-|------|-----------------|-------------|----------|
-| `free` | 10 | 50 | Testing, development |
-| `starter` | 60 | 1,000 | Small applications |
-| `pro` | 300 | 10,000 | Production apps |
-| `enterprise` | 1,000 | Unlimited | High-volume senders |
+| Tier | Requests/Min | Daily Limit |
+|------|--------------|-------------|
+| free | 10 | 50 |
+| starter | 60 | 1,000 |
+| pro | 300 | 10,000 |
+| enterprise | 1,000 | Unlimited |
 
 ### Response Codes
 
-| Code | Description |
-|------|-------------|
+| Code | Meaning |
+|------|---------|
 | 200 | Success |
-| 400 | Bad request (invalid parameters) |
-| 401 | Invalid or missing API key |
+| 400 | Bad request |
+| 401 | Invalid API key |
 | 402 | Insufficient credits |
 | 429 | Rate limit exceeded |
-| 500 | Server error |
+
+---
+
+## Blocklet Integration
+
+When running on Blocklet Server, other Blocklets can call IntentMail directly:
+
+```javascript
+import Component from '@blocklet/sdk/lib/component';
+
+// No API key needed - automatic auth
+await Component.call('intentmail', 'send', {
+  brand: 'default',
+  intent: 'welcome',
+  to: 'user@example.com',
+  data: { userName: 'John' }
+});
+```
+
+**Available Actions:** `send`, `preview`, `listBrands`, `listIntents`, `getBrand`, `getIntent`
+
+---
 
 ## Pricing (When Credits Enabled)
 
-| Operation | Credits | Example |
-|-----------|---------|---------|
-| Email sent | 0.01 | 100 emails = 1 credit |
-| AI input tokens | 0.001 / 1K | 10K tokens = 0.01 credits |
-| AI output tokens | 0.003 / 1K | 10K tokens = 0.03 credits |
-| Preview | Free | Unlimited previews |
+| Operation | Credits |
+|-----------|---------|
+| Email sent | 0.01 |
+| AI input tokens | 0.001 / 1K |
+| AI output tokens | 0.003 / 1K |
+| Preview | Free |
 
-## Documentation
+Enable with: `EMAIL_REQUIRE_CREDITS=true`
 
-| Guide | Description |
-|-------|-------------|
-| [Getting Started](docs/getting-started.md) | Installation, setup, first email |
-| [API Reference](docs/api-reference.md) | Complete API documentation |
-| [Intents Guide](docs/intents-guide.md) | Understanding and customizing intents |
-| [Brands Guide](docs/brands-guide.md) | Setting up brand voices |
-| [Integration Guide](docs/integration-guide.md) | Framework examples, best practices |
-| [Configuration](docs/configuration.md) | Environment variables, settings |
-| [Troubleshooting](docs/troubleshooting.md) | Common issues and solutions |
-
-## Configuration
-
-### Required Variables
-
-```bash
-# AI Generation
-ANTHROPIC_API_KEY=sk-ant-...
-
-# Email Provider
-EMAIL_PROVIDER=resend          # resend, smtp, or console
-RESEND_API_KEY=re_...          # If using Resend
-```
-
-### Optional Variables
-
-```bash
-# Billing (optional)
-EMAIL_REQUIRE_CREDITS=true
-EMAIL_CREDIT_RATE=0.01
-AI_INPUT_TOKEN_RATE=0.001
-AI_OUTPUT_TOKEN_RATE=0.003
-
-# Defaults
-DEFAULT_FROM_EMAIL=noreply@example.com
-DEFAULT_FROM_NAME=Your Company
-DEFAULT_RATE_LIMIT=60
-
-# Logging
-LOG_LEVEL=info                 # error, warn, info, debug
-```
-
-See [Configuration Reference](docs/configuration.md) for all options.
-
-## Development
-
-```bash
-# Install dependencies
-npm install
-
-# Start dev server (API + Client)
-npm run dev
-
-# Build for production
-npm run build
-
-# Bundle for Blocklet deployment
-npm run bundle
-
-# Deploy to Blocklet Server
-npm run deploy
-
-# Run linting
-npm run lint
-```
+---
 
 ## Project Structure
 
 ```
 intentmail/
-├── api/                    # Backend (Express + TypeScript)
-│   ├── index.ts           # Server entry point
-│   ├── libs/              # Shared utilities
-│   │   ├── config.ts      # Configuration
-│   │   ├── payment.ts     # PaymentKit integration
-│   │   └── usageReporting.ts
-│   ├── middlewares/       # Express middleware
-│   │   ├── apiKeyAuth.ts  # API key validation
-│   │   ├── hybridAuth.ts  # Dual auth support
-│   │   ├── rateLimit.ts   # Rate limiting
-│   │   └── creditCheck.ts # Credit verification
-│   ├── routes/v1/         # V1 API routes
-│   │   ├── send.ts        # Email sending
-│   │   ├── keys.ts        # API key management
-│   │   └── usage.ts       # Usage statistics
-│   └── services/          # Business logic
-│       ├── ai.ts          # AI content generation
-│       ├── email.ts       # Email sending
-│       ├── apiKey.ts      # API key management
-│       └── usage.ts       # Usage tracking
+├── api/                    # Express backend
+│   ├── routes/v1/          # API endpoints
+│   ├── services/           # Business logic
+│   ├── middlewares/        # Auth, rate limit
+│   └── libs/               # Config, payment
 ├── lib/                    # Shared library
-│   ├── brands/            # Brand definitions
-│   ├── intents/           # Intent definitions
-│   └── templates/         # Email templates
-├── src/                    # Frontend (React)
+│   ├── brands/             # Brand definitions
+│   ├── intents/            # Intent definitions
+│   └── templates/          # Email templates
+├── src/                    # React frontend
 ├── docs/                   # Documentation
-├── blocklet.yml           # Blocklet configuration
-└── blocklet.md            # Blocklet Store listing
+├── blocklet.yml            # Blocklet config
+└── blocklet.md             # Store listing
 ```
 
-## Blocklet Deployment
+---
 
-IntentMail is designed to run as a Blocklet on Blocklet Server:
+## Documentation
 
-```bash
-# Build and bundle
-npm run bundle
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](docs/getting-started.md) | Installation & first email |
+| [API Reference](docs/api-reference.md) | Complete API docs |
+| [Intents Guide](docs/intents-guide.md) | Creating & customizing intents |
+| [Brands Guide](docs/brands-guide.md) | Setting up brand voices |
+| [Integration Guide](docs/integration-guide.md) | Framework examples |
+| [Configuration](docs/configuration.md) | All environment variables |
+| [Troubleshooting](docs/troubleshooting.md) | Common issues |
 
-# Deploy to your server
-npm run deploy
-```
-
-Or install directly from [Blocklet Store](https://store.blocklet.dev).
-
-### Blocklet Features
-
-- **Component Calls** - Other Blocklets can call IntentMail directly
-- **DID Authentication** - Integrated with Blocklet Server auth
-- **PaymentKit** - Credit-based billing when enabled
-- **Automatic HTTPS** - Secure by default
+---
 
 ## Integration Examples
 
-### Node.js / Express
+### Node.js
 
 ```javascript
 const response = await fetch('https://your-server/api/v1/send', {
@@ -343,10 +385,7 @@ import requests
 
 response = requests.post(
     'https://your-server/api/v1/send',
-    headers={
-        'Content-Type': 'application/json',
-        'x-api-key': 'ek_live_your_api_key'
-    },
+    headers={'x-api-key': 'ek_live_your_api_key'},
     json={
         'brand': 'default',
         'intent': 'welcome',
@@ -356,30 +395,37 @@ response = requests.post(
 )
 ```
 
-See [Integration Guide](docs/integration-guide.md) for more examples.
+### cURL
+
+```bash
+curl -X POST https://your-server/api/v1/send \
+  -H "x-api-key: ek_live_your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"brand":"default","intent":"welcome","to":"user@example.com","data":{"userName":"John"}}'
+```
+
+---
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Commit changes: `git commit -am 'Add my feature'`
-4. Push to branch: `git push origin feature/my-feature`
-5. Submit a Pull Request
+2. Create feature branch: `git checkout -b feature/my-feature`
+3. Commit changes: `git commit -am 'Add feature'`
+4. Push: `git push origin feature/my-feature`
+5. Open a Pull Request
+
+---
 
 ## License
 
 Apache-2.0
 
+---
+
 ## Credits
 
-Built with:
-- [Anthropic Claude](https://anthropic.com) - AI content generation
-- [Blocklet SDK](https://www.arcblock.io/docs/blocklet-developer) - Deployment platform
-- [Express](https://expressjs.com) - Web framework
-- [React](https://reactjs.org) - Frontend UI
-- [Resend](https://resend.com) - Email delivery
-- [PaymentKit](https://github.com/blocklet/payment-kit) - Credit-based billing
+Built with [Anthropic Claude](https://anthropic.com), [Blocklet SDK](https://www.arcblock.io/docs/blocklet-developer), [Express](https://expressjs.com), [React](https://reactjs.org), [Resend](https://resend.com), [PaymentKit](https://github.com/blocklet/payment-kit)
 
 ---
 
-**Questions?** Open an issue at [GitHub](https://github.com/robroyhobbs/intent-mail/issues)
+**Questions?** [Open an issue](https://github.com/robroyhobbs/intent-mail/issues)
