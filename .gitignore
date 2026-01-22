@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.blocklet/
+dist/
+
+# Environment files (contain secrets)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Database
+*.sqlite
+*.db
+data/
+lib/**/*.js

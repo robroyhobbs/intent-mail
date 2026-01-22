@@ -1,0 +1,84 @@
+name: email-kit
+title: Email Kit
+description: AI-Native Email System with brand management, intent-based templates, and AI content generation
+version: 0.1.0
+group: arcblock
+
+author:
+  name: ArcBlock
+  email: support@arcblock.io
+  url: https://www.arcblock.io
+
+community: https://github.com/ArcBlock/email-kit
+
+main: .blocklet/api/index.js
+
+logo: logo.svg
+
+files:
+  - .blocklet/api
+  - .blocklet/client
+  - logo.svg
+
+interfaces:
+  - type: web
+    name: publicUrl
+    path: /
+    prefix: '*'
+    port: BLOCKLET_PORT
+    protocol: http
+
+environments:
+  - name: ANTHROPIC_API_KEY
+    description: Anthropic API key for AI content generation
+    required: false
+    secure: true
+  - name: EMAIL_PROVIDER
+    description: Email provider (resend, smtp, console)
+    required: false
+    default: console
+  - name: RESEND_API_KEY
+    description: Resend API key for email delivery
+    required: false
+    secure: true
+  - name: DEFAULT_FROM_EMAIL
+    description: Default sender email address
+    required: false
+    default: noreply@example.com
+  - name: DEFAULT_FROM_NAME
+    description: Default sender name
+    required: false
+    default: Email Kit
+  - name: SMTP_HOST
+    description: SMTP server host (if using smtp provider)
+    required: false
+  - name: SMTP_PORT
+    description: SMTP server port
+    required: false
+    default: "587"
+  - name: SMTP_USER
+    description: SMTP username
+    required: false
+  - name: SMTP_PASS
+    description: SMTP password
+    required: false
+    secure: true
+
+capabilities:
+  clusterMode: false
+  component:
+    - name: send-email
+      description: Send an email using a predefined intent
+
+scripts:
+  dev: npm run dev
+  build: npm run build
+  bundle: npm run bundle
+
+requirements:
+  server: '>=1.16.0'
+  os: '*'
+  cpu: '*'
+  fuels:
+    endpoint: ''
+    addonBlueprints: []
