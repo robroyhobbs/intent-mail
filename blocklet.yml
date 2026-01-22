@@ -1,8 +1,9 @@
 name: email-kit
+did: z8iZpsrTemCJNp5nNyX48L9nBLdMt8cLEkvKn
 title: Email Kit
 description: AI-Native Email System with brand management, intent-based templates, and AI content generation
 version: 0.1.0
-group: arcblock
+group: dapp
 
 author:
   name: ArcBlock
@@ -11,14 +12,16 @@ author:
 
 community: https://github.com/ArcBlock/email-kit
 
-main: .blocklet/api/index.js
+main: .blocklet/api/api/index.js
 
 logo: logo.svg
 
 files:
-  - .blocklet/api
+  - .blocklet/api/api
+  - .blocklet/api/lib
   - .blocklet/client
   - logo.svg
+  - blocklet.md
 
 interfaces:
   - type: web
@@ -66,19 +69,10 @@ environments:
 
 capabilities:
   clusterMode: false
-  component:
-    - name: send-email
-      description: Send an email using a predefined intent
+  component: true
 
 scripts:
   dev: npm run dev
-  build: npm run build
-  bundle: npm run bundle
 
 requirements:
   server: '>=1.16.0'
-  os: '*'
-  cpu: '*'
-  fuels:
-    endpoint: ''
-    addonBlueprints: []

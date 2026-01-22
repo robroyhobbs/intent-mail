@@ -24,6 +24,10 @@ export interface ContentGenerationResult {
   content: string | string[];
   success: boolean;
   error?: string;
+  tokens?: {
+    input: number;
+    output: number;
+  };
 }
 
 // Content quality guidelines that are always included in AI prompts
@@ -109,9 +113,15 @@ class AIContentService {
         ],
       });
 
+      // Extract token counts for billing
+      const tokens = {
+        input: response.usage?.input_tokens || 0,
+        output: response.usage?.output_tokens || 0,
+      };
+
       const textContent = response.content.find((c) => c.type === 'text');
       if (!textContent || textContent.type !== 'text') {
-        return { content: '', success: false, error: 'No text content in response' };
+        return { content: '', success: false, error: 'No text content in response', tokens };
       }
 
       const rawContent = textContent.text.trim();
@@ -119,10 +129,10 @@ class AIContentService {
       // Parse bullet list if needed
       if (request.slotType === 'bullet-list' || request.itemCount) {
         const items = this.parseBulletList(rawContent, request.itemCount || 4);
-        return { content: items, success: true };
+        return { content: items, success: true, tokens };
       }
 
-      return { content: rawContent, success: true };
+      return { content: rawContent, success: true, tokens };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('[AI Service] Generation failed:', errorMessage);
@@ -132,8 +142,13 @@ class AIContentService {
 
   async generateAllSlots(
     slots: Array<ContentGenerationRequest>
-  ): Promise<Record<string, string | string[]>> {
-    const results: Record<string, string | string[]> = {};
+  ): Promise<{
+    content: Record<string, string | string[]>;
+    tokens: { input: number; output: number };
+  }> {
+    const content: Record<string, string | string[]> = {};
+    let totalInputTokens = 0;
+    let totalOutputTokens = 0;
 
     // Process slots in parallel for speed
     const promises = slots.map(async (slot) => {
@@ -145,11 +160,18 @@ class AIContentService {
 
     for (const { slotId, result } of completed) {
       if (result.success) {
-        results[slotId] = result.content;
+        content[slotId] = result.content;
+      }
+      if (result.tokens) {
+        totalInputTokens += result.tokens.input;
+        totalOutputTokens += result.tokens.output;
       }
     }
 
-    return results;
+    return {
+      content,
+      tokens: { input: totalInputTokens, output: totalOutputTokens },
+    };
   }
 
   private buildSystemPrompt(request: ContentGenerationRequest): string {

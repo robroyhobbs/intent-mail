@@ -22,6 +22,10 @@ export interface SendEmailResult {
   success: boolean;
   messageId?: string;
   error?: string;
+  aiTokens?: {
+    input: number;
+    output: number;
+  };
 }
 
 type EmailProvider = 'resend' | 'sendgrid' | 'smtp' | 'console';
@@ -87,7 +91,7 @@ class EmailService {
       }
 
       // Generate slot content from intent + data (with AI when available)
-      const slotContent = await this.generateSlotContentWithAI(intent, template, brand, data, slotOverrides);
+      const { content: slotContent, tokens: aiTokens } = await this.generateSlotContentWithAI(intent, template, brand, data, slotOverrides);
 
       // Determine subject
       const subject = subjectOverride || this.resolveSubject(intent, data);
@@ -128,7 +132,11 @@ class EmailService {
         sentAt: new Date(),
       });
 
-      return result;
+      // Include AI token usage in result for billing
+      return {
+        ...result,
+        aiTokens: aiTokens.input > 0 || aiTokens.output > 0 ? aiTokens : undefined,
+      };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
@@ -154,7 +162,7 @@ class EmailService {
     brand: any,
     data: Record<string, unknown>,
     overrides?: Partial<EmailSlotContent>
-  ): Promise<EmailSlotContent> {
+  ): Promise<{ content: EmailSlotContent; tokens: { input: number; output: number } }> {
     const content: EmailSlotContent = {};
     const aiRequests: ContentGenerationRequest[] = [];
 
@@ -229,10 +237,12 @@ class EmailService {
     }
 
     // Generate AI content in parallel
+    let tokens = { input: 0, output: 0 };
     if (aiRequests.length > 0) {
       try {
-        const aiContent = await aiContentService.generateAllSlots(aiRequests);
-        Object.assign(content, aiContent);
+        const aiResult = await aiContentService.generateAllSlots(aiRequests);
+        Object.assign(content, aiResult.content);
+        tokens = aiResult.tokens;
       } catch (error) {
         console.error('[Email Service] AI generation failed, using fallback:', error);
         // Fallback to interpolation for failed AI slots
@@ -244,7 +254,7 @@ class EmailService {
       }
     }
 
-    return content;
+    return { content, tokens };
   }
 
   // Keep synchronous version for backwards compatibility (used when AI is disabled)
@@ -403,7 +413,12 @@ class EmailService {
     return { success: true, messageId: `console-${Date.now()}` };
   }
 
-  async preview(params: Omit<SendEmailParams, 'to'> & { useAI?: boolean }): Promise<{ html: string; subject: string; aiGenerated: boolean }> {
+  async preview(params: Omit<SendEmailParams, 'to'> & { useAI?: boolean }): Promise<{
+    html: string;
+    subject: string;
+    aiGenerated: boolean;
+    aiTokens?: { input: number; output: number };
+  }> {
     const { brand: brandId, intent: intentId, data, slotOverrides, subject: subjectOverride, useAI = true } = params;
 
     const brand = getBrand(brandId);
@@ -418,9 +433,16 @@ class EmailService {
 
     // Use AI generation for preview when enabled and API key is configured
     const aiEnabled = useAI && aiContentService.isEnabled();
-    const slotContent = aiEnabled
-      ? await this.generateSlotContentWithAI(intent, template, brand, data, slotOverrides)
-      : this.generateSlotContent(intent, template, brand, data, slotOverrides);
+    let slotContent: EmailSlotContent;
+    let aiTokens: { input: number; output: number } | undefined;
+
+    if (aiEnabled) {
+      const result = await this.generateSlotContentWithAI(intent, template, brand, data, slotOverrides);
+      slotContent = result.content;
+      aiTokens = result.tokens.input > 0 || result.tokens.output > 0 ? result.tokens : undefined;
+    } else {
+      slotContent = this.generateSlotContent(intent, template, brand, data, slotOverrides);
+    }
 
     const subject = subjectOverride || this.resolveSubject(intent, data);
 
@@ -430,7 +452,7 @@ class EmailService {
       previewText,
     });
 
-    return { html, subject, aiGenerated: aiEnabled };
+    return { html, subject, aiGenerated: aiEnabled, aiTokens };
   }
 
   getProviderInfo() {
