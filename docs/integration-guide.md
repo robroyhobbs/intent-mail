@@ -1,6 +1,6 @@
 # Integration Guide
 
-This guide covers how to integrate Email Kit with your applications, whether you're using the REST API, Blocklet Component calls, or building a custom integration.
+This guide covers how to integrate IntentMail with your applications, whether you're using the REST API, Blocklet Component calls, or building a custom integration.
 
 ## Integration Methods
 
@@ -49,7 +49,7 @@ await sendEmail({
 ### TypeScript Client
 
 ```typescript
-// email-kit-client.ts
+// intentmail-client.ts
 interface SendEmailOptions {
   brand: string;
   intent: string;
@@ -158,7 +158,7 @@ For Blocklet-to-Blocklet communication on the same server:
 
 ### Setup
 
-Ensure Email Kit is installed on your Blocklet Server and note its component name (usually `email-kit`).
+Ensure IntentMail is installed on your Blocklet Server and note its component name (usually `intentmail`).
 
 ### Sending Emails
 
@@ -168,7 +168,7 @@ const { Component } = require('@blocklet/sdk');
 // Send a single email
 async function sendWelcomeEmail(user) {
   try {
-    const result = await Component.call('email-kit', 'send-email', {
+    const result = await Component.call('intentmail', 'send-email', {
       brand: 'your-brand',
       intent: 'welcome',
       data: {
@@ -212,7 +212,7 @@ async function sendWelcomeEmail(user) {
 
 ```javascript
 const express = require('express');
-const EmailKitClient = require('./email-kit-client');
+const EmailKitClient = require('./intentmail-client');
 
 const app = express();
 const emailClient = new EmailKitClient(
@@ -263,7 +263,7 @@ export default async function handler(
   // Get user from database
   const user = await getUser(userId);
 
-  // Send email via Email Kit
+  // Send email via IntentMail
   const response = await fetch(`${EMAILKIT_URL}/api/v1/send`, {
     method: 'POST',
     headers: {
@@ -348,7 +348,7 @@ result = client.send(
 
 ## Webhook Integration
 
-Email Kit can trigger webhooks on email events (coming soon):
+IntentMail can trigger webhooks on email events (coming soon):
 
 ```javascript
 // Your webhook endpoint

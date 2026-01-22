@@ -116,7 +116,7 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 const port = process.env.BLOCKLET_PORT || process.env.PORT || 3030;
 
 app.listen(port, async () => {
-  console.log(`Email Kit server running on port ${port}`);
+  console.log(`IntentMail server running on port ${port}`);
   console.log(`Email provider: ${process.env.EMAIL_PROVIDER || 'console'}`);
   console.log(`Blocklet environment: ${blockletConfig ? 'Yes' : 'No'}`);
   console.log(`Auth middleware: ${Auth ? 'Enabled' : 'Disabled'}`);

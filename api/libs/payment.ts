@@ -1,7 +1,7 @@
 /**
  * PaymentKit Integration
  *
- * Wraps @blocklet/payment-js for credit-based billing in Email Kit.
+ * Wraps @blocklet/payment-js for credit-based billing in IntentMail.
  * Provides graceful degradation when PaymentKit is not available.
  */
 
@@ -80,7 +80,7 @@ async function ensureMeterExists(): Promise<void> {
       event_name: METER_EVENT_NAME,
       aggregation_method: 'sum',
       unit: 'credits',
-      description: 'Email Kit usage tracking (emails sent, AI tokens)',
+      description: 'IntentMail usage tracking (emails sent, AI tokens)',
     });
     console.log('[Payment] Created usage meter:', METER_EVENT_NAME);
   } catch (error) {

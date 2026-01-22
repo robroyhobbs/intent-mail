@@ -1,7 +1,7 @@
 /**
  * V1 API Routes
  *
- * Version 1 of the Email Kit API with:
+ * Version 1 of the IntentMail API with:
  * - API key authentication
  * - Rate limiting
  * - Usage tracking

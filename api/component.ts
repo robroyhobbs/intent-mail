@@ -3,12 +3,12 @@
  *
  * Handles inter-blocklet communication via @blocklet/sdk/lib/component
  *
- * Other blocklets can call Email Kit like this:
+ * Other blocklets can call IntentMail like this:
  *
  * ```typescript
  * import Component from '@blocklet/sdk/lib/component';
  *
- * await Component.call('email-kit', 'send', {
+ * await Component.call('intentmail', 'send', {
  *   brand: 'aigne',
  *   intent: 'credits.low',
  *   to: 'user@example.com',

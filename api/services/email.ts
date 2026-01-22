@@ -325,7 +325,7 @@ class EmailService {
   }
 
   private getFromAddress(brand: any): string {
-    const name = process.env.DEFAULT_FROM_NAME || brand.name || 'Email Kit';
+    const name = process.env.DEFAULT_FROM_NAME || brand.name || 'IntentMail';
     const email = process.env.DEFAULT_FROM_EMAIL || 'noreply@example.com';
     return `${name} <${email}>`;
   }

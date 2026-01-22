@@ -13,7 +13,7 @@ import { Config } from '../libs/config';
 
 // Database setup
 const dataDir = process.env.BLOCKLET_DATA_DIR || path.join(process.cwd(), 'data');
-const dbPath = path.join(dataDir, 'email-kit.db');
+const dbPath = path.join(dataDir, 'intentmail.db');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',

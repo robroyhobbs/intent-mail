@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
     environmentVariables: {
       EMAIL_PROVIDER: process.env.EMAIL_PROVIDER || 'console',
       DEFAULT_FROM_EMAIL: process.env.DEFAULT_FROM_EMAIL || 'noreply@example.com',
-      DEFAULT_FROM_NAME: process.env.DEFAULT_FROM_NAME || 'Email Kit',
+      DEFAULT_FROM_NAME: process.env.DEFAULT_FROM_NAME || 'IntentMail',
       // Don't expose API keys, just show if they're set
       RESEND_API_KEY: process.env.RESEND_API_KEY ? '••••••••' : '(not set)',
       SENDGRID_API_KEY: process.env.SENDGRID_API_KEY ? '••••••••' : '(not set)',

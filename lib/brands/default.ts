@@ -2,7 +2,7 @@ import type { BrandConfig } from '../types';
 
 export const defaultBrand: BrandConfig = {
   id: 'default',
-  name: 'Email Kit',
+  name: 'IntentMail',
   tagline: 'AI-Native Email System',
 
   colors: {
@@ -32,7 +32,7 @@ export const defaultBrand: BrandConfig = {
   logo: {
     url: '',
     width: 120,
-    altText: 'Email Kit',
+    altText: 'IntentMail',
   },
 
   links: {

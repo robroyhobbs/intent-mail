@@ -1,7 +1,7 @@
 {
-  "name": "email-kit",
+  "name": "intentmail",
   "version": "0.1.0",
-  "description": "AI-Native Email System - Visual email builder with brand management",
+  "description": "IntentMail - AI-Native Intent-Driven Email System",
   "main": "api/dist/index.js",
   "scripts": {
     "dev": "npm run dev:api & npm run dev:client",

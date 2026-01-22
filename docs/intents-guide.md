@@ -1,6 +1,6 @@
 # Intents Guide
 
-Intents are the core concept in Email Kit. They define **what you want to say** without specifying the exact words. AI then generates contextually appropriate content based on the intent, brand voice, and provided data.
+Intents are the core concept in IntentMail. They define **what you want to say** without specifying the exact words. AI then generates contextually appropriate content based on the intent, brand voice, and provided data.
 
 ## What is an Intent?
 
@@ -18,7 +18,7 @@ Each intent includes:
 
 ## Built-in Intents
 
-Email Kit comes with several pre-configured intents:
+IntentMail comes with several pre-configured intents:
 
 ### Transactional Intents
 

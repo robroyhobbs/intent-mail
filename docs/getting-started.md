@@ -1,6 +1,6 @@
-# Getting Started with Email Kit
+# Getting Started with IntentMail
 
-This guide will help you get Email Kit up and running in your environment.
+This guide will help you get IntentMail up and running in your environment.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ This guide will help you get Email Kit up and running in your environment.
 
 1. Open your Blocklet Server dashboard
 2. Go to the Store
-3. Search for "Email Kit"
+3. Search for "IntentMail"
 4. Click Install
 
 ### Option 2: Deploy from Source
@@ -77,7 +77,7 @@ PAYMENT_LIVE_MODE=false
 
 ### Using the Web UI
 
-1. Navigate to Email Kit in your browser
+1. Navigate to IntentMail in your browser
 2. Go to the "Send" tab
 3. Select a brand and intent
 4. Fill in the recipient and data fields
@@ -114,7 +114,7 @@ curl -X POST https://your-server.com/api/v1/send \
 ```javascript
 const { Component } = require('@blocklet/sdk');
 
-const result = await Component.call('email-kit', 'send-email', {
+const result = await Component.call('intentmail', 'send-email', {
   brand: 'default',
   intent: 'welcome',
   data: {
@@ -126,7 +126,7 @@ const result = await Component.call('email-kit', 'send-email', {
 
 ## Understanding the Architecture
 
-Email Kit uses a layered architecture:
+IntentMail uses a layered architecture:
 
 ```
 ┌─────────────────────────────────────────┐

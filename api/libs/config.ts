@@ -1,5 +1,5 @@
 /**
- * Runtime configuration for Email Kit
+ * Runtime configuration for IntentMail
  *
  * Centralizes environment variables and default values for:
  * - Credit-based billing
@@ -35,7 +35,7 @@ export const Config = {
   usageReportThrottleMs: parseInt(process.env.USAGE_REPORT_THROTTLE_MS || '5000', 10),
 
   // PaymentKit integration
-  meterName: 'email-kit-usage',
+  meterName: 'intentmail-usage',
   meterUnit: 'Email Credits',
 
   // API key settings

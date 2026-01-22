@@ -12,8 +12,8 @@ import { v4 as uuid } from 'uuid';
 
 // Initialize SQLite database (shared path with logs)
 const dbPath = process.env.BLOCKLET_DATA_DIR
-  ? path.join(process.env.BLOCKLET_DATA_DIR, 'email-kit.db')
-  : path.join(__dirname, '../../data/email-kit.db');
+  ? path.join(process.env.BLOCKLET_DATA_DIR, 'intentmail.db')
+  : path.join(__dirname, '../../data/intentmail.db');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',

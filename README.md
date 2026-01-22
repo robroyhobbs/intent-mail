@@ -1,4 +1,4 @@
-# Email Kit
+# IntentMail
 
 **AI-Native Intent-Driven Email System**
 
@@ -8,7 +8,7 @@
 
 ---
 
-Email Kit transforms how you send emails by separating **what you want to say** (intents) from **how it looks** (templates) and **who you are** (brands). AI generates contextually appropriate content while maintaining brand consistency.
+IntentMail transforms how you send emails by separating **what you want to say** (intents) from **how it looks** (templates) and **who you are** (brands). AI generates contextually appropriate content while maintaining brand consistency.
 
 ```
 "Send a welcome email to john@example.com"
@@ -18,9 +18,9 @@ AI generates personalized subject, body, and CTA
 Email sent with your brand voice and style
 ```
 
-## Why Email Kit?
+## Why IntentMail?
 
-| Traditional Email | Email Kit |
+| Traditional Email | IntentMail |
 |-------------------|-----------|
 | Write copy for every email | Define intent once, AI handles the words |
 | Inconsistent brand voice | Consistent voice across all communications |
@@ -120,7 +120,7 @@ curl -X POST http://localhost:3030/api/v1/send/preview \
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                       Email Kit                              │
+│                       IntentMail                              │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
 │  │   Intent    │  │    Brand    │  │  Template   │         │
@@ -264,7 +264,7 @@ npm run lint
 ## Project Structure
 
 ```
-email-kit/
+intentmail/
 ├── api/                    # Backend (Express + TypeScript)
 │   ├── index.ts           # Server entry point
 │   ├── libs/              # Shared utilities
@@ -297,7 +297,7 @@ email-kit/
 
 ## Blocklet Deployment
 
-Email Kit is designed to run as a Blocklet on Blocklet Server:
+IntentMail is designed to run as a Blocklet on Blocklet Server:
 
 ```bash
 # Build and bundle
@@ -311,7 +311,7 @@ Or install directly from [Blocklet Store](https://store.blocklet.dev).
 
 ### Blocklet Features
 
-- **Component Calls** - Other Blocklets can call Email Kit directly
+- **Component Calls** - Other Blocklets can call IntentMail directly
 - **DID Authentication** - Integrated with Blocklet Server auth
 - **PaymentKit** - Credit-based billing when enabled
 - **Automatic HTTPS** - Secure by default

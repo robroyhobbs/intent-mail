@@ -1,10 +1,10 @@
-# Email Kit
+# IntentMail
 
 AI-Native Email System with intent-driven architecture for intelligent, brand-consistent email communications.
 
 ## Overview
 
-Email Kit transforms how you send emails by separating **what you want to say** (intents) from **how it looks** (templates) and **who you are** (brands). This layered architecture enables AI to generate contextually appropriate content while maintaining brand consistency.
+IntentMail transforms how you send emails by separating **what you want to say** (intents) from **how it looks** (templates) and **who you are** (brands). This layered architecture enables AI to generate contextually appropriate content while maintaining brand consistency.
 
 ## Key Features
 
@@ -42,7 +42,7 @@ Email Kit transforms how you send emails by separating **what you want to say** 
 
 ```javascript
 // Call from another blocklet
-const response = await Component.call('email-kit', 'send-email', {
+const response = await Component.call('intentmail', 'send-email', {
   brand: 'your-brand',
   intent: 'welcome',
   data: {
@@ -108,7 +108,7 @@ curl -X POST https://your-server/api/v1/send \
 | `RESEND_API_KEY` | Resend API key for email delivery | - |
 | `ANTHROPIC_API_KEY` | Anthropic API key for AI generation | - |
 | `DEFAULT_FROM_EMAIL` | Default sender email address | noreply@example.com |
-| `DEFAULT_FROM_NAME` | Default sender name | Email Kit |
+| `DEFAULT_FROM_NAME` | Default sender name | IntentMail |
 | `SMTP_HOST` | SMTP server host | - |
 | `SMTP_PORT` | SMTP server port | 587 |
 | `SMTP_USER` | SMTP username | - |
@@ -141,7 +141,7 @@ When credit billing is enabled:
 
 Traditional email systems require developers to code every email variation. Legacy AI solutions often produce inconsistent, off-brand content.
 
-**Email Kit's approach:**
+**IntentMail's approach:**
 1. **Structured Intent** defines purpose and required data
 2. **AI generates content** within defined constraints
 3. **Brand voice** ensures consistency

@@ -4,7 +4,7 @@ Brands define **who you are** when sending emails. Each brand includes visual id
 
 ## What is a Brand?
 
-A brand in Email Kit contains:
+A brand in IntentMail contains:
 - **Identity** - Name, logo, colors
 - **Voice** - Tone, personality, communication style
 - **Preferences** - Words to use, words to avoid
@@ -42,7 +42,7 @@ interface Brand {
 
 ## Built-in Brands
 
-Email Kit includes example brands you can customize:
+IntentMail includes example brands you can customize:
 
 ### Default Brand
 

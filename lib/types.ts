@@ -1,5 +1,5 @@
 /**
- * Email Kit Type Definitions
+ * IntentMail Type Definitions
  */
 
 // =============================================================================

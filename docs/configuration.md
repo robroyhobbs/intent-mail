@@ -1,6 +1,6 @@
 # Configuration Reference
 
-Complete reference for all Email Kit configuration options.
+Complete reference for all IntentMail configuration options.
 
 ## Environment Variables
 
@@ -18,7 +18,7 @@ Complete reference for all Email Kit configuration options.
 |----------|-------------|---------|----------|
 | `EMAIL_PROVIDER` | Provider type: `resend`, `smtp`, `console` | console | No |
 | `DEFAULT_FROM_EMAIL` | Sender email address | noreply@example.com | No |
-| `DEFAULT_FROM_NAME` | Sender display name | Email Kit | No |
+| `DEFAULT_FROM_NAME` | Sender display name | IntentMail | No |
 
 ### Resend Provider
 
@@ -106,7 +106,7 @@ AI_OUTPUT_TOKEN_RATE=0.006    # $6 per 1M output tokens
 
 ## Database Configuration
 
-Email Kit uses SQLite by default. Databases are stored in:
+IntentMail uses SQLite by default. Databases are stored in:
 
 - **Development**: `./data/`
 - **Blocklet**: `$BLOCKLET_DATA_DIR/`
@@ -123,7 +123,7 @@ Email Kit uses SQLite by default. Databases are stored in:
 ## File Structure
 
 ```
-email-kit/
+intentmail/
 ├── api/                    # Backend API
 │   ├── index.ts           # Express server entry
 │   ├── libs/              # Shared utilities
@@ -161,8 +161,8 @@ email-kit/
 Key configuration sections:
 
 ```yaml
-name: email-kit
-title: Email Kit
+name: intentmail
+title: IntentMail
 group: dapp
 
 # Entry point
@@ -200,7 +200,7 @@ requirements:
 Set via Blocklet Server dashboard:
 
 1. Go to your Blocklet Server
-2. Navigate to Email Kit
+2. Navigate to IntentMail
 3. Click Settings → Environment
 4. Add/edit variables
 5. Restart the Blocklet

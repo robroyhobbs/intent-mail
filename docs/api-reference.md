@@ -1,6 +1,6 @@
 # API Reference
 
-Email Kit provides a RESTful API for sending emails, managing API keys, and tracking usage.
+IntentMail provides a RESTful API for sending emails, managing API keys, and tracking usage.
 
 ## Authentication
 

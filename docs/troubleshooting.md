@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-Solutions for common issues with Email Kit.
+Solutions for common issues with IntentMail.
 
 ## Common Issues
 
@@ -246,12 +246,12 @@ ls -la $BLOCKLET_DATA_DIR/
 
 #### Symptom
 ```
-Error: Component email-kit not found
+Error: Component intentmail not found
 ```
 
 #### Possible Causes
 
-1. **Email Kit not installed**
+1. **IntentMail not installed**
    - Verify it's running on same Blocklet Server
 
 2. **Wrong component name**
@@ -269,7 +269,7 @@ const components = await Component.list();
 console.log(components);
 
 // Use correct component name
-await Component.call('email-kit', 'send-email', { ... });
+await Component.call('intentmail', 'send-email', { ... });
 ```
 
 ---
@@ -355,7 +355,7 @@ curl -X POST http://localhost:3030/api/v1/send/preview \
 ### Report Issues
 
 1. Gather information:
-   - Email Kit version
+   - IntentMail version
    - Node.js version
    - Error messages
    - Steps to reproduce

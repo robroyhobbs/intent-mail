@@ -1,7 +1,7 @@
-name: email-kit
+name: intentmail
 did: z8iZpsrTemCJNp5nNyX48L9nBLdMt8cLEkvKn
-title: Email Kit
-description: AI-Native Email System with brand management, intent-based templates, and AI content generation
+title: IntentMail
+description: AI-Native Intent-Driven Email System with brand management, intelligent templates, and AI content generation
 version: 0.1.0
 group: dapp
 
@@ -51,7 +51,7 @@ environments:
   - name: DEFAULT_FROM_NAME
     description: Default sender name
     required: false
-    default: Email Kit
+    default: IntentMail
   - name: SMTP_HOST
     description: SMTP server host (if using smtp provider)
     required: false
