@@ -1,5 +1,5 @@
 name: intentmail
-did: z8iZpsrTemCJNp5nNyX48L9nBLdMt8cLEkvKn
+did: z2qaKJzMotHsZzXS7499HPkrfEvrQb6TQUx3J
 title: IntentMail
 description: AI-Native Intent-Driven Email System with brand management, intelligent templates, and AI content generation
 version: 0.1.0
@@ -12,14 +12,12 @@ author:
 
 community: https://github.com/robroyhobbs/intent-mail
 
-main: .blocklet/api/api/index.js
+main: api/index.ts
 
 logo: logo.svg
 
 files:
-  - .blocklet/api/api
-  - .blocklet/api/lib
-  - .blocklet/client
+  - dist
   - logo.svg
   - blocklet.md
 

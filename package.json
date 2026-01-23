@@ -10,7 +10,7 @@
     "build": "npm run build:api && npm run build:client",
     "build:api": "tsc -p api/tsconfig.json",
     "build:client": "vite build",
-    "bundle": "npm run build && blocklet bundle --create-release",
+    "bundle": "npm run build:client && blocklet bundle --compact --create-release",
     "deploy": "npm run bundle && blocklet deploy .blocklet/bundle",
     "upload": "npm run bundle && blocklet upload .blocklet/bundle",
     "lint": "eslint --ext .js,.ts,.tsx src api",
@@ -64,7 +64,8 @@
     "react-router-dom": "^6.21.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "vite": "^5.0.10",
+    "vite-plugin-blocklet": "^0.14.6"
   },
   "blocklet": {
     "group": "dapp"
