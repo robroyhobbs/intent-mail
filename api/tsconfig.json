@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "outDir": "../.blocklet/api",
+    "outDir": "../dist/api",
     "baseUrl": "..",
     "paths": {
       "@lib/*": ["lib/*"]
