@@ -1,0 +1,512 @@
+[
+  {
+    "term": "vibe coding",
+    "category": "vibe coding",
+    "content_angle": "Definitive guide to vibe coding: what it is, why it matters, and how MyVibe takes it beyond prototypes to live production deployments",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "what is vibe coding",
+    "category": "vibe coding",
+    "content_angle": "Beginner-friendly explainer positioning vibe coding as the next evolution beyond no-code, with MyVibe as the publishing-first example",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "vibe coding for non-developers",
+    "category": "vibe coding",
+    "content_angle": "How marketers, founders, and creators are using natural language to build and deploy live experiences without writing code",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "vibe coding for marketers",
+    "category": "vibe coding",
+    "content_angle": "Why marketing teams are adopting vibe coding to ship landing pages, campaigns, and A/B tests without developer bottlenecks",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "vibe coding tools 2026",
+    "category": "vibe coding",
+    "content_angle": "Comparison of the top vibe coding platforms with emphasis on which ones actually deploy to production vs just generate prototypes",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "vibe coding vs no-code",
+    "category": "vibe coding",
+    "content_angle": "Why vibe coding is not just another no-code trend: the key differences in flexibility, AI-native design, and deployment capabilities",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "vibe coding vs low-code",
+    "category": "vibe coding",
+    "content_angle": "Head-to-head comparison showing how vibe coding eliminates the visual builder learning curve while delivering more customizable results",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "vibe coding examples",
+    "category": "vibe coding",
+    "content_angle": "Real-world examples of what people have built and deployed with vibe coding, from dashboards to live content experiences",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "vibe coding movement",
+    "category": "vibe coding",
+    "content_angle": "Thought leadership piece on vibe coding as a cultural shift: from Andrej Karpathy coining the term to mainstream adoption in 2026",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "vibe coding for founders",
+    "category": "vibe coding",
+    "content_angle": "How non-technical founders are using vibe coding to validate ideas, build MVPs, and ship products without hiring engineers",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "natural language to deployed app",
+    "category": "vibe coding",
+    "content_angle": "The end-to-end workflow: describe what you want in plain English and get a live, deployed experience with real data connections",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "prompt to production",
+    "category": "vibe coding",
+    "content_angle": "The new development paradigm where the gap between idea and live product is measured in minutes, not sprints",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI native publishing platform",
+    "category": "AI publishing",
+    "content_angle": "What makes a platform AI-native vs AI-assisted: why bolt-on AI features cannot match platforms built from the ground up around AI",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI publishing platform",
+    "category": "AI publishing",
+    "content_angle": "Overview of how AI is transforming publishing from static page builders to dynamic, intelligent deployment systems",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "future of digital publishing",
+    "category": "AI publishing",
+    "content_angle": "The shift from CMS-driven publishing to AI-native publishing: why the next decade of content will be live, adaptive, and deployed by AI",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI content deployment",
+    "category": "AI publishing",
+    "content_angle": "Beyond content creation: why AI that deploys content is fundamentally different from AI that just writes it",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI powered content creation",
+    "category": "AI publishing",
+    "content_angle": "The evolution from AI writing assistants to AI that designs, builds, and deploys entire content experiences",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "AI document publishing",
+    "category": "AI publishing",
+    "content_angle": "How live document publishing replaces the traditional create-export-upload workflow with instant AI-driven deployment",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI replaces CMS",
+    "category": "AI publishing",
+    "content_angle": "Provocative thought leadership: why AI-native platforms will make traditional content management systems obsolete",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "future of content management",
+    "category": "AI publishing",
+    "content_angle": "From WordPress to AI-native: the architectural shift happening in how organizations manage and deploy content",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI website builder 2026",
+    "category": "AI publishing",
+    "content_angle": "How AI website builders have evolved from template selectors to full-stack deployment engines that understand intent",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "live documents",
+    "category": "live documents",
+    "content_angle": "What are live documents and why they represent the future of content: always current, always connected, always deployed",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "live document publishing",
+    "category": "live documents",
+    "content_angle": "The shift from static PDFs and blog posts to live, interactive documents that update in real-time with connected data",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "real-time content publishing",
+    "category": "live documents",
+    "content_angle": "How real-time publishing with live data connections changes the economics and speed of content operations",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "interactive content platform",
+    "category": "live documents",
+    "content_angle": "Why static content is dying and interactive, live experiences are becoming the standard for audience engagement",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "dynamic content deployment",
+    "category": "live documents",
+    "content_angle": "From static HTML to dynamic live documents: how AI-native platforms deploy content that adapts and responds",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "living documents vs static content",
+    "category": "live documents",
+    "content_angle": "Comparison piece: why living documents with real data connections outperform traditional static pages on every metric",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "connected data documents",
+    "category": "live documents",
+    "content_angle": "How live documents pull from real data sources to stay current without manual updates, and why this matters for business content",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "publish content without developers",
+    "category": "no-code",
+    "content_angle": "The developer bottleneck is real: how content teams can go from idea to deployed experience without a single Jira ticket",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "no-code content publishing",
+    "category": "no-code",
+    "content_angle": "Beyond drag-and-drop: how AI-native no-code platforms let you describe what you want and get a deployed result",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "no-code deploy platform",
+    "category": "no-code",
+    "content_angle": "Comparison of no-code platforms that actually handle deployment, not just design: what to look for and why it matters",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "no-code A/B testing",
+    "category": "no-code",
+    "content_angle": "How to run real A/B tests on your live content without touching code or waiting for a developer sprint",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "no developer needed to publish",
+    "category": "no-code",
+    "content_angle": "The business case for eliminating developer handoff from your publishing workflow: speed, cost, and autonomy gains",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "no-code website builder with AI",
+    "category": "no-code",
+    "content_angle": "How AI transforms no-code from template-constrained to truly custom: describe your vision and let AI build it",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "build and deploy without coding",
+    "category": "no-code",
+    "content_angle": "Step-by-step walkthrough of going from an idea described in natural language to a live, deployed web experience",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "eliminate developer handoff",
+    "category": "no-code",
+    "content_angle": "Why developer handoff is the hidden tax on content velocity and how AI-native platforms eliminate it entirely",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "content team bottleneck",
+    "category": "no-code",
+    "content_angle": "Diagnosing the content bottleneck: when your ideas move faster than your dev team can ship them, and what to do about it",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "one-click deploy content",
+    "category": "no-code",
+    "content_angle": "The magic of one-click deploy: how AI-native platforms compress the entire build-test-deploy cycle into a single action",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI tools for creators 2026",
+    "category": "creator tools",
+    "content_angle": "The creator tool landscape in 2026: from writing assistants to full deployment platforms that let creators own the entire workflow",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "creator tools that deploy",
+    "category": "creator tools",
+    "content_angle": "Why the next generation of creator tools does not stop at design: the deploy button is the feature that changes everything",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI for content creators",
+    "category": "creator tools",
+    "content_angle": "Beyond writing assistance: how AI is becoming the full creative partner that designs, builds, and ships content experiences",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "creator economy AI tools",
+    "category": "creator tools",
+    "content_angle": "How AI tools are reshaping the $14 billion creator economy by giving individuals production capabilities that once required studios",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "empowering non-technical creators",
+    "category": "creator tools",
+    "content_angle": "The democratization thesis: why giving non-technical people deployment power is the most important trend in creator tools",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI design to deploy",
+    "category": "creator tools",
+    "content_angle": "The full loop: AI does not just design it, AI deploys it. Why closing the design-to-deploy gap matters for creators",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "build landing pages with AI",
+    "category": "creator tools",
+    "content_angle": "Practical guide: how to use natural language prompts to create, customize, and deploy landing pages in minutes",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI landing page builder",
+    "category": "creator tools",
+    "content_angle": "Comparison of AI landing page builders, emphasizing which ones offer live data connections and built-in A/B testing",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "instant rollback publishing",
+    "category": "creator tools",
+    "content_angle": "Why instant rollback is the safety net that makes AI-powered publishing trustworthy for business-critical content",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "A/B testing for content",
+    "category": "creator tools",
+    "content_angle": "How built-in A/B testing changes content strategy from guesswork to data-driven iteration without technical overhead",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI A/B testing platform",
+    "category": "creator tools",
+    "content_angle": "The new wave of AI-powered A/B testing: generate variants, deploy them, and let AI analyze results automatically",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "democratize software creation",
+    "category": "vibe coding",
+    "content_angle": "The bigger picture: vibe coding is not a developer tool, it is a democratization movement that gives everyone the power to build",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "natural language UI builder",
+    "category": "vibe coding",
+    "content_angle": "How describing a user interface in plain English produces better results than dragging and dropping components",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI deploys it",
+    "category": "AI publishing",
+    "content_angle": "The paradigm shift from AI-assisted design to AI-driven deployment: when AI does not just help you create, it ships for you",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "no-code alternatives to WordPress",
+    "category": "no-code",
+    "content_angle": "Why creators and businesses are leaving WordPress for AI-native platforms that eliminate the plugin, theme, and hosting complexity",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "WordPress alternative AI",
+    "category": "no-code",
+    "content_angle": "The AI-native alternative to WordPress: comparing the old CMS model with describe-and-deploy publishing",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Webflow alternative AI powered",
+    "category": "no-code",
+    "content_angle": "Why AI-native platforms are capturing designers and marketers who outgrew Webflow but do not want to hire developers",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Lovable alternative",
+    "category": "vibe coding",
+    "content_angle": "Comparison piece: how MyVibe differs from Lovable by focusing on live document publishing rather than app prototyping",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Replit alternative for publishing",
+    "category": "vibe coding",
+    "content_angle": "When you need a publishing platform, not a code editor: why content-focused teams choose purpose-built vibe coding tools",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Bolt.new alternative",
+    "category": "vibe coding",
+    "content_angle": "Beyond code generation: what Bolt.new gets right about AI building and what is missing for real publishing workflows",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI app builder for business",
+    "category": "no-code",
+    "content_angle": "How business leaders are using AI app builders to ship internal tools, customer-facing pages, and content experiences",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "describe and deploy",
+    "category": "vibe coding",
+    "content_angle": "The describe-and-deploy workflow: why typing what you want and clicking deploy is the natural evolution of content creation",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI for GTM teams",
+    "category": "creator tools",
+    "content_angle": "How go-to-market teams use AI-native tools to ship campaigns, landing pages, and content without engineering support",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI marketing deployment tools",
+    "category": "creator tools",
+    "content_angle": "The new stack for marketing ops: AI tools that do not just generate copy but deploy entire campaign experiences",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "ship faster without engineers",
+    "category": "no-code",
+    "content_angle": "The velocity argument: teams using AI-native platforms ship content 10x faster by removing the developer dependency",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "content velocity platform",
+    "category": "AI publishing",
+    "content_angle": "How to measure and improve content velocity: from ideation to live deployment in minutes instead of weeks",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI first content strategy",
+    "category": "AI publishing",
+    "content_angle": "What an AI-first content strategy looks like: faster creation, smarter testing, instant deployment, and continuous optimization",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "the end of developer handoff",
+    "category": "no-code",
+    "content_angle": "Thought leadership: why the design-to-dev handoff is a relic of the pre-AI era and what replaces it",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "publish AI generated content",
+    "category": "AI publishing",
+    "content_angle": "The complete workflow: AI generates the content, AI designs the experience, AI deploys it live. What humans still control.",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI web experience builder",
+    "category": "creator tools",
+    "content_angle": "Building web experiences, not just web pages: how AI-native platforms create interactive, data-connected experiences",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "vibe coding for content teams",
+    "category": "vibe coding",
+    "content_angle": "How content teams are adopting vibe coding to publish faster: real workflows and results from early adopters",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI that ships",
+    "category": "AI publishing",
+    "content_angle": "The differentiator in 2026 AI tools: does your AI actually ship production content, or does it just generate drafts?",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "deploy UI with natural language",
+    "category": "vibe coding",
+    "content_angle": "Technical explainer: how natural language processing translates intent into deployed user interfaces with real data",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI native vs AI assisted tools",
+    "category": "AI publishing",
+    "content_angle": "The critical distinction: AI-native platforms built around AI from day one vs legacy tools with AI features bolted on",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "future of no-code 2026",
+    "category": "no-code",
+    "content_angle": "No-code is evolving into natural language coding: why the drag-and-drop era is giving way to describe-and-deploy",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "publish without a CMS",
+    "category": "AI publishing",
+    "content_angle": "Why you might not need a CMS anymore: how AI-native platforms let you create and publish without content management overhead",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "vibe coding use cases",
+    "category": "vibe coding",
+    "content_angle": "Catalog of real vibe coding use cases: landing pages, dashboards, interactive reports, campaign pages, and live documents",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "best AI tools for solopreneurs 2026",
+    "category": "creator tools",
+    "content_angle": "The solopreneur AI stack: tools that replace entire teams, with emphasis on platforms that handle creation through deployment",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "AI content creation without coding",
+    "category": "AI publishing",
+    "content_angle": "How AI has finally bridged the gap between content creation and content deployment for non-technical teams",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "deploy content experiences",
+    "category": "live documents",
+    "content_angle": "Content as experience: why deploying interactive, connected content experiences beats publishing static pages",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "real data connections in content",
+    "category": "live documents",
+    "content_angle": "How connecting live data to published content creates documents that never go stale and always tell the current story",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI publishing workflow",
+    "category": "AI publishing",
+    "content_angle": "The new publishing workflow: prompt, review, deploy, test, iterate. How AI compresses the content lifecycle",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Andrej Karpathy vibe coding",
+    "category": "vibe coding",
+    "content_angle": "From tweet to movement: how Andrej Karpathy's vibe coding concept became the defining development trend of 2026",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI empowers creators",
+    "category": "creator tools",
+    "content_angle": "The empowerment thesis: AI is not replacing creators, it is giving them superpowers to build what they previously could not",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "vibe marketing",
+    "category": "vibe coding",
+    "content_angle": "The intersection of vibe coding and marketing: how marketing teams are adopting natural language tools to build and deploy campaigns",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI deploy without developer",
+    "category": "no-code",
+    "content_angle": "The zero-developer deployment model: how AI handles the entire stack from design intent to live production",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "content operations automation AI",
+    "category": "AI publishing",
+    "content_angle": "How AI-native platforms automate the entire content operations pipeline: creation, review, deployment, testing, and optimization",
+    "estimated_difficulty": "medium"
+  }
+]

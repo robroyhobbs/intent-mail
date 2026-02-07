@@ -1,0 +1,11 @@
+[
+  {
+    "date": "2026-02-07",
+    "assignments": {
+      "arcblock": {"content_type": "how-to", "keyword": "DID wallet for business"},
+      "arcsphere": {"content_type": "overview", "keyword": "AI native browser"},
+      "aigne": {"content_type": "tutorial", "keyword": "TypeScript AI agent framework"},
+      "myvibe": {"content_type": "listicle", "keyword": "vibe coding for marketers"}
+    }
+  }
+]

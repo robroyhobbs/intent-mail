@@ -1,0 +1,104 @@
+# Daily Blog Content Engine Configuration
+# All logic lives in CLAUDE.md — this file defines the data model only.
+
+products:
+  - name: arcblock
+    display_name: ArcBlock
+    focus: Platform, blockchain, DID, infrastructure
+    blog_tag: arcblock
+    github_repos:
+      - ArcBlock/blocklet-server
+      - ArcBlock/agent-skills
+    urls:
+      website: https://www.arcblock.io
+      blog: https://www.arcblock.io/blog/
+
+  - name: arcsphere
+    display_name: ArcSphere
+    focus: AI browser, skill system, AFS
+    blog_tag: arcsphere
+    github_repos: []  # Private repo
+    urls:
+      website: https://www.arcblock.io
+
+  - name: aigne
+    display_name: AIGNE
+    focus: AI framework, agent engineering, open-source
+    blog_tag: aigne
+    github_repos:
+      - AIGNE-io/aigne-framework
+      - AIGNE-io/aigne-hub
+      - AIGNE-io/aigne-doc-smith
+    urls:
+      website: https://aigne.io
+
+  - name: myvibe
+    display_name: MyVibe
+    focus: Live documents, publishing, vibe coding
+    blog_tag: myvibe
+    github_repos: []  # Private repo
+    urls:
+      website: https://myvibe.so
+
+content_types:
+  - name: how-to
+    weight: 20
+    needs_diagram: true
+    needs_code: true
+    word_range: [1000, 1500]
+  - name: tutorial
+    weight: 15
+    needs_diagram: true
+    needs_code: true
+    word_range: [1200, 1500]
+  - name: guide
+    weight: 15
+    needs_diagram: true
+    needs_code: sometimes
+    word_range: [1000, 1500]
+  - name: listicle
+    weight: 15
+    needs_diagram: optional
+    needs_code: false
+    word_range: [800, 1200]
+  - name: overview
+    weight: 10
+    needs_diagram: true
+    needs_code: false
+    word_range: [800, 1200]
+  - name: product-update
+    weight: 10
+    needs_diagram: optional
+    needs_code: true
+    word_range: [800, 1200]
+  - name: industry
+    weight: 10
+    needs_diagram: optional
+    needs_code: false
+    word_range: [1000, 1500]
+  - name: comparison
+    weight: 5
+    needs_diagram: true
+    needs_code: sometimes
+    word_range: [1000, 1500]
+
+rotation_rules:
+  same_day_collision: false      # No two products get same content type on same day
+  cooldown_days: 5               # Same product can't get same type within 5 days
+  calendar_history_days: 30      # Rolling window for repetition checks
+  product_update_frequency: 14   # Check changelogs every 14 days
+
+schedule:
+  time: "09:30"
+  timezone: "America/Los_Angeles"
+
+blog:
+  platform: discuss-kit
+  url: https://www.arcblock.io/blog/
+  admin_url: https://www.arcblock.io/content/admin
+
+seo:
+  always_tag: arcblock           # Every article gets this tag
+  slug_max_length: 60
+  title_max_length: 65
+  description_max_length: 160

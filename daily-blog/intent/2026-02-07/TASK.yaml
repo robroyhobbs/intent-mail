@@ -1,0 +1,41 @@
+date: "2026-02-07"
+status: done
+phase: 3
+owner: qa-agent
+
+articles:
+  arcblock:
+    content_type: "how-to"
+    keyword: "DID wallet for business"
+    topic: "How to Replace Password Databases with DID Wallets in Your Enterprise Auth Stack"
+    status: passed
+    file: "drafts/2026-02-07/arcblock-how-to.md"
+    checklist_failures: []
+    word_count: 1278
+  arcsphere:
+    content_type: "overview"
+    keyword: "AI native browser"
+    topic: "What Makes a Browser AI-Native (And Why Bolting AI onto Chrome Isn't Enough)"
+    status: passed
+    file: "drafts/2026-02-07/arcsphere-overview.md"
+    checklist_failures: []
+    word_count: 1220
+  aigne:
+    content_type: "tutorial"
+    keyword: "TypeScript AI agent framework"
+    topic: "Build Your First AI Agent in TypeScript with AIGNE Framework — From Zero to Running in 15 Minutes"
+    status: passed
+    file: "drafts/2026-02-07/aigne-tutorial.md"
+    checklist_failures: []
+    word_count: 1522
+  myvibe:
+    content_type: "listicle"
+    keyword: "vibe coding for marketers"
+    topic: "5 Ways Marketing Teams Are Using Vibe Coding to Ship Campaigns Without Developer Bottlenecks"
+    status: passed
+    file: "drafts/2026-02-07/myvibe-listicle.md"
+    checklist_failures: []
+    word_count: 1237
+
+updated: "2026-02-07T06:40:00Z"
+note: "Integration test dry run — all 4 articles passed QA checklist"

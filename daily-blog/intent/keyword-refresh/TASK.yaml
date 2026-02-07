@@ -1,0 +1,7 @@
+status: ready
+owner: null
+assignee: null
+phase: 0/4
+updated: 2026-02-07T07:00:00Z
+heartbeat: null
+note: "Monthly keyword bank refresh. Run with /swarm run keyword-refresh"

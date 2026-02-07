@@ -1,0 +1,524 @@
+[
+  {
+    "term": "AI agent framework",
+    "category": "framework",
+    "content_angle": "Definitive guide to choosing an AI agent framework in 2026 -- what to look for and why architecture decisions matter early",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "TypeScript AI agent framework",
+    "category": "framework",
+    "content_angle": "Why TypeScript is now the #1 language on GitHub and what that means for building production AI agents",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "open source AI agent framework",
+    "category": "framework",
+    "content_angle": "89% of orgs using AI leverage open source -- how to evaluate open-source agent frameworks for enterprise use",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "agentic AI framework",
+    "category": "agentic AI",
+    "content_angle": "What makes a framework truly agentic vs just an LLM wrapper -- the architecture checklist for business leaders",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "best AI agent frameworks 2026",
+    "category": "framework",
+    "content_angle": "Practitioner comparison of the top AI agent frameworks with real-world use cases and tradeoffs",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "build AI agents TypeScript",
+    "category": "developer tools",
+    "content_angle": "Step-by-step tutorial: building your first production AI agent in TypeScript with functional patterns",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "agentic AI trends 2026",
+    "category": "agentic AI",
+    "content_angle": "Gartner predicts 40% of enterprise apps will embed AI agents by 2026 -- what this means for your tech stack",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "multi-agent orchestration",
+    "category": "agentic AI",
+    "content_angle": "From single agents to agent teams: orchestration patterns that scale without complexity spiraling",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "agentic AI design patterns",
+    "category": "agentic AI",
+    "content_angle": "The 7 design patterns every AI builder needs to know -- sequential, concurrent, routing, handoff, reflection, and more",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent workflow patterns",
+    "category": "agentic AI",
+    "content_angle": "Choosing the right workflow pattern for your use case: when to use sequential vs concurrent vs routing",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "LangChain alternative",
+    "category": "framework",
+    "content_angle": "Why teams are looking beyond LangChain -- a comparison of lighter, more functional alternatives",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "CrewAI alternative",
+    "category": "framework",
+    "content_angle": "CrewAI vs functional agent frameworks: when role-based orchestration isnt what you need",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AutoGen alternative",
+    "category": "framework",
+    "content_angle": "Beyond AutoGen: agent frameworks that offer multi-agent patterns without the Microsoft ecosystem lock-in",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "LangGraph vs CrewAI vs AutoGen",
+    "category": "framework",
+    "content_angle": "Honest comparison from someone who has built with all three -- and why the next generation looks different",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "MCP model context protocol",
+    "category": "developer tools",
+    "content_angle": "MCP is the USB-C of AI agents -- what it is, why it matters, and how to implement it today",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "MCP AI agents integration",
+    "category": "developer tools",
+    "content_angle": "Practical guide to connecting AI agents to external tools and data sources using MCP",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "model context protocol tutorial",
+    "category": "developer tools",
+    "content_angle": "Building your first MCP server and connecting it to an AI agent framework in under 30 minutes",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "multi LLM support framework",
+    "category": "LLM",
+    "content_angle": "Why locking into a single LLM provider is the new vendor lock-in -- how multi-LLM frameworks protect your investment",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "OpenAI Anthropic Gemini unified API",
+    "category": "LLM",
+    "content_angle": "One codebase, any model: the business case for LLM-agnostic agent architectures",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "switch LLM providers without rewriting code",
+    "category": "LLM",
+    "content_angle": "How to architect your AI app so you can swap between GPT, Claude, Gemini, and DeepSeek without touching business logic",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "DeepSeek integration AI framework",
+    "category": "LLM",
+    "content_angle": "DeepSeek is disrupting the LLM market -- how to add it to your existing agent stack today",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Ollama local LLM AI agents",
+    "category": "LLM",
+    "content_angle": "Running AI agents with local models via Ollama: privacy, cost savings, and latency benefits",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent code sandbox",
+    "category": "developer tools",
+    "content_angle": "Sandboxed agents reduce security incidents by 90% -- how to implement secure code execution for AI agents",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "secure AI code execution",
+    "category": "developer tools",
+    "content_angle": "The risks of running AI-generated code in production and how sandbox isolation solves them",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent sandbox security",
+    "category": "developer tools",
+    "content_angle": "Enterprise security requirements for agentic AI: sandboxing, guardrails, and audit trails",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "functional programming AI",
+    "category": "framework",
+    "content_angle": "Functional-first agent design: why composable, testable AI agents beat object-oriented monoliths",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "code-first AI agents",
+    "category": "developer tools",
+    "content_angle": "Why code-first beats no-code for production AI agents -- the case for TypeScript-first development",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent handoff pattern",
+    "category": "agentic AI",
+    "content_angle": "Implementing agent-to-agent handoffs: when and how to delegate tasks between specialized agents",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent routing pattern",
+    "category": "agentic AI",
+    "content_angle": "Smart routing in multi-agent systems: how to direct requests to the right agent automatically",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent reflection pattern",
+    "category": "agentic AI",
+    "content_angle": "Self-improving AI agents: how the reflection pattern catches errors before they reach users",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "sequential AI agent workflow",
+    "category": "agentic AI",
+    "content_angle": "Building reliable AI pipelines: when sequential agent workflows outperform parallel execution",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "concurrent AI agent execution",
+    "category": "agentic AI",
+    "content_angle": "Parallel agent execution patterns: how to cut latency by running specialized agents simultaneously",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "agentic AI enterprise adoption",
+    "category": "agentic AI",
+    "content_angle": "Only 11% of enterprises have agentic AI in production -- what separates the leaders from the rest",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent market size 2026",
+    "category": "agentic AI",
+    "content_angle": "The autonomous AI agent market is projected to hit $8.5B in 2026 -- where the opportunity lies for builders",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "build AI apps faster",
+    "category": "developer tools",
+    "content_angle": "Developers using AI tools build 50-70% faster -- how the right agent framework amplifies that further",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI developer productivity",
+    "category": "developer tools",
+    "content_angle": "The developer productivity stack in 2026: AI agents as building blocks, not just code assistants",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "open source AI tools for startups",
+    "category": "AI agents",
+    "content_angle": "Open source AI tools that give startups enterprise-grade capabilities without enterprise budgets",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent framework comparison",
+    "category": "framework",
+    "content_angle": "Side-by-side framework comparison: architecture, DX, ecosystem, and production readiness rated",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "what is agentic AI",
+    "category": "agentic AI",
+    "content_angle": "Agentic AI explained for business leaders -- beyond chatbots to autonomous systems that act",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "agentic AI vs traditional AI",
+    "category": "agentic AI",
+    "content_angle": "The shift from ask-and-answer to plan-and-execute: why agentic AI changes everything for enterprises",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent orchestration tools",
+    "category": "agentic AI",
+    "content_angle": "From Deloitte to Google: how enterprise orchestration tools are shaping the multi-agent future",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "how to choose AI agent framework",
+    "category": "framework",
+    "content_angle": "Decision framework for CTOs: the 7 criteria that actually matter when picking an AI agent framework",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent framework for production",
+    "category": "framework",
+    "content_angle": "From prototype to production: what changes when your AI agent framework needs to handle real traffic",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "TypeScript vs Python AI agents",
+    "category": "framework",
+    "content_angle": "TypeScript overtook Python on GitHub -- should your next AI agent project use TypeScript instead?",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "multi-agent system architecture",
+    "category": "agentic AI",
+    "content_angle": "Designing multi-agent systems that dont collapse under complexity: lessons from production deployments",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent tool use",
+    "category": "AI agents",
+    "content_angle": "Tool use is what separates useful AI agents from chat toys -- a practical implementation guide",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI function calling framework",
+    "category": "developer tools",
+    "content_angle": "Function calling done right: how to make AI agents reliably invoke the right tools with correct parameters",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent memory and state",
+    "category": "AI agents",
+    "content_angle": "Stateful AI agents: how to give agents memory that persists across conversations and sessions",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "agentic AI ROI",
+    "category": "agentic AI",
+    "content_angle": "Companies using open-source AI report 25% higher ROI -- how to measure and maximize agentic AI returns",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent governance",
+    "category": "agentic AI",
+    "content_angle": "Bounded autonomy: the governance model that lets AI agents act fast without creating risk",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "human in the loop AI agents",
+    "category": "agentic AI",
+    "content_angle": "Strategic handoffs, not just safety nets: designing human-in-the-loop patterns for agentic systems",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent guardrails",
+    "category": "agentic AI",
+    "content_angle": "Implementing guardrails for AI agents: input validation, output filtering, and behavior boundaries",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "LLM orchestration layer",
+    "category": "LLM",
+    "content_angle": "The orchestration layer is the most important piece of your AI stack -- heres why and how to build it",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent testing and evaluation",
+    "category": "developer tools",
+    "content_angle": "How to test AI agents: evaluation strategies that catch failures before production",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "vibe coding AI agents",
+    "category": "agentic AI",
+    "content_angle": "40% of enterprise software will be vibe-coded by 2026 -- what that means for AI agent frameworks",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Blocklet ecosystem AI",
+    "category": "developer tools",
+    "content_angle": "Composable AI applications: how the Blocklet ecosystem model makes AI agents modular and shareable",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "agentic file system",
+    "category": "developer tools",
+    "content_angle": "Why AI agents need their own file system: how AFS enables persistent context and document workflows",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent context management",
+    "category": "AI agents",
+    "content_angle": "Context management is the hidden bottleneck in agent systems -- strategies for progressive disclosure and offloading",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "build multi-agent system tutorial",
+    "category": "developer tools",
+    "content_angle": "From zero to multi-agent: building a team of specialized AI agents that collaborate on complex tasks",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent framework TypeScript tutorial",
+    "category": "developer tools",
+    "content_angle": "Getting started with AI agent development in TypeScript: your first agent in 15 minutes",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent scalability",
+    "category": "AI agents",
+    "content_angle": "Scaling AI agents from POC to production: infrastructure patterns that handle real-world load",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "enterprise AI agent deployment",
+    "category": "agentic AI",
+    "content_angle": "The enterprise deployment playbook: moving from AI agent pilot to production in 90 days",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent observability",
+    "category": "developer tools",
+    "content_angle": "You cant manage what you cant see: observability patterns for multi-agent AI systems",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "open source LLM strategy",
+    "category": "LLM",
+    "content_angle": "Control, customization, and cost: the executive case for building on open-source LLM infrastructure",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent error handling",
+    "category": "developer tools",
+    "content_angle": "Graceful degradation in AI agents: how to handle hallucinations, timeouts, and tool failures in production",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "composable AI architecture",
+    "category": "framework",
+    "content_angle": "Composable over monolithic: why the best AI architectures are built from swappable, testable pieces",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent prompt engineering",
+    "category": "AI agents",
+    "content_angle": "Prompt engineering for agents is different from chatbots -- how to write system prompts that drive reliable behavior",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "reduce AI vendor lock-in",
+    "category": "LLM",
+    "content_angle": "The cost of LLM vendor lock-in is rising -- how to architect for portability from day one",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent for customer support",
+    "category": "AI agents",
+    "content_angle": "Building AI support agents that actually resolve issues: architecture patterns from real deployments",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent for data analysis",
+    "category": "AI agents",
+    "content_angle": "Autonomous data analysis agents: how to build agents that query, analyze, and report without human babysitting",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent for content creation",
+    "category": "AI agents",
+    "content_angle": "Content creation pipelines powered by agent teams: research, draft, edit, publish with orchestrated agents",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent for code review",
+    "category": "AI agents",
+    "content_angle": "Multi-agent code review: parallel agents for style, security, and performance auditing in CI/CD",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "agentic AI cost optimization",
+    "category": "agentic AI",
+    "content_angle": "Over 40% of agentic projects get canceled due to cost -- how to keep your agent costs under control",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent debugging",
+    "category": "developer tools",
+    "content_angle": "Debugging AI agents is different from debugging code -- tracing, logging, and replay strategies that work",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Elastic License open source AI",
+    "category": "framework",
+    "content_angle": "Elastic-2.0 licensing for AI frameworks: what it means for your project and why it balances openness with sustainability",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent RAG integration",
+    "category": "AI agents",
+    "content_angle": "RAG-powered agents: connecting retrieval-augmented generation to agentic workflows for grounded, accurate responses",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "MCP server implementation",
+    "category": "developer tools",
+    "content_angle": "Building custom MCP servers: how to expose your APIs and databases to any AI agent via the standard protocol",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agents vs chatbots",
+    "category": "AI agents",
+    "content_angle": "Chatbots answer questions, agents complete tasks -- why the distinction matters for your product strategy",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "agentic AI strategy Deloitte",
+    "category": "agentic AI",
+    "content_angle": "What Deloitte, Gartner, and PwC are telling enterprise leaders about agentic AI strategy in 2026",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent developer experience",
+    "category": "developer tools",
+    "content_angle": "DX is the moat: why developer experience separates winning AI frameworks from abandoned ones",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Google ADK vs open source agents",
+    "category": "framework",
+    "content_angle": "Googles Agent Development Kit just launched for TypeScript -- how it compares to independent open-source options",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "OpenAI Agents SDK alternative",
+    "category": "framework",
+    "content_angle": "Beyond the OpenAI Agents SDK: frameworks that give you multi-LLM flexibility instead of single-vendor focus",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent marketplace",
+    "category": "agentic AI",
+    "content_angle": "The emerging AI agent marketplace: how composable agent ecosystems are creating new distribution models",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "no-code vs code-first AI agents",
+    "category": "developer tools",
+    "content_angle": "No-code agent builders hit walls fast -- why serious AI projects need a code-first foundation",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent streaming responses",
+    "category": "developer tools",
+    "content_angle": "Real-time agent output: implementing streaming responses for AI agents that feel instant to users",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "agentic AI use cases 2026",
+    "category": "agentic AI",
+    "content_angle": "Real-world agentic AI use cases delivering ROI today: from customer service to data analysis to DevOps",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent framework npm package",
+    "category": "developer tools",
+    "content_angle": "Getting started with @aigne/core: the npm package that brings functional AI agent patterns to TypeScript",
+    "estimated_difficulty": "low"
+  }
+]

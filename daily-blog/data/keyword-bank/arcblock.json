@@ -1,0 +1,506 @@
+[
+  {
+    "term": "decentralized identity for enterprise",
+    "category": "DID",
+    "content_angle": "Why enterprises are shifting from centralized IAM to decentralized identity -- cost savings, breach reduction, and compliance advantages",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "self-sovereign identity benefits",
+    "category": "DID",
+    "content_angle": "The business case for giving users control of their own identity data -- reduced liability, GDPR alignment, and customer trust",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "DID wallet for business",
+    "category": "DID",
+    "content_angle": "How DID wallets transform enterprise authentication and customer onboarding without password databases",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "what is decentralized identity",
+    "category": "DID",
+    "content_angle": "Pillar guide explaining DID to business leaders -- what it is, why it matters, and how it changes digital trust",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "decentralized identity vs centralized identity",
+    "category": "DID",
+    "content_angle": "Comparison piece showing the security, cost, and scalability differences between traditional IAM and DID-based approaches",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "verifiable credentials enterprise use cases",
+    "category": "DID",
+    "content_angle": "Real-world examples of enterprises using verifiable credentials for employee access, customer verification, and supply chain trust",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "passwordless authentication blockchain",
+    "category": "DID",
+    "content_angle": "How blockchain-based DID eliminates passwords entirely -- the security and UX advantages for enterprise applications",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "DID Connect authentication protocol",
+    "category": "DID",
+    "content_angle": "How DID Connect simplifies trustless authentication between applications and users without centralized identity providers",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "digital identity wallet solutions 2026",
+    "category": "DID",
+    "content_angle": "Landscape overview of DID wallet solutions and what enterprise buyers should evaluate when choosing a platform",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain identity management GDPR compliance",
+    "category": "DID",
+    "content_angle": "How decentralized identity natively supports GDPR right-to-be-forgotten and data minimization requirements",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "self-hosted blockchain infrastructure",
+    "category": "infrastructure",
+    "content_angle": "Why enterprises choose self-hosted over managed blockchain services -- data sovereignty, compliance, and operational control",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Web3 infrastructure for enterprises",
+    "category": "infrastructure",
+    "content_angle": "Evaluating Web3 infrastructure options: self-hosted vs. cloud-managed vs. hybrid approaches for enterprise adoption",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "no vendor lock-in blockchain platform",
+    "category": "infrastructure",
+    "content_angle": "The hidden cost of vendor lock-in in Web3 and how self-hosted, open-source infrastructure protects long-term flexibility",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "enterprise blockchain deployment options",
+    "category": "infrastructure",
+    "content_angle": "Decision framework for CTOs: when to self-host, when to use managed services, and when a hybrid model makes sense",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "self-hosted Web3 platform benefits",
+    "category": "infrastructure",
+    "content_angle": "The strategic advantages of owning your Web3 stack -- from data sovereignty to reduced recurring costs",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Blocklet Server composable applications",
+    "category": "Blocklet",
+    "content_angle": "How Blocklet Server enables teams to assemble applications from reusable components instead of building from scratch",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "composable application architecture Web3",
+    "category": "Blocklet",
+    "content_angle": "The shift from monolithic dApps to composable architectures -- faster time-to-market and lower maintenance costs",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "modular blockchain application platform",
+    "category": "Blocklet",
+    "content_angle": "How modular, component-based development is changing the economics of Web3 application delivery for enterprises",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "serverless blockchain application development",
+    "category": "Blocklet",
+    "content_angle": "Serverless patterns meet blockchain: how Blocklets reduce infrastructure overhead while maintaining decentralization",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "dApp development platform comparison",
+    "category": "Blocklet",
+    "content_angle": "Comparison of dApp development platforms for enterprise use -- evaluating speed, flexibility, and total cost of ownership",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "reusable software components blockchain",
+    "category": "Blocklet",
+    "content_angle": "How pre-built blockchain components (Blocklets) cut development time by letting teams compose rather than code from scratch",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Blocklet Store marketplace",
+    "category": "Blocklet",
+    "content_angle": "How a decentralized component marketplace accelerates Web3 adoption by making proven modules instantly deployable",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "deploy decentralized applications easily",
+    "category": "Blocklet",
+    "content_angle": "Step-by-step guide to deploying dApps without deep blockchain expertise using composable platforms",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "cross-chain interoperability solutions",
+    "category": "blockchain",
+    "content_angle": "Why enterprises need cross-chain capability and how protocol-level interoperability prevents siloed blockchain investments",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "blockchain interoperability enterprise",
+    "category": "blockchain",
+    "content_angle": "The business case for cross-chain: avoiding lock-in to a single chain and future-proofing enterprise blockchain strategy",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "multi-chain strategy for business",
+    "category": "blockchain",
+    "content_angle": "How a multi-chain approach protects enterprise investments and enables the best-chain-for-each-use-case strategy",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "enterprise blockchain adoption 2026",
+    "category": "blockchain",
+    "content_angle": "State of enterprise blockchain adoption: trends, barriers, and the platforms leading the next wave of corporate deployment",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "blockchain for digital transformation",
+    "category": "blockchain",
+    "content_angle": "Where blockchain fits in the enterprise digital transformation stack alongside AI, cloud, and IoT",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "enterprise Web3 strategy",
+    "category": "blockchain",
+    "content_angle": "Building a Web3 strategy that board members understand: framing decentralization as a business advantage, not a tech experiment",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 enterprise use cases",
+    "category": "blockchain",
+    "content_angle": "Concrete use cases where Web3 delivers measurable ROI: supply chain, identity, tokenized assets, and customer engagement",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain platform for startups",
+    "category": "blockchain",
+    "content_angle": "Why startups building on Web3 need platforms that scale with them -- avoiding over-engineering and infrastructure debt",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "DID Spaces personal data vault",
+    "category": "DID",
+    "content_angle": "How DID Spaces gives users a personal, encrypted data vault -- shifting data ownership from corporations back to individuals",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "personal data sovereignty blockchain",
+    "category": "DID",
+    "content_angle": "The business and ethical case for personal data sovereignty: how blockchain makes user-owned data practical and profitable",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized data storage for enterprise",
+    "category": "DID",
+    "content_angle": "How decentralized data storage reduces breach surface area while meeting data residency and sovereignty requirements",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "user-controlled data sharing",
+    "category": "DID",
+    "content_angle": "Why user-controlled data sharing is the next competitive advantage -- building trust and reducing regulatory risk simultaneously",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "W3C DID standard implementation",
+    "category": "DID",
+    "content_angle": "What the W3C DID standard means for interoperability and why enterprises should insist on standards-compliant identity solutions",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain 3.0 what is it",
+    "category": "blockchain",
+    "content_angle": "Defining blockchain 3.0 for business leaders: the evolution from cryptocurrency to programmable infrastructure to full application platforms",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 vs Web2 enterprise benefits",
+    "category": "blockchain",
+    "content_angle": "Concrete comparison of Web3 vs Web2 for enterprise use: where decentralization adds value and where it does not",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "reduce data breach risk blockchain identity",
+    "category": "DID",
+    "content_angle": "How eliminating centralized identity databases with DID reduces breach surface area by up to 70 percent",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "zero trust architecture blockchain",
+    "category": "infrastructure",
+    "content_angle": "How blockchain-native identity powers zero-trust security without the complexity of traditional ZTNA implementations",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized application deployment platform",
+    "category": "Blocklet",
+    "content_angle": "Streamlining dApp deployment for enterprise teams: one-click deployment, automatic scaling, and built-in identity",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "open source blockchain development platform",
+    "category": "Blocklet",
+    "content_angle": "Why open-source blockchain platforms win in enterprise: auditability, community innovation, and freedom from vendor lock-in",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "full stack Web3 development platform",
+    "category": "Blocklet",
+    "content_angle": "The value of a full-stack Web3 platform that handles identity, storage, chain access, and deployment in one unified framework",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "tokenization platform for business",
+    "category": "blockchain",
+    "content_angle": "How businesses use tokenization for asset management, loyalty programs, and digital certificates on blockchain",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "digital certificate verification blockchain",
+    "category": "DID",
+    "content_angle": "Using blockchain to issue and verify digital certificates instantly -- education credentials, compliance certificates, and professional licenses",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain KYC solution",
+    "category": "DID",
+    "content_angle": "How decentralized identity streamlines KYC: verify once, use everywhere, while maintaining compliance",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized authentication for SaaS",
+    "category": "DID",
+    "content_angle": "How SaaS companies can integrate DID-based authentication to eliminate password management and reduce support costs",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "self-hosted node infrastructure",
+    "category": "infrastructure",
+    "content_angle": "Running your own blockchain node infrastructure: when it makes sense, total cost of ownership, and operational requirements",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain as a service vs self-hosted",
+    "category": "infrastructure",
+    "content_angle": "BaaS vs self-hosted blockchain: a decision matrix for enterprise IT leaders weighing convenience against control",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "data residency compliance blockchain",
+    "category": "infrastructure",
+    "content_angle": "Meeting data residency requirements with self-hosted blockchain infrastructure: a compliance-first approach",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Web3 onboarding enterprise employees",
+    "category": "blockchain",
+    "content_angle": "Practical guide to onboarding enterprise employees onto Web3 systems without requiring crypto knowledge",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain identity for healthcare",
+    "category": "DID",
+    "content_angle": "How decentralized identity solves healthcare data interoperability while keeping patient data under patient control",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain identity for financial services",
+    "category": "DID",
+    "content_angle": "Decentralized identity in fintech: reducing KYC costs, enabling portable credentials, and meeting regulatory requirements",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain identity for education",
+    "category": "DID",
+    "content_angle": "Digital diplomas and verifiable academic credentials: how blockchain transforms education credentialing",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "decentralized identity market size 2026",
+    "category": "DID",
+    "content_angle": "Market analysis piece positioning the DID market opportunity -- $5B in 2026 growing to $623B by 2035 at 70.8% CAGR",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain supply chain transparency",
+    "category": "blockchain",
+    "content_angle": "How blockchain-verified supply chains build consumer trust and reduce fraud in manufacturing and food industries",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "selective disclosure verifiable credentials",
+    "category": "DID",
+    "content_angle": "How selective disclosure lets users prove eligibility without revealing full identity -- the privacy advantage enterprises need",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "decentralized identity government adoption",
+    "category": "DID",
+    "content_angle": "Government DID adoption trends: Estonia's success, EU digital identity wallets mandate, and what it means for private sector",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 application marketplace",
+    "category": "Blocklet",
+    "content_angle": "How decentralized app marketplaces like Blocklet Store create new distribution models for enterprise software",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "enterprise blockchain ROI",
+    "category": "blockchain",
+    "content_angle": "Calculating ROI on enterprise blockchain investments: frameworks for measuring cost reduction, risk mitigation, and new revenue",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 without crypto complexity",
+    "category": "blockchain",
+    "content_angle": "How to leverage Web3 technology for enterprise value without requiring employees or customers to understand cryptocurrency",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "decentralized identity developer tools",
+    "category": "DID",
+    "content_angle": "Overview of DID development tools and SDKs that let engineering teams integrate decentralized identity in weeks, not months",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain node management platform",
+    "category": "infrastructure",
+    "content_angle": "Simplifying blockchain node management: tools and platforms that make self-hosted infrastructure practical for lean IT teams",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "DID for IoT device identity",
+    "category": "DID",
+    "content_angle": "How decentralized identity extends beyond people to devices -- securing IoT ecosystems with machine-readable verifiable credentials",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "open chain access protocol",
+    "category": "blockchain",
+    "content_angle": "How open chain access protocols enable applications to work across multiple blockchains without rewriting for each chain",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Web3 platform for non-technical founders",
+    "category": "blockchain",
+    "content_angle": "How non-technical founders can evaluate and adopt Web3 platforms -- what to look for beyond the hype",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "enterprise blockchain security best practices",
+    "category": "infrastructure",
+    "content_angle": "Security best practices for enterprise blockchain deployments: from key management to node security to access controls",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain compliance automation",
+    "category": "blockchain",
+    "content_angle": "How blockchain automates compliance workflows: immutable audit trails, automated reporting, and real-time regulatory adherence",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "future of digital identity",
+    "category": "DID",
+    "content_angle": "Thought leadership piece on where digital identity is heading: from passwords to SSI, from centralized to user-controlled",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "Web3 talent acquisition strategy",
+    "category": "blockchain",
+    "content_angle": "Building a Web3-ready team: which roles to hire, which skills to upskill, and how platforms reduce the talent gap",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "decentralized identity competitive advantage",
+    "category": "DID",
+    "content_angle": "How early DID adoption creates a competitive moat: better user experience, lower breach costs, and regulatory readiness",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain platform total cost of ownership",
+    "category": "infrastructure",
+    "content_angle": "TCO analysis of blockchain platforms: comparing self-hosted, BaaS, and hybrid models over a 3-year horizon",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "composable software vs monolithic architecture",
+    "category": "Blocklet",
+    "content_angle": "Why composable beats monolithic for Web3 applications: faster iteration, easier upgrades, and better team scalability",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "atomic swap cross-chain transactions",
+    "category": "blockchain",
+    "content_angle": "How atomic swaps enable trustless cross-chain asset transfers without intermediaries -- implications for enterprise trading",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 customer engagement platform",
+    "category": "blockchain",
+    "content_angle": "How Web3 enables new customer engagement models: token-gated experiences, verifiable loyalty, and true digital ownership",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "blockchain migration strategy enterprise",
+    "category": "infrastructure",
+    "content_angle": "Planning a blockchain migration: how to move from legacy systems to Web3 infrastructure without disrupting operations",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized identity for remote workforce",
+    "category": "DID",
+    "content_angle": "Securing remote work with DID: portable identity credentials that work across organizations and geographies",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Blocklet development tutorial",
+    "category": "Blocklet",
+    "content_angle": "Getting started with Blocklet development: a business-oriented walkthrough showing how fast teams can ship composable apps",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Web3 data privacy regulation 2026",
+    "category": "blockchain",
+    "content_angle": "How evolving data privacy regulations in 2026 are driving enterprises toward decentralized architectures and self-sovereign identity",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "blockchain vs traditional database enterprise",
+    "category": "blockchain",
+    "content_angle": "When to use blockchain and when a traditional database is enough -- a practical decision framework for enterprise architects",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized identity onboarding flow",
+    "category": "DID",
+    "content_angle": "Designing user-friendly DID onboarding: how to introduce decentralized identity without overwhelming mainstream users",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "enterprise blockchain pilot to production",
+    "category": "blockchain",
+    "content_angle": "Moving blockchain from pilot to production: what enterprises learn in the gap and how to cross it successfully",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "self-hosted vs cloud blockchain nodes",
+    "category": "infrastructure",
+    "content_angle": "Self-hosted vs cloud-managed blockchain nodes: performance, security, cost, and compliance considerations for enterprise IT",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Web3 interoperability standards",
+    "category": "blockchain",
+    "content_angle": "Why interoperability standards matter for enterprise Web3 adoption and which standards are gaining traction in 2026",
+    "estimated_difficulty": "medium"
+  }
+]

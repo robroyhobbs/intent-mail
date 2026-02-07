@@ -1,0 +1,31 @@
+taskswarm:
+  tasks:
+    paths:
+      - intent/
+    logs_dir: taskswarm/logs
+
+  git:
+    auto_commit: false    # No git for daily blog (not a code repo)
+    auto_push: false
+
+  run_all:
+    scan_interval: 60s
+    max_interval: 300s
+    backoff_multiplier: 2
+    quick_check: true
+    compact_between_tasks: true
+    git_pull: false        # No git repo
+    max_execution_time: 2h # Daily blog shouldn't take more than 2h
+
+  heartbeat:
+    interval: 5m
+    stale_timeout: 30m
+
+  locking:
+    use_local_lock: true
+    lock_dir: ~/.taskswarm/locks
+    lock_expire: 30m
+
+  execution:
+    on_test_fail: block
+    require_e2e: false      # E2E gates are verification scripts, not test suites

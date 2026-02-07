@@ -1,0 +1,46 @@
+[
+  {
+    "date": "2026-02-07",
+    "product": "arcblock",
+    "content_type": "how-to",
+    "keyword": "DID wallet for business",
+    "topic": "How to Replace Password Databases with DID Wallets in Your Enterprise Auth Stack",
+    "file": "drafts/2026-02-07/arcblock-how-to.md",
+    "status": "passed",
+    "word_count": 1278,
+    "checklist_failures": []
+  },
+  {
+    "date": "2026-02-07",
+    "product": "arcsphere",
+    "content_type": "overview",
+    "keyword": "AI native browser",
+    "topic": "What Makes a Browser AI-Native (And Why Bolting AI onto Chrome Isn't Enough)",
+    "file": "drafts/2026-02-07/arcsphere-overview.md",
+    "status": "passed",
+    "word_count": 1220,
+    "checklist_failures": []
+  },
+  {
+    "date": "2026-02-07",
+    "product": "aigne",
+    "content_type": "tutorial",
+    "keyword": "TypeScript AI agent framework",
+    "topic": "Build Your First AI Agent in TypeScript with AIGNE Framework",
+    "file": "drafts/2026-02-07/aigne-tutorial.md",
+    "status": "passed",
+    "word_count": 1522,
+    "checklist_failures": []
+  },
+  {
+    "date": "2026-02-07",
+    "product": "myvibe",
+    "content_type": "listicle",
+    "keyword": "vibe coding for marketers",
+    "topic": "5 Ways Marketing Teams Are Using Vibe Coding to Ship Campaigns Without Developer Bottlenecks",
+    "file": "drafts/2026-02-07/myvibe-listicle.md",
+    "status": "passed",
+    "word_count": 1237,
+    "checklist_failures": []
+  }
+]

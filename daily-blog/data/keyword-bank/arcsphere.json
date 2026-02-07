@@ -1,0 +1,512 @@
+[
+  {
+    "term": "AI native browser",
+    "category": "AI browser",
+    "content_angle": "Why 'AI native' is fundamentally different from 'AI features bolted onto Chrome' -- the architectural difference matters for users",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "best AI browser 2026",
+    "category": "AI browser",
+    "content_angle": "Comparison guide positioning ArcSphere against Atlas, Comet, Dia, and Opera Neon on privacy, identity, and agent access",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "agentic browser",
+    "category": "AI browser",
+    "content_angle": "The rise of browsers that act on your behalf -- what agentic browsing means for everyday users, not just developers",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "AI browser vs traditional browser",
+    "category": "AI browser",
+    "content_angle": "Side-by-side breakdown of what you gain (and what you should demand) when switching from Chrome to an AI-native browser",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "future of web browsers",
+    "category": "AI browser",
+    "content_angle": "The browser is becoming an OS -- why tabs, bookmarks, and search bars are relics of a pre-AI internet",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "browser as operating system",
+    "category": "AI browser",
+    "content_angle": "How the browser is absorbing the functions of the OS -- apps, identity, AI, and workflows converging in one interface",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI powered mobile browser",
+    "category": "AI browser",
+    "content_angle": "Why mobile is the real frontier for AI browsers -- touch-first, on-device processing, and always-with-you context",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "private AI browser",
+    "category": "AI browser",
+    "content_angle": "You shouldn't have to choose between AI intelligence and privacy -- how ArcSphere delivers both without ad networks",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser without tracking",
+    "category": "AI browser",
+    "content_angle": "The hidden cost of free browsers: your data. How a no-tracking AI browser changes the economics of browsing",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "Chrome alternative AI",
+    "category": "AI browser",
+    "content_angle": "Why power users are leaving Chrome for AI-native browsers -- and what they're finding on the other side",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Arc browser alternative 2026",
+    "category": "AI browser",
+    "content_angle": "Arc is gone (acquired by Atlassian). Where should Arc fans go? A look at browsers that inherited Arc's vision and went further",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser for productivity",
+    "category": "AI browser",
+    "content_angle": "Stop context-switching: how an AI-native browser collapses research, chat, and action into a single workflow",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "browser paradigm shift AI",
+    "category": "AI browser",
+    "content_angle": "From Netscape to Chrome to AI-native: the third great browser paradigm shift is happening now and most people will miss it",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI browser comparison 2026",
+    "category": "AI browser",
+    "content_angle": "Atlas vs Comet vs ArcSphere vs Dia: an honest comparison on architecture, privacy, identity, and agent capabilities",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "what is an AI native browser",
+    "category": "AI browser",
+    "content_angle": "Definitional guide: AI-native means AI is the foundation, not a sidebar. Here's what that looks like in practice",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI skills browser",
+    "category": "skills",
+    "content_angle": "Browsing AI skills like apps: why discoverability is the bottleneck for AI adoption and how a skill browser solves it",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI skills marketplace",
+    "category": "skills",
+    "content_angle": "The app store moment for AI: why browsable, installable AI skills will democratize access to specialized intelligence",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "discover AI skills",
+    "category": "skills",
+    "content_angle": "Most people don't know what AI can do for them. A skill browser makes AI capabilities tangible and browsable",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent skills",
+    "category": "skills",
+    "content_angle": "Skills are the building blocks of useful AI agents -- why modular, composable skills beat monolithic AI assistants",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "browse AI capabilities",
+    "category": "skills",
+    "content_angle": "From 'what can AI do?' to 'let me browse what AI can do' -- the UX shift that makes AI accessible to non-technical users",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI skill discovery platform",
+    "category": "skills",
+    "content_angle": "The discovery problem in AI: there are thousands of AI skills but no good way to find them. Until now",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "install AI skills mobile",
+    "category": "skills",
+    "content_angle": "One-tap AI skill installation on mobile: making AI as easy to add as downloading an app",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI skills for business",
+    "category": "skills",
+    "content_angle": "Business leaders need AI skills, not AI models. How browsable skill libraries change AI procurement",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized identity browser",
+    "category": "identity",
+    "content_angle": "Your browser should know who you are without Big Tech knowing who you are -- DID-based identity in the browser",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "DID wallet browser",
+    "category": "identity",
+    "content_angle": "Why your next browser needs a built-in DID wallet -- and what that means for passwords, logins, and data ownership",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "passwordless login browser",
+    "category": "identity",
+    "content_angle": "Passwords are a 1990s relic. How DID-based passwordless authentication in the browser eliminates phishing forever",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "digital passport identity",
+    "category": "identity",
+    "content_angle": "The concept of a digital passport: one portable identity across every site, owned by you, verified cryptographically",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "self sovereign identity browser",
+    "category": "identity",
+    "content_angle": "Self-sovereign identity is moving from crypto theory to browser reality -- what business leaders need to understand",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "own your data browser",
+    "category": "identity",
+    "content_angle": "Data ownership isn't a feature, it's a right. How a DID-native browser puts you back in control of your digital life",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "phishing proof authentication",
+    "category": "identity",
+    "content_angle": "Phishing works because passwords work. Remove passwords, remove phishing -- the DID approach to browser security",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "verifiable credentials browser",
+    "category": "identity",
+    "content_angle": "Selective disclosure in the browser: prove your age without revealing your birthday, prove employment without sharing salary",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 identity without crypto complexity",
+    "category": "identity",
+    "content_angle": "The promise of Web3 identity without the wallet-seed-phrase nightmare -- how ArcSphere makes DID invisible and usable",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "passkey alternative DID",
+    "category": "identity",
+    "content_angle": "Passkeys are a step forward but still platform-locked. DIDs are the destination -- truly portable, user-owned identity",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "privacy first digital identity",
+    "category": "identity",
+    "content_angle": "In 2026 your identity is the product. A privacy-first digital identity architecture flips the model entirely",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "mobile AI agents",
+    "category": "mobile AI",
+    "content_angle": "Desktop had AI agents first. Mobile is next -- and it will be bigger because your phone is always with you",
+    "estimated_difficulty": "high"
+  },
+  {
+    "term": "personal AI agent fleet",
+    "category": "mobile AI",
+    "content_angle": "One AI assistant isn't enough. The future is a fleet of specialized agents you manage from your phone like a personal staff",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "manage AI agents on mobile",
+    "category": "mobile AI",
+    "content_angle": "Your AI agents need a command center. Why mobile is the natural interface for orchestrating your personal agent fleet",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agent interface mobile",
+    "category": "mobile AI",
+    "content_angle": "The interface challenge: how do you control multiple AI agents from a 6-inch screen? Radial menus and spatial design",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "first mobile AI agent browser",
+    "category": "mobile AI",
+    "content_angle": "Most AI agent platforms are desktop-first or API-only. ArcSphere is building the first true mobile interface for agent fleets",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI agents replacing apps",
+    "category": "mobile AI",
+    "content_angle": "You don't need 80 apps. You need 5 agents. How AI agents are collapsing the app economy into intent-based interfaces",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "autonomous AI browsing mobile",
+    "category": "mobile AI",
+    "content_angle": "Let your phone browse for you: autonomous AI browsing on mobile means research, comparison, and action while you sleep",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "on device AI processing browser",
+    "category": "mobile AI",
+    "content_angle": "Cloud AI is a privacy liability. On-device AI processing in the browser keeps your data on your phone where it belongs",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI agent orchestration",
+    "category": "mobile AI",
+    "content_angle": "From single assistant to agent orchestration: why the next leap in AI productivity is managing multiple specialized agents",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "mobile AI workspace",
+    "category": "mobile AI",
+    "content_angle": "Your phone as your AI workspace: how touch-first AI browsers are turning mobile into a productivity powerhouse",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "spatial tab navigation",
+    "category": "UX innovation",
+    "content_angle": "Tabs are broken. Spatial navigation (an 8x8 grid projected as a 3D sphere) rethinks how you organize your digital world",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "3D browser interface",
+    "category": "UX innovation",
+    "content_angle": "Flat tab bars are a 1990s metaphor. 3D spatial interfaces reduce cognitive load and make tab management intuitive",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "radial menu mobile UI",
+    "category": "UX innovation",
+    "content_angle": "Why radial menus are the natural interface for AI actions on mobile -- faster than lists, built for thumb and muscle memory",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "touch first AI interface",
+    "category": "UX innovation",
+    "content_angle": "Most AI interfaces are keyboard-first transplants. A touch-first AI interface (like Action Ring) is designed for how you actually use your phone",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "action ring AI menu",
+    "category": "UX innovation",
+    "content_angle": "The Action Ring concept: a radial touch menu that puts AI actions at your fingertips -- literally one gesture away",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "spatial computing browser",
+    "category": "UX innovation",
+    "content_angle": "Spatial computing isn't just for VR headsets. Spatial interfaces in mobile browsers are the quiet revolution happening now",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "immersive tab management",
+    "category": "UX innovation",
+    "content_angle": "50 tabs open? Spatial tab management turns tab chaos into navigable 3D space you can actually make sense of",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "gesture based AI controls",
+    "category": "UX innovation",
+    "content_angle": "Swipe to summarize, pinch to compare, drag to organize -- gesture-based AI controls are faster than typing prompts",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "context aware AI chat",
+    "category": "AI chat",
+    "content_angle": "AI chat that knows what you're looking at: how context-aware @ mentions turn the browser into a conversation partner",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI chat with @ mentions",
+    "category": "AI chat",
+    "content_angle": "@ mention your tabs, bookmarks, and history in AI chat -- why context injection is the key to useful AI conversations",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "browser AI assistant context",
+    "category": "AI chat",
+    "content_angle": "Your browser AI should understand your browsing context without you explaining it. Here's how @ mentions make that real",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI chat in browser vs ChatGPT",
+    "category": "AI chat",
+    "content_angle": "ChatGPT in a separate tab vs AI chat built into your browser -- why integration beats bolt-on for real productivity",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "conversational browsing",
+    "category": "AI chat",
+    "content_angle": "The end of search-click-scroll: conversational browsing means asking your browser questions and getting synthesized answers",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI native computing",
+    "category": "thought leadership",
+    "content_angle": "AI native is not AI added. It's a design philosophy where AI is the foundation, not the feature. What this means for every product category",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "post-browser internet",
+    "category": "thought leadership",
+    "content_angle": "The browser as we know it is dying. What replaces it is an AI-native interface that understands intent, not just URLs",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "user empowerment AI",
+    "category": "thought leadership",
+    "content_angle": "AI should empower users, not surveil them. The design principles behind building AI that serves the user first",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI democratization mobile",
+    "category": "thought leadership",
+    "content_angle": "3 billion people have smartphones. AI democratization means giving all of them access to powerful AI through the browser",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "intent based computing",
+    "category": "thought leadership",
+    "content_angle": "From click-based to intent-based: the shift where you tell your browser what you want instead of how to get it",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "death of tabs and bookmarks",
+    "category": "thought leadership",
+    "content_angle": "Tabs were a hack. Bookmarks were a band-aid. AI-native browsers don't need either -- they need spatial context and agent memory",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI browser privacy paradox",
+    "category": "thought leadership",
+    "content_angle": "The paradox: AI needs data to be smart, but privacy demands less data collection. How DID architecture solves this elegantly",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "browser wars 2026",
+    "category": "thought leadership",
+    "content_angle": "The new browser wars aren't about rendering speed. They're about AI intelligence, identity ownership, and agent access",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "end of passwords",
+    "category": "thought leadership",
+    "content_angle": "Passwords have been 'dying' for 20 years. DID-based browser identity is the technology that finally kills them for real",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "task centric browser",
+    "category": "thought leadership",
+    "content_angle": "Stop organizing by tabs. Start organizing by tasks. How task-centric browsing changes the way knowledge workers operate",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "agentic AI for consumers",
+    "category": "thought leadership",
+    "content_angle": "Enterprise gets all the AI agent attention. But consumers need agents too -- personal finance, travel, health, shopping, all from your browser",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser enterprise adoption",
+    "category": "business strategy",
+    "content_angle": "76.8% of AI browser revenue is enterprise. But the real disruption starts with consumer AI browsers that enterprises eventually adopt",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser market size 2026",
+    "category": "business strategy",
+    "content_angle": "From $4.5B to $76.8B by 2034: the AI browser market is exploding and most business leaders haven't noticed yet",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "switch from Chrome to AI browser",
+    "category": "business strategy",
+    "content_angle": "A practical guide for teams switching from Chrome to an AI-native browser -- what to expect, what to prepare for",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser for teams",
+    "category": "business strategy",
+    "content_angle": "Shared AI context, team skill libraries, and collaborative spatial tabs -- how AI browsers are becoming team productivity tools",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "decentralized apps browser",
+    "category": "identity",
+    "content_angle": "DApps shouldn't require a PhD in crypto. A DID-native browser makes decentralized applications as easy as visiting a website",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "Web3 browser user experience",
+    "category": "identity",
+    "content_angle": "Web3 failed on UX. An AI-native browser with built-in DID finally delivers the Web3 vision with Web2-level simplicity",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser security",
+    "category": "identity",
+    "content_angle": "AI browsers handle sensitive workflows. Security can't be an afterthought -- how DID plus on-device AI creates a new security model",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "data ownership internet",
+    "category": "identity",
+    "content_angle": "You created the data. You should own it. How DID-based browsers are rebuilding internet identity around user ownership",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI browser no ads",
+    "category": "AI browser",
+    "content_angle": "Ad-supported browsers need your data. AI-native browsers need your trust. Why the ad-free model is the future of browsing",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "mobile browser innovation 2026",
+    "category": "mobile AI",
+    "content_angle": "Desktop browsers get all the press. But mobile is where 60% of browsing happens -- and where AI browser innovation matters most",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI first mobile experience",
+    "category": "mobile AI",
+    "content_angle": "What happens when AI isn't a feature in your mobile browser but the entire foundation? Everything about the experience changes",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "reduce app overload AI agents",
+    "category": "mobile AI",
+    "content_angle": "The average phone has 80 apps. AI agents accessed through a browser can replace dozens of them with intent-based actions",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "ArcBlock DID technology",
+    "category": "identity",
+    "content_angle": "Deep dive into ArcBlock's DID infrastructure and why building identity into the browser protocol layer matters more than bolt-on solutions",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "AI browser for non technical users",
+    "category": "skills",
+    "content_angle": "AI shouldn't require a prompt engineering degree. How skill browsers and radial menus make AI accessible to everyone",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "next generation web experience",
+    "category": "thought leadership",
+    "content_angle": "The web experience hasn't fundamentally changed since tabbed browsing. AI-native browsers are the first true generational leap",
+    "estimated_difficulty": "medium"
+  },
+  {
+    "term": "AI browser open source decentralized",
+    "category": "identity",
+    "content_angle": "Centralized AI browsers create new gatekeepers. Decentralized, DID-native browsers distribute power back to users",
+    "estimated_difficulty": "low"
+  },
+  {
+    "term": "smart tab management AI",
+    "category": "UX innovation",
+    "content_angle": "AI that understands your tabs better than you do -- automatic grouping, priority surfacing, and spatial organization",
+    "estimated_difficulty": "low"
+  }
+]
