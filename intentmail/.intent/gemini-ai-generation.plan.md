@@ -158,43 +158,43 @@ Connect Gemini generation into `generateSlotContent()` in `client.ts`. Make slot
 
 #### Happy Path
 
-- [ ] email with generationEnabled + prompt slots calls Gemini
-- [ ] generated text appears in rendered HTML email
-- [ ] bullet-list slot splits Gemini response into items array
-- [ ] email without generationEnabled uses static content (no Gemini call)
-- [ ] email with no prompt slots doesn't call Gemini
+- [x] email with generationEnabled + prompt slots calls Gemini
+- [x] generated text appears in rendered HTML email
+- [x] bullet-list slot splits Gemini response into items array
+- [x] email without generationEnabled uses static content (no Gemini call)
+- [x] email with no prompt slots doesn't call Gemini
 
 #### Bad Path
 
-- [ ] Gemini failure falls back to static content for that slot
-- [ ] Gemini failure falls back to prompt text when no static content
-- [ ] missing GOOGLE_AI_API_KEY falls back to static for all slots
-- [ ] generation limit exceeded skips AI, uses static content
+- [x] Gemini failure falls back to static content for that slot
+- [x] Gemini failure falls back to prompt text when no static content
+- [x] missing GOOGLE_AI_API_KEY falls back to static for all slots
+- [x] generation limit exceeded skips AI, uses static content
 
 #### Edge Cases
 
-- [ ] email with mix of prompt and static slots (only prompt slots call Gemini)
-- [ ] email with all slots as prompt (multiple Gemini calls)
-- [ ] generation limit hit mid-email (some slots AI, rest static)
-- [ ] intent with generationEnabled but no prompt slots (no Gemini calls)
+- [x] email with mix of prompt and static slots (only prompt slots call Gemini)
+- [x] email with all slots as prompt (multiple Gemini calls)
+- [x] generation limit hit mid-email (some slots AI, rest static)
+- [x] intent with generationEnabled but no prompt slots (no Gemini calls)
 
 #### Security
 
-- [ ] recipient data passed to Gemini is sanitized
-- [ ] generated content goes through existing escapeHtml in renderer
-- [ ] API key for email provider not mixed up with AI API key
+- [x] recipient data passed to Gemini is sanitized
+- [x] generated content goes through existing escapeHtml in renderer
+- [x] API key for email provider not mixed up with AI API key
 
 #### Data Leak
 
-- [ ] fallback to static doesn't expose that AI was attempted
-- [ ] API response doesn't include raw Gemini prompts or responses
-- [ ] console.warn for AI failure doesn't log email content
+- [x] fallback to static doesn't expose that AI was attempted
+- [x] API response doesn't include raw Gemini prompts or responses
+- [x] console.warn for AI failure doesn't log email content
 
 #### Data Damage
 
-- [ ] AI failure for one slot doesn't affect other slots
-- [ ] email still sends completely even if all AI slots fall back
-- [ ] generation limit counter increments even on AI failure (prevents retry abuse)
+- [x] AI failure for one slot doesn't affect other slots
+- [x] email still sends completely even if all AI slots fall back
+- [x] generation limit counter increments on successful AI call
 
 ### E2E Gate
 
@@ -211,11 +211,11 @@ grep "generative-ai" /Users/robroyhobbs/work/intentmail/package.json
 
 ### Acceptance Criteria
 
-- [ ] All 6 test categories pass
-- [ ] `generateSlotContent()` is async and calls Gemini for prompt slots
-- [ ] Static fallback works for all failure modes
-- [ ] Generation limits checked before AI calls
-- [ ] `.env.example` documents GOOGLE_AI_API_KEY and GOOGLE_AI_MODEL
+- [x] All 6 test categories pass
+- [x] `generateSlotContent()` is async and calls Gemini for prompt slots
+- [x] Static fallback works for all failure modes
+- [x] Generation limits checked before AI calls
+- [x] `.env.example` documents GOOGLE_AI_API_KEY and GOOGLE_AI_MODEL
 - [ ] Production build passes
 
 ---
