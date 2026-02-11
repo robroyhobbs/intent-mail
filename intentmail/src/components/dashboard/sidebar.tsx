@@ -13,6 +13,7 @@ import {
   Settings,
   Plug,
   Mail,
+  Clock,
   Users,
 } from "lucide-react";
 
@@ -22,6 +23,7 @@ const navigation = [
   { name: "Intents", href: "/dashboard/intents", icon: MessageSquare },
   { name: "Providers", href: "/dashboard/providers", icon: Plug },
   { name: "Emails", href: "/dashboard/emails", icon: Mail },
+  { name: "Scheduled", href: "/dashboard/emails/scheduled", icon: Clock },
   { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
   { name: "API Keys", href: "/dashboard/api-keys", icon: Key },
   { name: "Members", href: "/dashboard/settings/members", icon: Users },

@@ -243,12 +243,12 @@ pnpm build 2>&1 | tail -5
 
 ### Acceptance Criteria
 
-- [ ] GET /api/v1/emails/scheduled returns paginated list of scheduled emails
-- [ ] DELETE /api/v1/emails/scheduled/:id cancels via QStash and updates DB
-- [ ] PATCH /api/v1/emails/scheduled/:id reschedules via QStash and updates DB
-- [ ] All endpoints enforce organization isolation and API key auth
-- [ ] All 6 test categories pass
-- [ ] Build succeeds
+- [x] GET /api/v1/emails/scheduled returns paginated list of scheduled emails
+- [x] DELETE /api/v1/emails/scheduled/:id cancels via QStash and updates DB
+- [x] PATCH /api/v1/emails/scheduled/:id reschedules via QStash and updates DB
+- [x] All endpoints enforce organization isolation and API key auth
+- [x] All 6 test categories pass
+- [x] Build succeeds
 
 ---
 
@@ -262,41 +262,41 @@ Create dashboard page at `/dashboard/emails/scheduled` showing pending scheduled
 
 #### Happy Path
 
-- [ ] Page renders table of SCHEDULED emails with recipient, subject, brand, scheduled time
-- [ ] Cancel button calls DELETE endpoint and refreshes page
-- [ ] Reschedule action sends PATCH with new date and refreshes page
-- [ ] Page shows empty state when no scheduled emails exist
-- [ ] Sidebar includes "Scheduled" link under Emails section
+- [x] Page renders table of SCHEDULED emails with recipient, subject, brand, scheduled time
+- [x] Cancel button calls DELETE endpoint and refreshes page
+- [x] Reschedule action sends PATCH with new date and refreshes page
+- [x] Page shows empty state when no scheduled emails exist
+- [x] Sidebar includes "Scheduled" link under Emails section
 
 #### Bad Path
 
-- [ ] Cancel button shows error toast when API returns error
-- [ ] Reschedule with past date shows validation error before API call
-- [ ] Page redirects to login when user is not authenticated
-- [ ] Page shows error when API call to fetch scheduled emails fails
+- [x] Cancel button shows error toast when API returns error
+- [x] Reschedule with past date shows validation error before API call
+- [x] Page redirects to login when user is not authenticated
+- [x] Page shows error when API call to fetch scheduled emails fails
 
 #### Edge Cases
 
-- [ ] Page handles large list (50+ scheduled emails) with pagination
-- [ ] Scheduled time displays in user's local timezone
-- [ ] Email that was just cancelled disappears from list after refresh
-- [ ] Multiple rapid cancel clicks are debounced (loading state)
+- [x] Page handles large list (50+ scheduled emails) with pagination
+- [x] Scheduled time displays in user's local timezone
+- [x] Email that was just cancelled disappears from list after refresh
+- [x] Multiple rapid cancel clicks are debounced (loading state)
 
 #### Security
 
-- [ ] Page requires authenticated session (server-side check)
-- [ ] Organization isolation — only shows current org's scheduled emails
-- [ ] Cancel/reschedule actions use session auth, not exposed API keys
+- [x] Page requires authenticated session (server-side check)
+- [x] Organization isolation — only shows current org's scheduled emails
+- [x] Cancel/reschedule actions use session auth, not exposed API keys
 
 #### Data Leak
 
-- [ ] Page does not display internal IDs (qstashMessageId, scheduledRequest)
-- [ ] Page does not expose API keys or provider details
+- [x] Page does not display internal IDs (qstashMessageId, scheduledRequest)
+- [x] Page does not expose API keys or provider details
 
 #### Data Damage
 
-- [ ] Cancel confirmation dialog prevents accidental cancellation
-- [ ] Reschedule preserves all original email params (only scheduledFor changes)
+- [x] Cancel confirmation dialog prevents accidental cancellation
+- [x] Reschedule preserves all original email params (only scheduledFor changes)
 
 ### E2E Gate
 
@@ -310,11 +310,11 @@ npx tsc --noEmit 2>&1 || true
 
 ### Acceptance Criteria
 
-- [ ] Dashboard page at /dashboard/emails/scheduled renders scheduled emails table
-- [ ] Cancel and reschedule actions work via API calls
-- [ ] Sidebar navigation includes Scheduled link
-- [ ] All 6 test categories pass
-- [ ] Build succeeds
+- [x] Dashboard page at /dashboard/emails/scheduled renders scheduled emails table
+- [x] Cancel and reschedule actions work via API calls
+- [x] Sidebar navigation includes Scheduled link
+- [x] All 6 test categories pass
+- [x] Build succeeds
 
 ---
 
