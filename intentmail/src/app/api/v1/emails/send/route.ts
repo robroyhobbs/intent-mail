@@ -77,8 +77,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check monthly limit
+    // Lazy billing cycle reset: if cycle expired, reset counter
     const limits = getPlanLimits(org.plan);
+    if (org.billingCycleStart) {
+      const nextReset = new Date(org.billingCycleStart);
+      nextReset.setMonth(nextReset.getMonth() + 1);
+      if (new Date() >= nextReset) {
+        try {
+          await db.organization.update({
+            where: { id: org.id },
+            data: { emailsUsedThisMonth: 0, billingCycleStart: new Date() },
+          });
+          org.emailsUsedThisMonth = 0;
+        } catch {
+          // Non-blocking: proceed with stale counter
+          console.warn(
+            "Failed to reset billing cycle counter for org:",
+            org.id,
+          );
+        }
+      }
+    }
+
+    // Check monthly limit
     if (org.emailsUsedThisMonth >= limits.emailsPerMonth) {
       return NextResponse.json(
         {
