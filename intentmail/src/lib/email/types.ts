@@ -208,6 +208,30 @@ export interface EmailProviderResult {
 }
 
 // =============================================================================
+// DOMAIN VERIFICATION
+// =============================================================================
+
+export interface DnsRecord {
+  type: string; // "TXT" | "CNAME" | "MX"
+  name: string; // hostname
+  value: string; // record value
+  priority?: number; // for MX records
+}
+
+export interface DomainAddResult {
+  success: boolean;
+  providerDomainId?: string;
+  dnsRecords?: DnsRecord[];
+  error?: string;
+}
+
+export interface DomainVerifyResult {
+  success: boolean;
+  verified: boolean;
+  error?: string;
+}
+
+// =============================================================================
 // SLOTS & TEMPLATES
 // =============================================================================
 

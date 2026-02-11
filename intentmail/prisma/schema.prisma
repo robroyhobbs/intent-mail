@@ -37,6 +37,7 @@ model Organization {
   apiKeys        ApiKey[]
   emailLogs      EmailLog[]
   unsubscribes   Unsubscribe[]
+  domains        Domain[]
 
   @@index([clerkId])
   @@index([slug])
@@ -222,6 +223,7 @@ model EmailProvider {
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   emailLogs    EmailLog[]
+  domains      Domain[]
 
   @@unique([organizationId, name])
   @@index([organizationId])
@@ -233,6 +235,37 @@ enum ProviderType {
   POSTMARK
   AWS_SES
   MAILGUN
+}
+
+// =============================================================================
+// DOMAINS (Custom Sender Domains)
+// =============================================================================
+
+model Domain {
+  id               String       @id @default(cuid())
+  organizationId   String
+  providerId       String
+  domain           String
+  status           DomainStatus @default(PENDING)
+  providerDomainId String?
+  dnsRecords       Json         @default("[]")
+  lastCheckedAt    DateTime?
+  verifiedAt       DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  provider     EmailProvider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, domain])
+  @@index([organizationId])
+  @@index([providerId])
+}
+
+enum DomainStatus {
+  PENDING
+  VERIFIED
+  FAILED
 }
 
 // =============================================================================

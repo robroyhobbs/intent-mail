@@ -3,7 +3,12 @@
 // =============================================================================
 
 import type { EmailProvider } from "./index";
-import type { EmailProviderSendOptions, EmailProviderResult } from "../types";
+import type {
+  EmailProviderSendOptions,
+  EmailProviderResult,
+  DomainAddResult,
+  DomainVerifyResult,
+} from "../types";
 
 export class PostmarkProvider implements EmailProvider {
   type = "postmark" as const;
@@ -90,6 +95,111 @@ export class PostmarkProvider implements EmailProvider {
           error instanceof Error
             ? error.message
             : "Failed to connect to Postmark",
+      };
+    }
+  }
+
+  private get pmHeaders(): Record<string, string> {
+    return {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-Postmark-Account-Token": this.apiKey,
+    };
+  }
+
+  async addDomain(domain: string): Promise<DomainAddResult> {
+    try {
+      const response = await fetch(`${this.baseUrl}/domains`, {
+        method: "POST",
+        headers: this.pmHeaders,
+        body: JSON.stringify({ Name: domain }),
+      });
+      const data = await response.json();
+      if (!response.ok || data.ErrorCode) {
+        return {
+          success: false,
+          error: data.Message ?? "Failed to add domain",
+        };
+      }
+      const records: { type: string; name: string; value: string }[] = [];
+      if (data.DKIMHost) {
+        records.push({
+          type: "TXT",
+          name: data.DKIMHost,
+          value: data.DKIMTextValue ?? "",
+        });
+      }
+      if (data.ReturnPathDomainCNAMEValue) {
+        records.push({
+          type: "CNAME",
+          name: data.ReturnPathDomain ?? `pm-bounces.${domain}`,
+          value: data.ReturnPathDomainCNAMEValue,
+        });
+      }
+      return {
+        success: true,
+        providerDomainId: String(data.ID),
+        dnsRecords: records,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to add domain",
+      };
+    }
+  }
+
+  async verifyDomain(providerDomainId: string): Promise<DomainVerifyResult> {
+    try {
+      // Postmark requires verifying DKIM and return-path separately
+      const [dkimRes, rpRes] = await Promise.all([
+        fetch(`${this.baseUrl}/domains/${providerDomainId}/verifyDkim`, {
+          method: "PUT",
+          headers: this.pmHeaders,
+        }),
+        fetch(`${this.baseUrl}/domains/${providerDomainId}/verifyReturnPath`, {
+          method: "PUT",
+          headers: this.pmHeaders,
+        }),
+      ]);
+      const dkimData = await dkimRes.json();
+      const rpData = await rpRes.json();
+      const dkimVerified = dkimData.DKIMVerified === true;
+      const rpVerified = rpData.ReturnPathDomainVerified === true;
+      return {
+        success: true,
+        verified: dkimVerified && rpVerified,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        verified: false,
+        error:
+          error instanceof Error ? error.message : "Failed to verify domain",
+      };
+    }
+  }
+
+  async removeDomain(
+    providerDomainId: string,
+  ): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/domains/${providerDomainId}`,
+        {
+          method: "DELETE",
+          headers: this.pmHeaders,
+        },
+      );
+      if (!response.ok) {
+        return { success: false, error: "Failed to remove domain" };
+      }
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error:
+          error instanceof Error ? error.message : "Failed to remove domain",
       };
     }
   }

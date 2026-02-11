@@ -6,6 +6,8 @@ import type {
   ProviderType,
   EmailProviderSendOptions,
   EmailProviderResult,
+  DomainAddResult,
+  DomainVerifyResult,
 } from "../types";
 import { ResendProvider } from "./resend";
 import { SendGridProvider } from "./sendgrid";
@@ -21,6 +23,12 @@ export interface EmailProvider {
   type: ProviderType;
   send(options: EmailProviderSendOptions): Promise<EmailProviderResult>;
   testConnection(): Promise<{ success: boolean; error?: string }>;
+  // Optional domain management — providers that don't support it omit these
+  addDomain?(domain: string): Promise<DomainAddResult>;
+  verifyDomain?(providerDomainId: string): Promise<DomainVerifyResult>;
+  removeDomain?(
+    providerDomainId: string,
+  ): Promise<{ success: boolean; error?: string }>;
 }
 
 // =============================================================================

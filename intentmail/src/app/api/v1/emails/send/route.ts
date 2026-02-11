@@ -171,6 +171,35 @@ export async function POST(request: NextRequest) {
       brandId = defaultBrand.id;
     }
 
+    // Check domain verification for GROWTH+ plans (customDomain enabled)
+    if (limits.customDomain) {
+      const brand = await db.brand.findUnique({ where: { id: brandId } });
+      if (brand?.fromEmail) {
+        const emailDomain = brand.fromEmail.split("@")[1]?.toLowerCase();
+        if (emailDomain) {
+          const verifiedDomain = await db.domain.findFirst({
+            where: {
+              organizationId: auth.organizationId,
+              domain: emailDomain,
+              status: "VERIFIED",
+            },
+          });
+          if (!verifiedDomain) {
+            return NextResponse.json(
+              {
+                error: {
+                  code: "DOMAIN_NOT_VERIFIED",
+                  message:
+                    "Sender domain is not verified. Add and verify your domain in the dashboard.",
+                },
+              },
+              { status: 400, headers: getRateLimitHeaders(rateLimit) },
+            );
+          }
+        }
+      }
+    }
+
     // Check if this is a scheduled send
     const scheduledFor = data.scheduledFor
       ? new Date(data.scheduledFor)
