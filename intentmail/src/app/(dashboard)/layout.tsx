@@ -21,12 +21,7 @@ export default async function DashboardLayout({
   }
 
   // Ensure org exists in our database
-  try {
-    await ensureOrganizationExists();
-  } catch (e) {
-    console.error("[DashboardLayout] ensureOrganizationExists error:", e);
-    throw e;
-  }
+  await ensureOrganizationExists();
 
   return (
     <div className="flex h-screen overflow-hidden">

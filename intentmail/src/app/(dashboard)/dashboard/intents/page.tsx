@@ -22,13 +22,7 @@ export default async function IntentsPage({
 }: {
   searchParams: Promise<{ page?: string; q?: string }>;
 }) {
-  let org;
-  try {
-    org = await requireOrganization();
-  } catch (e) {
-    console.error("[IntentsPage] requireOrganization error:", e);
-    throw e;
-  }
+  const org = await requireOrganization();
   const params = await searchParams;
   const page = Math.max(1, Number(params.page) || 1);
   const query = params.q ?? "";
