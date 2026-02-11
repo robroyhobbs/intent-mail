@@ -10,7 +10,14 @@ import { Badge } from "@/components/ui/badge";
 import { getOrganizationWithLimits } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatNumber } from "@/lib/utils";
-import { ArrowRight, Mail, Palette, MessageSquare, Plug } from "lucide-react";
+import {
+  ArrowRight,
+  Mail,
+  Palette,
+  MessageSquare,
+  Plug,
+  Globe,
+} from "lucide-react";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -23,13 +30,17 @@ export default async function DashboardPage() {
   }
 
   // Get counts
-  const [brandCount, intentCount, providerCount] = await Promise.all([
-    db.brand.count({ where: { organizationId: org.id } }),
-    db.intent.count({ where: { organizationId: org.id } }),
-    db.emailProvider.count({
-      where: { organizationId: org.id, isActive: true },
-    }),
-  ]);
+  const [brandCount, intentCount, providerCount, domainCount] =
+    await Promise.all([
+      db.brand.count({ where: { organizationId: org.id } }),
+      db.intent.count({ where: { organizationId: org.id } }),
+      db.emailProvider.count({
+        where: { organizationId: org.id, isActive: true },
+      }),
+      db.domain.count({
+        where: { organizationId: org.id, status: "VERIFIED" },
+      }),
+    ]);
 
   // Get recent emails
   const recentEmails = await db.emailLog.findMany({
@@ -89,6 +100,17 @@ export default async function DashboardPage() {
       icon: Plug,
       href: "/dashboard/providers",
     },
+    ...(org.limits.customDomain
+      ? [
+          {
+            name: "Domains",
+            value: domainCount,
+            description: "Verified",
+            icon: Globe,
+            href: "/dashboard/domains",
+          },
+        ]
+      : []),
   ];
 
   return (
