@@ -401,3 +401,23 @@ model WebhookEvent {
   @@index([provider, eventType])
   @@index([createdAt])
 }
+
+// =============================================================================
+// WAITLIST
+// =============================================================================
+
+model WaitlistEntry {
+  id        String         @id @default(cuid())
+  email     String         @unique
+  name      String
+  useCase   String
+  status    WaitlistStatus @default(PENDING)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+enum WaitlistStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
