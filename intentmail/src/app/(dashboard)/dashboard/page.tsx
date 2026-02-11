@@ -17,6 +17,8 @@ import {
   MessageSquare,
   Plug,
   Globe,
+  CheckCircle2,
+  Circle,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -113,6 +115,28 @@ export default async function DashboardPage() {
       : []),
   ];
 
+  const setupSteps = [
+    {
+      done: brandCount > 0,
+      label: "Create a brand",
+      href: "/dashboard/brands/new",
+      icon: Palette,
+    },
+    {
+      done: providerCount > 0,
+      label: "Connect an email provider",
+      href: "/dashboard/providers/new",
+      icon: Plug,
+    },
+    {
+      done: intentCount > 0,
+      label: "Create an intent",
+      href: "/dashboard/intents/new",
+      icon: MessageSquare,
+    },
+  ];
+  const setupComplete = setupSteps.every((s) => s.done);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -125,6 +149,45 @@ export default async function DashboardPage() {
           <Link href="/dashboard/intents/new">Create Intent</Link>
         </Button>
       </div>
+
+      {/* Setup Checklist */}
+      {!setupComplete && (
+        <Card className="border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-950/30">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Get Started</CardTitle>
+            <CardDescription>
+              Complete these steps to send your first email
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {setupSteps.map((step) => (
+              <Link
+                key={step.label}
+                href={step.href}
+                className="flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/30"
+              >
+                {step.done ? (
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                ) : (
+                  <Circle className="h-5 w-5 text-muted-foreground" />
+                )}
+                <span
+                  className={
+                    step.done
+                      ? "text-muted-foreground line-through"
+                      : "font-medium"
+                  }
+                >
+                  {step.label}
+                </span>
+                {!step.done && (
+                  <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground" />
+                )}
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
