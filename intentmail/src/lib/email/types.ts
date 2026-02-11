@@ -9,7 +9,6 @@ export interface EmailRequest {
   to: string;
   data: Record<string, unknown>;
   subject?: string; // Override subject
-  scheduledFor?: Date;
   tags?: string[];
   metadata?: Record<string, unknown>;
   plan?: string; // Org plan for AI generation limits

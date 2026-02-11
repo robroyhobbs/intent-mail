@@ -440,7 +440,6 @@ export async function sendEmail(request: EmailRequest): Promise<SendResult> {
     html: email.html,
     text: email.text,
     tags: request.tags,
-    scheduledAt: request.scheduledFor,
     headers: unsubscribeHeaders,
   });
 

@@ -5,6 +5,7 @@ import { authenticateApiKey, hasScope } from "@/lib/api/auth";
 import { checkRateLimit, getRateLimitHeaders } from "@/lib/api/rate-limit";
 import { sendEmail } from "@/lib/email/client";
 import { getPlanLimits } from "@/lib/auth";
+import { publishScheduledEmail } from "@/lib/queue/qstash";
 
 const sendEmailSchema = z.object({
   brandId: z.string().optional(),
@@ -149,7 +150,83 @@ export async function POST(request: NextRequest) {
       brandId = defaultBrand.id;
     }
 
-    // Send email
+    // Check if this is a scheduled send
+    const scheduledFor = data.scheduledFor
+      ? new Date(data.scheduledFor)
+      : undefined;
+    const shouldSchedule = scheduledFor && scheduledFor.getTime() > Date.now();
+
+    if (shouldSchedule) {
+      // Store request params and publish to QStash
+      const scheduledRequest = JSON.parse(
+        JSON.stringify({
+          organizationId: auth.organizationId,
+          brandId,
+          intentId,
+          to: data.to,
+          data: data.data ?? {},
+          subject: data.subject,
+          tags: data.tags,
+          metadata: data.metadata,
+          plan: org.plan,
+        }),
+      );
+
+      // Create EmailLog first with SCHEDULED status
+      const emailLog = await db.emailLog.create({
+        data: {
+          organizationId: auth.organizationId,
+          brandId,
+          intentId,
+          toEmail: data.to,
+          fromEmail: "pending",
+          subject: data.subject ?? "pending",
+          status: "SCHEDULED",
+          scheduledFor,
+          scheduledRequest,
+          tags: data.tags ?? [],
+          metadata: (data.metadata ?? {}) as Record<string, string>,
+        },
+      });
+
+      try {
+        const qstashMessageId = await publishScheduledEmail(
+          emailLog.id,
+          scheduledFor,
+        );
+        await db.emailLog.update({
+          where: { id: emailLog.id },
+          data: { qstashMessageId },
+        });
+
+        return NextResponse.json(
+          {
+            data: {
+              messageId: emailLog.id,
+              to: data.to,
+              status: "scheduled",
+              scheduled: true,
+              scheduledFor: scheduledFor.toISOString(),
+            },
+          },
+          { headers: getRateLimitHeaders(rateLimit) },
+        );
+      } catch {
+        // QStash publish failed — clean up the EmailLog
+        await db.emailLog.delete({ where: { id: emailLog.id } });
+        return NextResponse.json(
+          {
+            error: {
+              code: "SCHEDULE_FAILED",
+              message: "Failed to schedule email",
+            },
+          },
+          { status: 500, headers: getRateLimitHeaders(rateLimit) },
+        );
+      }
+    }
+
+    // Immediate send (no scheduledFor or scheduledFor in the past)
     const result = await sendEmail({
       organizationId: auth.organizationId,
       brandId,
@@ -159,7 +236,6 @@ export async function POST(request: NextRequest) {
       subject: data.subject,
       tags: data.tags,
       metadata: data.metadata,
-      scheduledFor: data.scheduledFor ? new Date(data.scheduledFor) : undefined,
       plan: org.plan,
     });
 

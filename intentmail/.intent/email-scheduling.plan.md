@@ -99,55 +99,55 @@ Modify the send route to detect `scheduledFor` and route through QStash instead 
 
 #### Happy Path
 
-- [ ] POST /api/v1/emails/send with scheduledFor creates EmailLog with status SCHEDULED
-- [ ] POST /api/v1/emails/send with scheduledFor stores request params in scheduledRequest JSON
-- [ ] POST /api/v1/emails/send with scheduledFor returns { scheduled: true, messageId }
-- [ ] POST /api/v1/emails/send without scheduledFor sends immediately (no change to existing flow)
-- [ ] POST /api/internal/scheduled-send with valid signature loads EmailLog and calls sendEmail()
-- [ ] POST /api/internal/scheduled-send updates EmailLog from SCHEDULED to SENT on success
-- [ ] Callback endpoint re-checks unsubscribe status before sending
-- [ ] Callback endpoint updates provider stats after successful send
+- [x] POST /api/v1/emails/send with scheduledFor creates EmailLog with status SCHEDULED
+- [x] POST /api/v1/emails/send with scheduledFor stores request params in scheduledRequest JSON
+- [x] POST /api/v1/emails/send with scheduledFor returns { scheduled: true, messageId }
+- [x] POST /api/v1/emails/send without scheduledFor sends immediately (no change to existing flow)
+- [x] POST /api/internal/scheduled-send with valid signature loads EmailLog and calls sendEmail()
+- [x] POST /api/internal/scheduled-send updates EmailLog from SCHEDULED to SENT on success
+- [x] Callback endpoint re-checks unsubscribe status before sending
+- [x] Callback endpoint updates provider stats after successful send
 
 #### Bad Path
 
-- [ ] POST /api/v1/emails/send with scheduledFor but invalid brand returns 404 (before QStash publish)
-- [ ] POST /api/v1/emails/send with scheduledFor but invalid intent returns 404 (before QStash publish)
-- [ ] POST /api/v1/emails/send with scheduledFor but no provider returns error (before QStash publish)
-- [ ] POST /api/internal/scheduled-send with missing signature returns 401
-- [ ] POST /api/internal/scheduled-send with invalid signature returns 401
-- [ ] POST /api/internal/scheduled-send with non-existent emailLogId returns 200 (no retry)
-- [ ] POST /api/internal/scheduled-send with already CANCELLED emailLog returns 200 (skip send)
-- [ ] POST /api/internal/scheduled-send with already SENT emailLog returns 200 (skip send)
-- [ ] Callback endpoint where sendEmail() fails updates EmailLog to FAILED, returns 200
+- [x] POST /api/v1/emails/send with scheduledFor but invalid brand returns 404 (before QStash publish)
+- [x] POST /api/v1/emails/send with scheduledFor but invalid intent returns 404 (before QStash publish)
+- [x] POST /api/v1/emails/send with scheduledFor but no provider returns error (before QStash publish)
+- [x] POST /api/internal/scheduled-send with missing signature returns 401
+- [x] POST /api/internal/scheduled-send with invalid signature returns 401
+- [x] POST /api/internal/scheduled-send with non-existent emailLogId returns 200 (no retry)
+- [x] POST /api/internal/scheduled-send with already CANCELLED emailLog returns 200 (skip send)
+- [x] POST /api/internal/scheduled-send with already SENT emailLog returns 200 (skip send)
+- [x] Callback endpoint where sendEmail() fails updates EmailLog to FAILED, returns 200
 
 #### Edge Cases
 
-- [ ] scheduledFor in past (<= now) sends immediately via normal pipeline (no QStash)
-- [ ] scheduledFor less than 60 seconds in future still routes through QStash
-- [ ] Callback fires but recipient unsubscribed since scheduling — marks CANCELLED, returns 200
-- [ ] scheduledRequest contains all original request params needed to reconstruct sendEmail() call
-- [ ] Large scheduledRequest JSON (many data fields) stores and retrieves correctly
+- [x] scheduledFor in past (<= now) sends immediately via normal pipeline (no QStash)
+- [x] scheduledFor less than 60 seconds in future still routes through QStash
+- [x] Callback fires but recipient unsubscribed since scheduling — marks CANCELLED, returns 200
+- [x] scheduledRequest contains all original request params needed to reconstruct sendEmail() call
+- [x] Large scheduledRequest JSON (many data fields) stores and retrieves correctly
 
 #### Security
 
-- [ ] Callback endpoint verifies QStash signature using Receiver with signing keys
-- [ ] Callback endpoint is not accessible without valid Upstash-Signature header
-- [ ] Callback endpoint does not accept requests from arbitrary origins
-- [ ] scheduledRequest does not store raw API key — only references (providerId, brandId, etc.)
-- [ ] Timing-safe signature comparison (via QStash Receiver library)
+- [x] Callback endpoint verifies QStash signature using Receiver with signing keys
+- [x] Callback endpoint is not accessible without valid Upstash-Signature header
+- [x] Callback endpoint does not accept requests from arbitrary origins
+- [x] scheduledRequest does not store raw API key — only references (providerId, brandId, etc.)
+- [x] Timing-safe signature comparison (via QStash Receiver library)
 
 #### Data Leak
 
-- [ ] Callback error responses do not expose EmailLog details or organization info
-- [ ] Callback endpoint returns generic 200/401 — no detailed error messages to caller
-- [ ] Scheduled send response does not expose QStash messageId to API consumers
+- [x] Callback error responses do not expose EmailLog details or organization info
+- [x] Callback endpoint returns generic 200/401 — no detailed error messages to caller
+- [x] Scheduled send response does not expose QStash messageId to API consumers
 
 #### Data Damage
 
-- [ ] EmailLog status transitions are atomic: SCHEDULED→SENT or SCHEDULED→FAILED
-- [ ] If callback encounters DB error updating status, returns 500 (QStash will retry)
-- [ ] Concurrent callbacks for same emailLogId only send once (check status before send)
-- [ ] scheduledFor field on EmailLog is preserved after send (for audit)
+- [x] EmailLog status transitions are atomic: SCHEDULED→SENT or SCHEDULED→FAILED
+- [x] If callback encounters DB error updating status, returns 500 (QStash will retry)
+- [x] Concurrent callbacks for same emailLogId only send once (check status before send)
+- [x] scheduledFor field on EmailLog is preserved after send (for audit)
 
 ### E2E Gate
 
