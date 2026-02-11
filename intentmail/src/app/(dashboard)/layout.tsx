@@ -1,27 +1,32 @@
-import { redirect } from 'next/navigation'
-import { auth } from '@clerk/nextjs/server'
-import { Sidebar } from '@/components/dashboard/sidebar'
-import { Header } from '@/components/dashboard/header'
-import { ensureOrganizationExists } from '@/lib/auth'
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { Header } from "@/components/dashboard/header";
+import { ensureOrganizationExists } from "@/lib/auth";
 
 export default async function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const { userId, orgId } = await auth()
+  const { userId, orgId } = await auth();
 
   if (!userId) {
-    redirect('/sign-in')
+    redirect("/sign-in");
   }
 
   // If user doesn't have an org, they need to create one
   if (!orgId) {
-    redirect('/create-organization')
+    redirect("/create-organization");
   }
 
   // Ensure org exists in our database
-  await ensureOrganizationExists()
+  try {
+    await ensureOrganizationExists();
+  } catch (e) {
+    console.error("[DashboardLayout] ensureOrganizationExists error:", e);
+    throw e;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -33,5 +38,5 @@ export default async function DashboardLayout({
         </main>
       </div>
     </div>
-  )
+  );
 }

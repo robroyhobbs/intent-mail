@@ -25,7 +25,13 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const org = await getOrganizationWithLimits();
+  let org;
+  try {
+    org = await getOrganizationWithLimits();
+  } catch (e) {
+    console.error("[DashboardPage] getOrganizationWithLimits error:", e);
+    throw e;
+  }
 
   if (!org) {
     return <div>Loading...</div>;

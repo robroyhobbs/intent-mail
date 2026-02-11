@@ -1,39 +1,51 @@
-import Link from 'next/link'
-import { Plus, MessageSquare, ChevronLeft, ChevronRight, Search } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { requireOrganization } from '@/lib/auth'
-import { db } from '@/lib/db'
+import Link from "next/link";
+import {
+  Plus,
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { requireOrganization } from "@/lib/auth";
+import { db } from "@/lib/db";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 20;
 
 export default async function IntentsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; q?: string }>
+  searchParams: Promise<{ page?: string; q?: string }>;
 }) {
-  const org = await requireOrganization()
-  const params = await searchParams
-  const page = Math.max(1, Number(params.page) || 1)
-  const query = params.q ?? ''
+  let org;
+  try {
+    org = await requireOrganization();
+  } catch (e) {
+    console.error("[IntentsPage] requireOrganization error:", e);
+    throw e;
+  }
+  const params = await searchParams;
+  const page = Math.max(1, Number(params.page) || 1);
+  const query = params.q ?? "";
 
-  const where: Record<string, unknown> = { organizationId: org.id }
+  const where: Record<string, unknown> = { organizationId: org.id };
   if (query) {
     where.OR = [
-      { name: { contains: query, mode: 'insensitive' } },
-      { slug: { contains: query, mode: 'insensitive' } },
-      { purpose: { contains: query, mode: 'insensitive' } },
-    ]
+      { name: { contains: query, mode: "insensitive" } },
+      { slug: { contains: query, mode: "insensitive" } },
+      { purpose: { contains: query, mode: "insensitive" } },
+    ];
   }
 
   const [intents, total] = await Promise.all([
     db.intent.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: {
@@ -42,24 +54,24 @@ export default async function IntentsPage({
       },
     }),
     db.intent.count({ where }),
-  ])
+  ]);
 
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const urgencyColors = {
-    NONE: 'secondary',
-    LOW: 'outline',
-    MEDIUM: 'warning',
-    HIGH: 'destructive',
-  } as const
+    NONE: "secondary",
+    LOW: "outline",
+    MEDIUM: "warning",
+    HIGH: "destructive",
+  } as const;
 
   function buildUrl(overrides: Record<string, string | undefined>) {
-    const p = new URLSearchParams()
-    const merged = { page: String(page), q: query, ...overrides }
+    const p = new URLSearchParams();
+    const merged = { page: String(page), q: query, ...overrides };
     for (const [k, v] of Object.entries(merged)) {
-      if (v) p.set(k, v)
+      if (v) p.set(k, v);
     }
-    return `/dashboard/intents?${p.toString()}`
+    return `/dashboard/intents?${p.toString()}`;
   }
 
   return (
@@ -81,7 +93,11 @@ export default async function IntentsPage({
       </div>
 
       {/* Search */}
-      <form action="/dashboard/intents" method="GET" className="relative max-w-sm">
+      <form
+        action="/dashboard/intents"
+        method="GET"
+        className="relative max-w-sm"
+      >
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           name="q"
@@ -94,7 +110,8 @@ export default async function IntentsPage({
       {/* Results count */}
       {(query || total > 0) && (
         <p className="text-sm text-muted-foreground">
-          {total} intent{total !== 1 ? 's' : ''}{query ? ` matching "${query}"` : ''}
+          {total} intent{total !== 1 ? "s" : ""}
+          {query ? ` matching "${query}"` : ""}
         </p>
       )}
 
@@ -103,13 +120,16 @@ export default async function IntentsPage({
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             {query ? (
-              <p className="text-muted-foreground">No intents match your search</p>
+              <p className="text-muted-foreground">
+                No intents match your search
+              </p>
             ) : (
               <>
                 <MessageSquare className="h-12 w-12 text-muted-foreground" />
                 <h3 className="mt-4 text-lg font-semibold">No intents yet</h3>
                 <p className="mt-2 text-center text-sm text-muted-foreground">
-                  Create your first intent to define email templates with slots-based content.
+                  Create your first intent to define email templates with
+                  slots-based content.
                 </p>
                 <Button className="mt-4" asChild>
                   <Link href="/dashboard/intents/new">
@@ -131,7 +151,10 @@ export default async function IntentsPage({
                     {/* Brand Color Indicator */}
                     <div
                       className="h-10 w-1 rounded-full"
-                      style={{ backgroundColor: intent.brand?.colorPrimary ?? '#6b7280' }}
+                      style={{
+                        backgroundColor:
+                          intent.brand?.colorPrimary ?? "#6b7280",
+                      }}
                     />
                     <div>
                       <div className="flex items-center gap-2">
@@ -208,5 +231,5 @@ export default async function IntentsPage({
         </div>
       )}
     </div>
-  )
+  );
 }
