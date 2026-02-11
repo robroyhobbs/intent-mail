@@ -164,12 +164,12 @@ pnpm build 2>&1 | tail -5
 
 ### Acceptance Criteria
 
-- [ ] Send route detects scheduledFor and creates SCHEDULED EmailLog + publishes to QStash
-- [ ] Callback endpoint at /api/internal/scheduled-send verifies QStash signature
-- [ ] Callback loads stored request params and calls sendEmail() through normal pipeline
-- [ ] client.ts no longer passes scheduledAt to provider when QStash handles scheduling
-- [ ] All 6 test categories pass
-- [ ] Build succeeds
+- [x] Send route detects scheduledFor and creates SCHEDULED EmailLog + publishes to QStash
+- [x] Callback endpoint at /api/internal/scheduled-send verifies QStash signature
+- [x] Callback loads stored request params and calls sendEmail() through normal pipeline
+- [x] client.ts no longer passes scheduledAt to provider when QStash handles scheduling
+- [x] All 6 test categories pass
+- [x] Build succeeds
 
 ---
 
@@ -183,50 +183,50 @@ Create REST endpoints for managing scheduled emails: list pending (`GET /api/v1/
 
 #### Happy Path
 
-- [ ] GET /api/v1/emails/scheduled returns list of SCHEDULED emails for the organization
-- [ ] GET /api/v1/emails/scheduled supports pagination (page, limit query params)
-- [ ] DELETE /api/v1/emails/scheduled/:id cancels QStash message and sets status CANCELLED
-- [ ] PATCH /api/v1/emails/scheduled/:id with new scheduledFor cancels old + publishes new QStash message
-- [ ] PATCH /api/v1/emails/scheduled/:id updates scheduledFor and qstashMessageId on EmailLog
+- [x] GET /api/v1/emails/scheduled returns list of SCHEDULED emails for the organization
+- [x] GET /api/v1/emails/scheduled supports pagination (page, limit query params)
+- [x] DELETE /api/v1/emails/scheduled/:id cancels QStash message and sets status CANCELLED
+- [x] PATCH /api/v1/emails/scheduled/:id with new scheduledFor cancels old + publishes new QStash message
+- [x] PATCH /api/v1/emails/scheduled/:id updates scheduledFor and qstashMessageId on EmailLog
 
 #### Bad Path
 
-- [ ] GET /api/v1/emails/scheduled without API key returns 401
-- [ ] GET /api/v1/emails/scheduled with key lacking email:send scope returns 403
-- [ ] DELETE /api/v1/emails/scheduled/:id with non-existent id returns 404
-- [ ] DELETE /api/v1/emails/scheduled/:id with wrong organizationId returns 404 (not 403)
-- [ ] DELETE /api/v1/emails/scheduled/:id on already-CANCELLED email returns 400
-- [ ] DELETE /api/v1/emails/scheduled/:id on already-SENT email returns 400
-- [ ] PATCH /api/v1/emails/scheduled/:id without new scheduledFor returns 400
-- [ ] PATCH /api/v1/emails/scheduled/:id with invalid date format returns 400
-- [ ] PATCH /api/v1/emails/scheduled/:id on non-SCHEDULED email returns 400
+- [x] GET /api/v1/emails/scheduled without API key returns 401
+- [x] GET /api/v1/emails/scheduled with key lacking email:send scope returns 403
+- [x] DELETE /api/v1/emails/scheduled/:id with non-existent id returns 404
+- [x] DELETE /api/v1/emails/scheduled/:id with wrong organizationId returns 404 (not 403)
+- [x] DELETE /api/v1/emails/scheduled/:id on already-CANCELLED email returns 400
+- [x] DELETE /api/v1/emails/scheduled/:id on already-SENT email returns 400
+- [x] PATCH /api/v1/emails/scheduled/:id without new scheduledFor returns 400
+- [x] PATCH /api/v1/emails/scheduled/:id with invalid date format returns 400
+- [x] PATCH /api/v1/emails/scheduled/:id on non-SCHEDULED email returns 400
 
 #### Edge Cases
 
-- [ ] GET /api/v1/emails/scheduled with no scheduled emails returns empty array
-- [ ] DELETE when QStash cancel fails (message already delivered) — still marks CANCELLED in DB, logs warning
-- [ ] PATCH reschedule to a time in the past returns 400
-- [ ] Rapid cancel + reschedule on same email — only latest state persists
-- [ ] List endpoint sorts by scheduledFor ascending (soonest first)
+- [x] GET /api/v1/emails/scheduled with no scheduled emails returns empty array
+- [x] DELETE when QStash cancel fails (message already delivered) — still marks CANCELLED in DB, logs warning
+- [x] PATCH reschedule to a time in the past returns 400
+- [x] Rapid cancel + reschedule on same email — only latest state persists
+- [x] List endpoint sorts by scheduledFor ascending (soonest first)
 
 #### Security
 
-- [ ] Cannot access scheduled emails from another organization
-- [ ] Cannot cancel scheduled emails from another organization
-- [ ] Cannot reschedule scheduled emails from another organization
-- [ ] API key scope check (email:send) required for all endpoints
+- [x] Cannot access scheduled emails from another organization
+- [x] Cannot cancel scheduled emails from another organization
+- [x] Cannot reschedule scheduled emails from another organization
+- [x] API key scope check (email:send) required for all endpoints
 
 #### Data Leak
 
-- [ ] List endpoint does not expose scheduledRequest (internal field)
-- [ ] List endpoint does not expose qstashMessageId (internal field)
-- [ ] Error responses for not-found do not reveal whether the ID exists in another org
+- [x] List endpoint does not expose scheduledRequest (internal field)
+- [x] List endpoint does not expose qstashMessageId (internal field)
+- [x] Error responses for not-found do not reveal whether the ID exists in another org
 
 #### Data Damage
 
-- [ ] Cancel is idempotent — calling twice does not corrupt state
-- [ ] Reschedule atomically: old QStash cancelled before new one published
-- [ ] If new QStash publish fails during reschedule, old message is NOT cancelled (rollback)
+- [x] Cancel is idempotent — calling twice does not corrupt state
+- [x] Reschedule atomically: old QStash cancelled before new one published
+- [x] If new QStash publish fails during reschedule, old message is NOT cancelled (rollback)
 
 ### E2E Gate
 
