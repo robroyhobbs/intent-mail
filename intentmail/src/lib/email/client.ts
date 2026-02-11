@@ -13,6 +13,11 @@ import {
   checkGenerationLimit,
   incrementGenerationCount,
 } from "@/lib/ai/limits";
+import {
+  isUnsubscribed,
+  generateUnsubscribeToken,
+  buildUnsubscribeUrl,
+} from "./unsubscribe";
 import { createProvider } from "./providers";
 import { getTemplate } from "./templates/slots";
 import { renderFullEmail, htmlToText } from "./templates/renderer";
@@ -332,6 +337,20 @@ export async function sendEmail(request: EmailRequest): Promise<SendResult> {
 
   const brandConfig = dbBrandToBrandConfig(brand);
 
+  // Check unsubscribe status — skip silently if unsubscribed (fail open on DB error)
+  try {
+    const unsubscribed = await isUnsubscribed(organizationId, brandId, to);
+    if (unsubscribed) {
+      return {
+        success: true,
+        messageId: undefined,
+        email: {} as GeneratedEmail,
+      };
+    }
+  } catch {
+    // Fail open: DB error should not prevent email delivery
+  }
+
   // Generate email (pass plan for AI generation limits)
   const email = await generateEmail(
     intent,
@@ -400,6 +419,19 @@ export async function sendEmail(request: EmailRequest): Promise<SendResult> {
   const fromEmail = brandConfig.fromEmail ?? `noreply@${to.split("@")[1]}`;
   const fromName = brandConfig.fromName ?? brandConfig.name;
 
+  // Build List-Unsubscribe headers (RFC 8058)
+  let unsubscribeHeaders: Record<string, string> = {};
+  try {
+    const unsubToken = generateUnsubscribeToken(organizationId, brandId, to);
+    const unsubUrl = buildUnsubscribeUrl(unsubToken);
+    unsubscribeHeaders = {
+      "List-Unsubscribe": `<${unsubUrl}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    };
+  } catch {
+    // Non-blocking: missing ENCRYPTION_KEY shouldn't prevent sending
+  }
+
   // Send email
   const result = await providerInstance.send({
     from: { email: fromEmail, name: fromName },
@@ -409,6 +441,7 @@ export async function sendEmail(request: EmailRequest): Promise<SendResult> {
     text: email.text,
     tags: request.tags,
     scheduledAt: request.scheduledFor,
+    headers: unsubscribeHeaders,
   });
 
   // Log email

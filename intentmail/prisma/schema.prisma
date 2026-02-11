@@ -1,0 +1,362 @@
+// IntentMail Database Schema
+// Multi-tenant SaaS for AI-native email
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// MULTI-TENANCY
+// =============================================================================
+
+model Organization {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique // Clerk organization ID
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Billing
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
+  plan                 Plan      @default(FREE)
+  emailsUsedThisMonth  Int       @default(0)
+  billingCycleStart    DateTime?
+
+  // Relations
+  members        OrganizationMember[]
+  brands         Brand[]
+  intents        Intent[]
+  emailProviders EmailProvider[]
+  apiKeys        ApiKey[]
+  emailLogs      EmailLog[]
+  unsubscribes   Unsubscribe[]
+
+  @@index([clerkId])
+  @@index([slug])
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String // Clerk user ID
+  role           Role     @default(MEMBER)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+}
+
+enum Plan {
+  FREE
+  STARTER
+  GROWTH
+  ENTERPRISE
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+// =============================================================================
+// BRANDS
+// =============================================================================
+
+model Brand {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  tagline        String?
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Colors (stored as hex strings)
+  colorPrimary    String @default("#4598fa")
+  colorSecondary  String @default("#00b8db")
+  colorSuccess    String @default("#10b981")
+  colorWarning    String @default("#f59e0b")
+  colorError      String @default("#ef4444")
+  colorBackground String @default("#f4f4f5")
+  colorSurface    String @default("#ffffff")
+  colorText       String @default("#1f2937")
+  colorTextMuted  String @default("#6b7280")
+  colorBorder     String @default("#e5e7eb")
+
+  // Typography
+  fontHeadings  String  @default("'Inter', sans-serif")
+  fontBody      String  @default("'Inter', sans-serif")
+  fontImportUrl String?
+
+  // Voice
+  voiceTone   String @default("Professional and friendly")
+  voiceDoSay  Json   @default("[]") // string[]
+  voiceDontSay Json   @default("[]") // string[]
+
+  // Logo
+  logoUrl   String?
+  logoWidth Int     @default(120)
+  logoAlt   String?
+
+  // Links
+  linkHome        String?
+  linkPrivacy     String?
+  linkUnsubscribe String?
+  linkCustom      Json    @default("{}") // Record<string, string>
+
+  // From Address
+  fromEmail String?
+  fromName  String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  intents      Intent[]
+  emailLogs    EmailLog[]
+  unsubscribes Unsubscribe[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+// =============================================================================
+// INTENTS (Email Templates)
+// =============================================================================
+
+model Intent {
+  id             String   @id @default(cuid())
+  organizationId String
+  brandId        String?
+  slug           String // e.g., "onboarding.welcome"
+  name           String // Human-readable name
+  description    String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Intent Definition
+  purpose String // What this email should accomplish
+  tone    String // Emotional tone
+  urgency Urgency @default(NONE)
+
+  // Subject Configuration
+  subjectDefault  String
+  subjectVariants Json   @default("[]") // string[]
+  subjectMaxLength Int   @default(50)
+
+  // Structure (V2 slots-based)
+  templateId  String  @default("simple")
+  slots       Json    @default("[]") // IntentSlotConfig[]
+
+  // Content Rules
+  contentGoal        String?
+  contentMustInclude Json   @default("[]") // string[]
+  contentMustNotInclude Json @default("[]") // string[]
+
+  // CTA Configuration
+  ctaText  String?
+  ctaUrl   String?
+  ctaStyle CTAStyle @default(MEDIUM)
+
+  // Generation Settings
+  generationEnabled     Boolean @default(false)
+  generationConstraints Json    @default("[]") // string[]
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  brand        Brand?       @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  emailLogs    EmailLog[]
+
+  @@unique([organizationId, slug])
+  @@index([organizationId])
+  @@index([brandId])
+}
+
+enum Urgency {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum CTAStyle {
+  SOFT
+  MEDIUM
+  STRONG
+}
+
+// =============================================================================
+// EMAIL PROVIDERS (BYOP)
+// =============================================================================
+
+model EmailProvider {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String // User-friendly name
+  type           ProviderType
+  isDefault      Boolean      @default(false)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Encrypted Credentials
+  apiKeyEncrypted String
+  apiKeyIv        String // Initialization vector for decryption
+
+  // Provider-specific config (e.g., region for SES)
+  config Json @default("{}")
+
+  // Stats
+  emailsSent     Int @default(0)
+  lastUsedAt     DateTime?
+  lastErrorAt    DateTime?
+  lastErrorMsg   String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  emailLogs    EmailLog[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+enum ProviderType {
+  RESEND
+  SENDGRID
+  POSTMARK
+  AWS_SES
+  MAILGUN
+}
+
+// =============================================================================
+// API KEYS
+// =============================================================================
+
+model ApiKey {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  keyPrefix      String // First 8 chars for identification (e.g., "im_live_...")
+  keyHash        String   @unique // SHA-256 hash of the full key
+  scopes         Json     @default("[\"email:send\"]") // string[]
+  lastUsedAt     DateTime?
+  expiresAt      DateTime?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Rate limiting
+  rateLimitOverride Int? // Custom rate limit, null uses plan default
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([keyHash])
+}
+
+// =============================================================================
+// EMAIL LOGS & ANALYTICS
+// =============================================================================
+
+model EmailLog {
+  id             String      @id @default(cuid())
+  organizationId String
+  brandId        String?
+  intentId       String?
+  providerId     String?
+
+  // Request Info
+  toEmail        String
+  fromEmail      String
+  subject        String
+
+  // Tracking
+  providerMessageId String?
+  status           EmailStatus @default(PENDING)
+
+  // Delivery Events
+  sentAt       DateTime?
+  deliveredAt  DateTime?
+  openedAt     DateTime?
+  clickedAt    DateTime?
+  bouncedAt    DateTime?
+  complainedAt DateTime?
+
+  // Error Info
+  errorCode    String?
+  errorMessage String?
+
+  // Metadata
+  apiKeyId     String?
+  ipAddress    String?
+  userAgent    String?
+  tags         Json    @default("[]") // string[]
+  metadata     Json    @default("{}") // Record<string, unknown>
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization  Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  brand         Brand?         @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  intent        Intent?        @relation(fields: [intentId], references: [id], onDelete: SetNull)
+  provider      EmailProvider? @relation(fields: [providerId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([brandId])
+  @@index([intentId])
+  @@index([providerId])
+  @@index([toEmail])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum EmailStatus {
+  PENDING
+  QUEUED
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  BOUNCED
+  COMPLAINED
+  FAILED
+}
+
+// =============================================================================
+// WEBHOOK EVENTS (for tracking provider callbacks)
+// =============================================================================
+
+model Unsubscribe {
+  id             String   @id @default(cuid())
+  organizationId String
+  brandId        String
+  email          String
+  source         String   @default("one-click") // "one-click" | "link" | "api" | "complaint"
+  unsubscribedAt DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  brand        Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, brandId, email])
+  @@index([organizationId, email])
+}
+
+model WebhookEvent {
+  id          String   @id @default(cuid())
+  provider    ProviderType
+  eventType   String
+  payload     Json
+  processedAt DateTime?
+  error       String?
+  createdAt   DateTime @default(now())
+
+  @@index([provider, eventType])
+  @@index([createdAt])
+}

@@ -199,6 +199,7 @@ export interface EmailProviderSendOptions {
   replyTo?: string;
   tags?: string[];
   scheduledAt?: Date;
+  headers?: Record<string, string>;
 }
 
 export interface EmailProviderResult {
