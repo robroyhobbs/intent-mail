@@ -1,0 +1,132 @@
+# =============================================================================
+# IntentMail - Billing Intent Specification
+# =============================================================================
+# Purpose: Define the Stripe-based subscription billing system with
+#          four pricing tiers and resource limits.
+
+intent:
+  name: Billing & Subscriptions
+  description: >
+    IntentMail uses Stripe for subscription management with four pricing tiers.
+    Each tier controls resource limits (emails, brands, API keys, rate limits)
+    and feature access (webhooks, custom domains, analytics retention).
+  source: src/lib/stripe.ts
+
+# -----------------------------------------------------------------------------
+# Pricing Tiers
+# -----------------------------------------------------------------------------
+
+plans:
+  FREE:
+    price: $0/month
+    stripe_price_id: null
+    features:
+      - "1,000 emails/month"
+      - "1 brand"
+      - "2 API keys"
+      - "100 req/min rate limit"
+      - "7-day analytics"
+
+  STARTER:
+    price: $29/month
+    stripe_price_id: env.STRIPE_STARTER_PRICE_ID
+    features:
+      - "10,000 emails/month"
+      - "3 brands"
+      - "5 API keys"
+      - "500 req/min rate limit"
+      - "30-day analytics"
+      - "Webhook integrations"
+
+  GROWTH:
+    price: $99/month
+    stripe_price_id: env.STRIPE_GROWTH_PRICE_ID
+    features:
+      - "50,000 emails/month"
+      - "10 brands"
+      - "20 API keys"
+      - "2,000 req/min rate limit"
+      - "90-day analytics"
+      - "Custom domain"
+      - "Priority support"
+
+  ENTERPRISE:
+    price: Custom
+    stripe_price_id: null
+    features:
+      - "Unlimited emails"
+      - "Unlimited brands"
+      - "Unlimited API keys"
+      - "10,000 req/min rate limit"
+      - "365-day analytics"
+      - "Custom domain"
+      - "Dedicated support"
+      - "SLA guarantee"
+
+# -----------------------------------------------------------------------------
+# Stripe Integration
+# -----------------------------------------------------------------------------
+
+stripe:
+  api_version: "2025-02-24.acacia"
+  singleton: true  # getStripe() returns cached instance
+
+  checkout:
+    function: createCheckoutSession(organizationId, priceId, customerId?)
+    mode: subscription
+    payment_methods: [card]
+    success_url: "/dashboard/settings/billing?success=true"
+    cancel_url: "/dashboard/settings/billing?canceled=true"
+    metadata: { organizationId }
+
+  billing_portal:
+    function: createBillingPortalSession(customerId)
+    return_url: "/dashboard/settings/billing"
+    purpose: Manage existing subscription, update payment method, cancel
+
+  subscription_retrieval:
+    function: getSubscription(subscriptionId)
+    returns: Stripe.Subscription | null
+
+# -----------------------------------------------------------------------------
+# Organization Billing State
+# -----------------------------------------------------------------------------
+
+org_billing:
+  fields:
+    stripeCustomerId: Created when user first starts checkout
+    stripeSubscriptionId: Set when subscription is active
+    plan: Updated via webhook on subscription change
+    emailsUsedThisMonth: Counter, reset on billing cycle
+    billingCycleStart: When current billing period began
+
+  quota_tracking:
+    description: >
+      emailsUsedThisMonth is incremented on every successful email send.
+      Reset to 0 when billing cycle resets (via Stripe webhook or scheduled job).
+    enforcement: Checked in API send pipeline (step 5) before email generation.
+
+# -----------------------------------------------------------------------------
+# Webhook Events
+# -----------------------------------------------------------------------------
+
+webhooks:
+  endpoint: /api/webhooks/stripe (public, no auth)
+  verification: STRIPE_WEBHOOK_SECRET for signature verification
+  events:
+    - checkout.session.completed: Set stripeCustomerId, stripeSubscriptionId, plan
+    - customer.subscription.updated: Update plan based on price ID
+    - customer.subscription.deleted: Downgrade to FREE plan
+    - invoice.payment_failed: Flag for notification (plan remains active)
+
+# -----------------------------------------------------------------------------
+# Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  - Free tier requires no Stripe interaction
+  - Enterprise pricing is custom (no self-serve checkout)
+  - stripeCustomerId and stripeSubscriptionId are unique (one org per customer)
+  - Plan changes take effect immediately via webhook
+  - Quota reset tied to billing cycle start date
+  - All Stripe API calls use server-side secret key only

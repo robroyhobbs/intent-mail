@@ -1,0 +1,139 @@
+# =============================================================================
+# IntentMail - Email Provider Intent Specification
+# =============================================================================
+# Purpose: Define the BYOP (Bring Your Own Provider) system for email delivery.
+
+intent:
+  name: Email Provider Management
+  description: >
+    IntentMail uses a BYOP model where organizations configure their own email
+    delivery providers. Provider credentials are encrypted at rest. A factory
+    pattern creates provider instances at send time.
+  source: >
+    prisma/schema.prisma (EmailProvider model),
+    src/lib/email/providers/index.ts,
+    src/lib/encryption.ts
+
+# -----------------------------------------------------------------------------
+# Supported Providers
+# -----------------------------------------------------------------------------
+
+providers:
+  resend:
+    type: RESEND
+    description: Modern email API with React email support
+    config: {}  # No extra config needed
+
+  sendgrid:
+    type: SENDGRID
+    description: Twilio SendGrid email delivery
+    config: {}
+
+  postmark:
+    type: POSTMARK
+    description: Transactional email service
+    config: {}
+
+  aws_ses:
+    type: AWS_SES
+    description: Amazon Simple Email Service
+    config:
+      region: string  # AWS region (e.g. "us-east-1")
+
+  mailgun:
+    type: MAILGUN
+    description: Mailgun email delivery
+    config:
+      domain: string  # Mailgun domain (optional)
+
+# -----------------------------------------------------------------------------
+# Provider Interface
+# -----------------------------------------------------------------------------
+
+interface:
+  EmailProvider:
+    description: Abstract interface all providers implement
+    methods:
+      send:
+        params:
+          from: { email: string, name?: string }
+          to: string
+          subject: string
+          html: string
+          text: string
+          replyTo: string (optional)
+          tags: string[] (optional)
+          scheduledAt: Date (optional)
+        returns:
+          success: boolean
+          messageId: string (optional)
+          error: string (optional)
+
+  factory:
+    description: createProvider() creates typed provider instances
+    input: (type, decryptedApiKey, config)
+    output: EmailProvider instance
+
+# -----------------------------------------------------------------------------
+# Credential Security
+# -----------------------------------------------------------------------------
+
+security:
+  encryption:
+    algorithm: AES-256-GCM
+    key_source: ENCRYPTION_KEY environment variable (64-char hex)
+    storage:
+      apiKeyEncrypted: Encrypted API key (base64)
+      apiKeyIv: Initialization vector (base64)
+    flow:
+      store: "plaintext API key -> encrypt(key, ENCRYPTION_KEY) -> store(encrypted, iv)"
+      retrieve: "load(encrypted, iv) -> decrypt(encrypted, iv, ENCRYPTION_KEY) -> plaintext"
+    note: Key is derived at application level, not database level
+
+# -----------------------------------------------------------------------------
+# Provider Lifecycle
+# -----------------------------------------------------------------------------
+
+lifecycle:
+  configure:
+    - Organization provides provider type, name, and API key
+    - API key encrypted before database storage
+    - Provider marked as active and optionally as default
+    - Organization must have exactly one default provider for sending
+
+  send:
+    - Load default active provider for organization
+    - Decrypt API key using stored IV
+    - Create provider instance via factory
+    - Call provider.send() with email payload
+    - Update provider stats (emailsSent, lastUsedAt)
+
+  error:
+    - On send failure: update lastErrorAt and lastErrorMsg
+    - Provider remains active (manual deactivation required)
+    - Error details logged in EmailLog
+
+  deactivate:
+    - Set isActive to false
+    - Provider preserved for historical email logs (SetNull on delete)
+
+# -----------------------------------------------------------------------------
+# Stats Tracking
+# -----------------------------------------------------------------------------
+
+stats:
+  emailsSent: Incremented on successful send
+  lastUsedAt: Updated on successful send
+  lastErrorAt: Updated on failed send
+  lastErrorMsg: Error message from last failure
+
+# -----------------------------------------------------------------------------
+# Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  - unique(organizationId, name): No duplicate provider names per org
+  - Exactly one default provider per org (isDefault: true)
+  - API keys never stored in plaintext
+  - Provider type must be one of: RESEND, SENDGRID, POSTMARK, AWS_SES, MAILGUN
+  - Provider deletion uses SetNull on EmailLog (preserves delivery history)

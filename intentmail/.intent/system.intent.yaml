@@ -1,0 +1,168 @@
+# =============================================================================
+# IntentMail - System Intent Specification
+# =============================================================================
+# Purpose: Define the platform-level architecture, multi-tenancy model,
+#          and system constraints for IntentMail.
+
+intent:
+  name: IntentMail Platform
+  version: "1.0.0"
+  description: >
+    Multi-tenant SaaS platform for AI-native, intent-driven email generation
+    and delivery. Replaces static templates with purpose-driven email
+    specifications that produce brand-consistent content.
+
+# -----------------------------------------------------------------------------
+# Core Architecture
+# -----------------------------------------------------------------------------
+
+architecture:
+  pattern: Multi-tenant SaaS
+  framework: Next.js 14 (App Router)
+  database: PostgreSQL via Prisma ORM
+  auth: Clerk (organizations + users)
+  billing: Stripe (subscriptions)
+  rate_limiting: Upstash Redis (sliding window)
+  encryption: AES-256-GCM (provider credentials)
+
+  tenant_model:
+    boundary: Organization
+    identity: Clerk Organization ID (clerkId)
+    isolation: Row-level via organizationId foreign keys
+    auto_provision: true  # Created on first dashboard access
+
+# -----------------------------------------------------------------------------
+# Data Model (Entity Relationships)
+# -----------------------------------------------------------------------------
+
+entities:
+  Organization:
+    description: Multi-tenant boundary; owns all resources
+    key_fields:
+      - id (cuid)
+      - clerkId (unique, Clerk org ID)
+      - slug (unique, URL-safe identifier)
+      - plan (FREE | STARTER | GROWTH | ENTERPRISE)
+      - emailsUsedThisMonth (counter, reset on billing cycle)
+      - stripeCustomerId (nullable)
+      - stripeSubscriptionId (nullable)
+    owns:
+      - OrganizationMember (1:N)
+      - Brand (1:N)
+      - Intent (1:N)
+      - EmailProvider (1:N)
+      - ApiKey (1:N)
+      - EmailLog (1:N)
+
+  OrganizationMember:
+    description: User membership with role
+    key_fields:
+      - userId (Clerk user ID)
+      - role (OWNER | ADMIN | MEMBER)
+    constraint: unique(organizationId, userId)
+
+  Brand:
+    description: Visual identity configuration for email rendering
+    key_fields:
+      - 10 color properties (hex strings)
+      - typography (headings, body, fontImportUrl)
+      - voice (tone, doSay[], dontSay[])
+      - logo (url, width, altText)
+      - links (home, privacy, unsubscribe, custom)
+      - fromEmail, fromName
+      - isDefault (boolean)
+    constraint: unique(organizationId, name)
+
+  Intent:
+    description: Email purpose specification driving content generation
+    key_fields:
+      - slug (e.g. "onboarding.welcome")
+      - purpose, tone, urgency
+      - subject config (default, variants, maxLength)
+      - structure (templateId, slots[])
+      - content rules (goal, mustInclude[], mustNotInclude[])
+      - CTA config (text, url, style)
+      - generation settings (enabled, constraints[])
+    constraint: unique(organizationId, slug)
+
+  EmailProvider:
+    description: BYOP email delivery service with encrypted credentials
+    key_fields:
+      - type (RESEND | SENDGRID | POSTMARK | AWS_SES | MAILGUN)
+      - apiKeyEncrypted + apiKeyIv (AES-256-GCM)
+      - isDefault, isActive
+      - stats (emailsSent, lastUsedAt, lastErrorAt, lastErrorMsg)
+    constraint: unique(organizationId, name)
+
+  ApiKey:
+    description: Bearer token for API access with scope-based authorization
+    key_fields:
+      - keyPrefix (first 8 chars, e.g. "im_live_...")
+      - keyHash (SHA-256 of full key)
+      - scopes (default ["email:send"])
+      - rateLimitOverride (nullable, custom rate limit)
+      - expiresAt (nullable)
+    constraint: unique(keyHash)
+
+  EmailLog:
+    description: Complete email lifecycle tracking
+    key_fields:
+      - toEmail, fromEmail, subject
+      - providerMessageId
+      - status (PENDING -> QUEUED -> SENT -> DELIVERED -> OPENED -> CLICKED)
+      - status (alternate: BOUNCED | COMPLAINED | FAILED)
+      - event timestamps (sentAt, deliveredAt, openedAt, clickedAt, bouncedAt, complainedAt)
+      - error info (errorCode, errorMessage)
+      - request metadata (apiKeyId, ipAddress, userAgent, tags[], metadata{})
+    indexes: [organizationId, brandId, intentId, providerId, toEmail, status, createdAt]
+
+  WebhookEvent:
+    description: Provider callback event log
+    key_fields:
+      - provider (ProviderType)
+      - eventType, payload (JSON)
+      - processedAt, error
+    indexes: [provider+eventType, createdAt]
+
+# -----------------------------------------------------------------------------
+# System Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  security:
+    - All provider API keys encrypted at rest (AES-256-GCM)
+    - API authentication via SHA-256 hashed Bearer tokens
+    - Scope-based authorization (email:send)
+    - Clerk middleware protects all non-public routes
+    - Webhook endpoints remain public for provider callbacks
+
+  performance:
+    - Sliding window rate limiting via Upstash Redis
+    - Per-plan rate limits (100 - 10,000 req/min)
+    - Optional per-key rate limit overrides
+    - Monthly email quota enforcement
+
+  data_integrity:
+    - Cascade deletes from Organization to all child resources
+    - SetNull on Brand/Intent deletion (preserves EmailLog history)
+    - Unique constraints on slugs, names, and key hashes
+    - Zod validation on all API inputs
+
+# -----------------------------------------------------------------------------
+# Environment Dependencies
+# -----------------------------------------------------------------------------
+
+environment:
+  required:
+    DATABASE_URL: PostgreSQL connection string
+    CLERK_SECRET_KEY: Clerk API secret
+    CLERK_PUBLISHABLE_KEY: Clerk publishable key
+    STRIPE_SECRET_KEY: Stripe API secret
+    STRIPE_WEBHOOK_SECRET: Stripe webhook verification
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: Stripe client key
+    ENCRYPTION_KEY: 64-char hex (openssl rand -hex 32)
+    UPSTASH_REDIS_REST_URL: Redis endpoint
+    UPSTASH_REDIS_REST_TOKEN: Redis auth token
+  optional:
+    ANTHROPIC_API_KEY: AI content generation
+    NEXT_PUBLIC_APP_URL: Base URL (default localhost:3000)

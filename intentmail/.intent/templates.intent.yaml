@@ -1,0 +1,220 @@
+# =============================================================================
+# IntentMail - Template System Intent Specification
+# =============================================================================
+# Purpose: Define the slot-based template system that structures email content
+#          into composable, renderable units.
+
+intent:
+  name: Slot-Based Template System
+  description: >
+    Templates define the structural skeleton of emails using composable slots.
+    Each slot has a type that determines its HTML rendering. Intent configurations
+    customize slot content while templates control layout and structure.
+  source: >
+    src/lib/email/templates/slots.ts,
+    src/lib/email/templates/renderer.ts,
+    src/lib/email/types.ts
+
+# -----------------------------------------------------------------------------
+# Slot Types (11 types)
+# -----------------------------------------------------------------------------
+
+slot_types:
+  greeting:
+    description: Personalized greeting line
+    rendering: Paragraph with greeting text
+    example: "Hey Alice,"
+
+  headline:
+    description: Large, bold heading
+    rendering: H1 styled with brand typography
+    example: "Your Weekly Report"
+
+  paragraph:
+    description: Body text block
+    rendering: P tag with brand body font, text color
+    max_length: Configurable per slot
+
+  bullet-list:
+    description: Unordered list of items
+    rendering: UL with styled LI elements
+    content_field: items[] (string array)
+
+  info-box:
+    description: Highlighted information panel
+    rendering: Rounded card with colored left border
+    styles:
+      info: brand.colors.primary border + light primary background
+      success: brand.colors.success border + light success background
+      warning: brand.colors.warning border + light warning background
+      error: brand.colors.error border + light error background
+
+  stats-box:
+    description: Statistics or metrics display
+    rendering: Formatted metrics panel
+
+  testimonial:
+    description: Customer quote with attribution
+    rendering: Blockquote with italic text + attribution line
+    content_fields:
+      text: Quote content
+      attribution: "— Customer Name, Company"
+
+  cta-button:
+    description: Call-to-action button
+    rendering: Centered button with brand primary color background
+    content_fields:
+      url: Button link destination
+      buttonText: Button label
+    styles:
+      soft: Subtle, text-link style
+      medium: Standard button
+      strong: Bold, high-contrast button
+
+  ps-line:
+    description: Post-script note below signature
+    rendering: Italic paragraph, smaller text
+    example: "P.S. If you didn't request this, contact support."
+
+  signature:
+    description: Sign-off line
+    rendering: Paragraph with sender identity
+    example: "The IntentMail Team"
+
+  divider:
+    description: Horizontal separator
+    rendering: HR with brand.colors.border
+
+# -----------------------------------------------------------------------------
+# Built-in Templates (7 templates)
+# -----------------------------------------------------------------------------
+
+templates:
+  simple:
+    name: Simple Email
+    description: Clean email with greeting, body, and CTA
+    slots: [greeting, main_copy(paragraph), cta(cta-button), signoff(signature)]
+    use_case: Welcome emails, announcements, general communication
+
+  info-box:
+    name: Marketing with Info Box
+    description: Email with highlighted information section
+    slots: [greeting, intro(paragraph), info_box(info-box), closing(paragraph), cta(cta-button), signoff(signature)]
+    use_case: Feature announcements, product updates
+
+  warning:
+    name: Warning/Alert Email
+    description: Email with warning or alert box
+    slots: [greeting, warning_box(info-box:warning), explanation(paragraph), cta(cta-button:strong), signoff(signature)]
+    use_case: Account warnings, expiration notices
+
+  bullets:
+    name: Bulleted List Email
+    description: Email with bulleted list of points
+    slots: [greeting, intro(paragraph), bullet_list(bullet-list), closing(paragraph), cta(cta-button), signoff(signature)]
+    use_case: Feature lists, weekly summaries, newsletters
+
+  social-proof:
+    name: Social Proof Email
+    description: Email with testimonial or social proof
+    slots: [greeting, intro(paragraph), divider_1(divider), testimonial(testimonial), divider_2(divider), closing(paragraph), cta(cta-button), signoff(signature)]
+    use_case: Conversion emails, upgrade prompts
+
+  transactional:
+    name: Transactional Email
+    description: Simple confirmation or notification
+    slots: [greeting, confirmation(info-box:success), details(paragraph), cta(cta-button:soft), signoff(signature)]
+    use_case: Order confirmations, receipt emails, action confirmations
+
+  security:
+    name: Security Notification
+    description: Security-related notification email
+    slots: [greeting, alert(info-box:warning), details(paragraph), action_needed(paragraph), cta(cta-button:strong), ps_line(ps-line), signoff(signature)]
+    use_case: Login alerts, password changes, 2FA notifications
+
+# -----------------------------------------------------------------------------
+# HTML Rendering Architecture
+# -----------------------------------------------------------------------------
+
+rendering:
+  description: >
+    renderFullEmail() in renderer.ts produces complete, email-client-compatible
+    HTML with inline styles derived from brand configuration.
+
+  structure:
+    - "<!DOCTYPE html> with UTF-8 encoding"
+    - "@import for brand typography (if fontImportUrl set)"
+    - "Body: brand.colors.background, centered layout"
+    - "Container: max-width 600px, brand.colors.surface card"
+    - "Header: centered brand logo (if configured)"
+    - "Content: rendered slots in template order"
+    - "Footer: unsubscribe link, privacy link, brand links"
+
+  slot_rendering:
+    description: >
+      Each slot type maps to a render function that produces HTML.
+      All styling is inline (email client compatibility).
+      Brand colors and typography applied via the brand config argument.
+
+  plain_text:
+    function: htmlToText(html)
+    description: >
+      Strips HTML tags to produce plain text alternative.
+      Required for email deliverability and accessibility.
+
+# -----------------------------------------------------------------------------
+# Template Registry
+# -----------------------------------------------------------------------------
+
+registry:
+  storage: In-memory TEMPLATES Record<string, TemplateStructure>
+  functions:
+    getTemplate(id): "Returns TemplateStructure or undefined"
+    listTemplates(): "Returns template ID array"
+    getTemplateSlots(id): "Returns SlotDefinition[] for a template"
+
+# -----------------------------------------------------------------------------
+# Validation Integration
+# -----------------------------------------------------------------------------
+
+validation:
+  source: src/lib/email/generation/validator.ts
+  scoring:
+    base: 100 points
+    blocking: -25 per issue (prevents delivery)
+    warning: -10 per issue (quality concern)
+    suggestion: -2 per issue (improvement opportunity)
+
+  blocking_checks:
+    - "Subject exceeds intent.subject.maxLength"
+    - "Content contains brand.voice.dontSay phrases"
+    - "Corporate jargon detected (15+ banned buzzwords)"
+    - "Multiple CTA buttons in one email"
+    - "Content in intent.content.mustNotInclude"
+
+  warning_checks:
+    - "Paragraph exceeds 4 sentences"
+    - "Passive voice indicators (was made, has been, etc.)"
+    - "Vague quantifiers (many, several, etc.)"
+    - "Email body exceeds 400 words"
+
+  suggestion_checks:
+    - "Missing personalization (no greeting or template variables)"
+    - "Lack of specificity (no numbers, percentages, or time references)"
+
+  subject_checks:
+    - "Subject length within maxLength"
+    - "All-caps text (spam trigger)"
+    - "Excessive exclamation marks"
+
+# -----------------------------------------------------------------------------
+# Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  - All HTML uses inline styles (no external stylesheets)
+  - Max email width: 600px (email client standard)
+  - Template IDs must be registered in TEMPLATES record
+  - Slot content can be text, items[], url+buttonText, or text+attribution
+  - Handlebars templates in slot content support data + productName variables
+  - Plain text alternative is always generated alongside HTML

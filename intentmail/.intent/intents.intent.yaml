@@ -1,0 +1,179 @@
+# =============================================================================
+# IntentMail - Email Intent Specification
+# =============================================================================
+# Purpose: Define how Intent configurations drive email content generation,
+#          replacing static templates with purpose-driven specifications.
+
+intent:
+  name: Email Intent Configuration
+  description: >
+    An Intent defines *what* an email should accomplish and *how* it should
+    feel, rather than specifying exact content. The system generates
+    brand-consistent content that fulfills the intent's purpose.
+  source: prisma/schema.prisma (Intent model), src/lib/email/types.ts (IntentConfig)
+
+# -----------------------------------------------------------------------------
+# Intent Config Structure
+# -----------------------------------------------------------------------------
+
+structure:
+  IntentConfig:
+    id: string (cuid)
+    slug: string          # Hierarchical slug (e.g. "onboarding.welcome", "billing.reminder")
+    name: string          # Human-readable name
+    description: string (optional)
+    purpose: string       # What this email should accomplish
+    tone: string          # Emotional tone (e.g. "warm and encouraging")
+    urgency: none | low | medium | high
+
+    subject:
+      default: string       # Handlebars template (e.g. "Welcome to {{productName}}, {{firstName}}!")
+      variants: string[]    # A/B test subject alternatives
+      maxLength: number     # Validated during quality scoring (default: 50)
+
+    structure:
+      template: string      # Template ID (simple, info-box, warning, bullets, social-proof, transactional, security)
+      slots: IntentSlotConfig[]  # Per-slot content configuration
+
+    content:
+      goal: string (optional)        # Content generation goal
+      mustInclude: string[]          # Required phrases/concepts
+      mustNotInclude: string[]       # Forbidden content (blocking validation)
+      cta:
+        text: string                 # Button text (e.g. "Get Started")
+        url: string                  # Handlebars template for CTA URL
+        style: soft | medium | strong
+
+    generation:
+      enabled: boolean               # Whether AI content generation is active
+      constraints: string[]          # Additional generation constraints
+
+# -----------------------------------------------------------------------------
+# Slot Configuration
+# -----------------------------------------------------------------------------
+
+slot_config:
+  IntentSlotConfig:
+    description: >
+      Per-slot overrides that customize template slot behavior for this intent.
+      Maps to template slot IDs.
+    properties:
+      id: string           # Must match a slot ID in the template
+      prompt: string (optional)       # AI generation prompt
+      static: string (optional)       # Static Handlebars content
+      url: string (optional)          # For CTA buttons
+      buttonText: string (optional)   # For CTA buttons
+      attribution: string (optional)  # For testimonials
+      maxLength: number (optional)    # Content length limit
+
+  resolution_order:
+    description: How slot content is resolved (first match wins)
+    steps:
+      1: "CTA button slots -> use slotConfig.url/buttonText or intent.content.cta"
+      2: "Greeting slots -> personalize with data.firstName or fallback 'Hey there,'"
+      3: "Signature slots -> use slotConfig.static or fallback 'The {brand.name} Team'"
+      4: "Template staticContent -> resolve Handlebars with data + productName"
+      5: "Intent slotConfig.static -> resolve Handlebars with data"
+      6: "Intent slotConfig.prompt -> placeholder '[Content for: {prompt}]' (AI TODO)"
+      7: "Empty -> slot omitted from rendering"
+
+# -----------------------------------------------------------------------------
+# Intent Lifecycle
+# -----------------------------------------------------------------------------
+
+lifecycle:
+  create:
+    - Organization provides slug, purpose, tone, urgency
+    - Select template (determines available slots)
+    - Configure slot overrides for each template slot
+    - Set subject template with Handlebars variables
+    - Define content rules (mustInclude, mustNotInclude)
+    - Optionally configure CTA and generation settings
+
+  send:
+    - API request references intent by ID or slug
+    - Intent loaded from database within organization scope
+    - DB record converted to IntentConfig interface
+    - Passed to email generation pipeline with brand and data
+
+  deactivate:
+    - Set isActive to false
+    - Intent preserved for historical email logs (not deleted)
+
+# -----------------------------------------------------------------------------
+# Examples
+# -----------------------------------------------------------------------------
+
+examples:
+  welcome_email:
+    slug: "onboarding.welcome"
+    name: "Welcome Email"
+    purpose: "Welcome new users and guide them to first action"
+    tone: "warm and encouraging"
+    urgency: none
+    subject:
+      default: "Welcome to {{productName}}, {{firstName}}!"
+      variants:
+        - "{{firstName}}, you're in! Here's what's next"
+        - "Let's get started, {{firstName}}"
+      maxLength: 60
+    structure:
+      template: simple
+      slots:
+        - id: greeting
+          static: "Hey {{firstName}},"
+        - id: main_copy
+          prompt: "Welcome message highlighting key benefits and first steps"
+        - id: cta
+          url: "{{dashboardUrl}}"
+          buttonText: "Go to Dashboard"
+        - id: signoff
+          static: "The {{productName}} Team"
+    content:
+      goal: "Drive user to dashboard for first action"
+      mustInclude: ["getting started", "dashboard"]
+      mustNotInclude: ["upgrade", "pricing"]
+      cta:
+        text: "Go to Dashboard"
+        url: "{{dashboardUrl}}"
+        style: strong
+
+  security_alert:
+    slug: "security.login-alert"
+    name: "Login Alert"
+    purpose: "Notify user of new login from unrecognized device"
+    tone: "direct and serious"
+    urgency: high
+    subject:
+      default: "New login to your {{productName}} account"
+      maxLength: 50
+    structure:
+      template: security
+      slots:
+        - id: alert
+          static: "A new login was detected from {{deviceName}} in {{location}}."
+        - id: details
+          static: "If this was you, no action is needed. If not, secure your account immediately."
+        - id: cta
+          url: "{{securitySettingsUrl}}"
+          buttonText: "Review Security Settings"
+    content:
+      goal: "Alert user and provide immediate action path"
+      mustInclude: ["login", "device"]
+      mustNotInclude: ["marketing", "upgrade"]
+      cta:
+        text: "Review Security Settings"
+        url: "{{securitySettingsUrl}}"
+        style: strong
+
+# -----------------------------------------------------------------------------
+# Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  - unique(organizationId, slug): No duplicate slugs per org
+  - Intent slug supports dot-notation for hierarchy (e.g. "onboarding.welcome")
+  - Template ID must reference a registered template
+  - Slot IDs in config must exist in the referenced template
+  - Subject default is a Handlebars template (compiled at send time)
+  - Brand association is optional (brandId nullable, uses SetNull on delete)

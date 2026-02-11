@@ -1,0 +1,191 @@
+# =============================================================================
+# IntentMail - Authentication & Authorization Intent Specification
+# =============================================================================
+# Purpose: Define the dual authentication model (Clerk for UI, API keys for API)
+#          and the scope-based authorization system.
+
+intent:
+  name: Authentication & Authorization
+  description: >
+    IntentMail uses two auth layers: Clerk for dashboard/UI authentication
+    (organization-based multi-tenancy), and SHA-256 hashed API keys for
+    programmatic API access with scope-based authorization.
+  source: >
+    src/lib/auth.ts,
+    src/lib/api/auth.ts,
+    src/middleware.ts
+
+# -----------------------------------------------------------------------------
+# Dashboard Authentication (Clerk)
+# -----------------------------------------------------------------------------
+
+clerk_auth:
+  description: >
+    Clerk handles all user-facing authentication and organization management.
+    Middleware enforces auth on all routes except explicitly public ones.
+
+  middleware:
+    source: src/middleware.ts
+    behavior: >
+      Runs on all routes. auth.protect() redirects unauthenticated users
+      to sign-in page. Public routes bypass protection.
+    public_routes:
+      - / (marketing homepage)
+      - /sign-in(.*)
+      - /sign-up(.*)
+      - /pricing
+      - /api/webhooks(.*)
+    excluded:
+      - /_next/static(.*)
+      - /_next/image(.*)
+      - /favicon.ico
+      - "\\.(css|js|svg|png|jpg|gif|woff2?)$"
+    note: >
+      Webhook endpoints are public because external providers (Stripe, SendGrid)
+      need unauthenticated access for callbacks.
+
+  organization_model:
+    auto_provision: true
+    flow: >
+      1. User signs in via Clerk
+      2. Clerk provides orgId and orgSlug
+      3. ensureOrganizationExists() checks/creates DB record
+      4. On first access: creates Organization + default Brand + OWNER membership
+
+  helper_functions:
+    getCurrentUser: "Returns {id, email, firstName, lastName, imageUrl} from Clerk"
+    getOrganization: "Looks up DB Organization by Clerk orgId"
+    getOrganizationWithLimits: "Organization + plan limits + emailsRemaining + isOverLimit"
+    requireOrganization: "Throws if org not found"
+    ensureOrganizationExists: "Creates org if missing (with default brand)"
+
+# -----------------------------------------------------------------------------
+# API Authentication (Bearer Token)
+# -----------------------------------------------------------------------------
+
+api_auth:
+  description: >
+    Programmatic API access uses Bearer tokens with SHA-256 hashing.
+    Keys are never stored in plaintext; only the hash is persisted.
+
+  key_format:
+    prefix: "im_live_" or "im_test_"  # First 8 chars stored as keyPrefix
+    storage: SHA-256 hash of full key (keyHash field, unique index)
+    display: Only shown once at creation time
+
+  authentication_flow:
+    1: "Extract Bearer token from Authorization header"
+    2: "Compute SHA-256 hash of the token"
+    3: "Lookup ApiKey by keyHash"
+    4: "Verify key is active and not expired"
+    5: "Update lastUsedAt timestamp"
+    6: "Return auth context: {organizationId, scopes, rateLimitOverride}"
+
+  function: authenticateApiKey(request) in src/lib/api/auth.ts
+
+# -----------------------------------------------------------------------------
+# Scope-Based Authorization
+# -----------------------------------------------------------------------------
+
+scopes:
+  description: >
+    API keys carry scope arrays that control access to specific operations.
+    Default scope is ["email:send"].
+  available:
+    - "email:send"   # Send emails via the API
+  default: ["email:send"]
+  check_function: hasScope(auth, requiredScope) in src/lib/api/auth.ts
+
+# -----------------------------------------------------------------------------
+# Rate Limiting
+# -----------------------------------------------------------------------------
+
+rate_limiting:
+  description: >
+    Distributed rate limiting via Upstash Redis using sliding window counters.
+    Consistent across serverless deployments.
+  source: src/lib/api/rate-limit.ts
+
+  plan_limits:
+    FREE: 100 req/min
+    STARTER: 500 req/min
+    GROWTH: 2000 req/min
+    ENTERPRISE: 10000 req/min
+
+  override:
+    description: >
+      API keys can have rateLimitOverride for custom limits.
+      Creates a dedicated Redis limiter with org-specific prefix.
+
+  response_headers:
+    X-RateLimit-Limit: Maximum requests in window
+    X-RateLimit-Remaining: Remaining requests in current window
+    X-RateLimit-Reset: Unix timestamp when window resets
+
+  algorithm: Sliding window (prevents traffic spike on counter reset)
+
+# -----------------------------------------------------------------------------
+# Plan-Based Resource Limits
+# -----------------------------------------------------------------------------
+
+plan_limits:
+  FREE:
+    emailsPerMonth: 1000
+    maxBrands: 1
+    maxApiKeys: 2
+    rateLimitPerMinute: 100
+    webhooksEnabled: false
+    analyticsRetentionDays: 7
+    customDomain: false
+    prioritySupport: false
+
+  STARTER:
+    emailsPerMonth: 10000
+    maxBrands: 3
+    maxApiKeys: 5
+    rateLimitPerMinute: 500
+    webhooksEnabled: true
+    analyticsRetentionDays: 30
+    customDomain: false
+    prioritySupport: false
+
+  GROWTH:
+    emailsPerMonth: 50000
+    maxBrands: 10
+    maxApiKeys: 20
+    rateLimitPerMinute: 2000
+    webhooksEnabled: true
+    analyticsRetentionDays: 90
+    customDomain: true
+    prioritySupport: true
+
+  ENTERPRISE:
+    emailsPerMonth: unlimited
+    maxBrands: unlimited
+    maxApiKeys: unlimited
+    rateLimitPerMinute: 10000
+    webhooksEnabled: true
+    analyticsRetentionDays: 365
+    customDomain: true
+    prioritySupport: true
+
+# -----------------------------------------------------------------------------
+# Guard Functions
+# -----------------------------------------------------------------------------
+
+guards:
+  canCreateBrand: "org._count.brands < limits.maxBrands"
+  canCreateApiKey: "org._count.apiKeys < limits.maxApiKeys"
+  canSendEmail: "org.emailsUsedThisMonth < limits.emailsPerMonth"
+
+# -----------------------------------------------------------------------------
+# Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  - API keys are one-way hashed (SHA-256); cannot be recovered
+  - Key shown to user exactly once at creation
+  - Expired keys (expiresAt < now) are rejected at auth time
+  - Inactive keys (isActive: false) are rejected at auth time
+  - Rate limit headers included in ALL responses (success and error)
+  - Monthly quota is separate from rate limit (quota = total emails, rate = per-minute)

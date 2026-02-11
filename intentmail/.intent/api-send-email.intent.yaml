@@ -1,0 +1,218 @@
+# =============================================================================
+# IntentMail - Email Send API Intent Specification
+# =============================================================================
+# Purpose: Define the POST /api/v1/emails/send endpoint behavior, including
+#          authentication, validation, rate limiting, and the email pipeline.
+
+intent:
+  name: Send Email API
+  description: >
+    Primary API endpoint for sending intent-driven, brand-styled emails.
+    Implements a multi-layer security pipeline before email generation and delivery.
+  endpoint: POST /api/v1/emails/send
+  source: src/app/api/v1/emails/send/route.ts
+
+# -----------------------------------------------------------------------------
+# Request Schema
+# -----------------------------------------------------------------------------
+
+request:
+  auth:
+    type: Bearer token
+    header: "Authorization: Bearer <api_key>"
+    required_scope: "email:send"
+    lookup: SHA-256 hash of key -> ApiKey table
+
+  body:
+    brandId:
+      type: string
+      required: false
+      description: Brand ID for styling. Falls back to org's default brand.
+    intentId:
+      type: string
+      required: false
+      description: Intent ID (database ID). Either intentId or intent slug required.
+    intent:
+      type: string
+      required: false
+      description: Intent slug (e.g. "onboarding.welcome"). Alternative to intentId.
+    to:
+      type: string
+      format: email
+      required: true
+      description: Recipient email address.
+    data:
+      type: Record<string, unknown>
+      required: false
+      default: {}
+      description: Dynamic data for template variables (e.g. firstName, companyName).
+    subject:
+      type: string
+      max_length: 200
+      required: false
+      description: Override the intent's default subject line.
+    tags:
+      type: string[]
+      required: false
+      description: Tags for categorization and analytics.
+    metadata:
+      type: Record<string, unknown>
+      required: false
+      description: Custom metadata stored with the email log.
+    scheduledFor:
+      type: string
+      format: ISO 8601 datetime
+      required: false
+      description: Schedule email for future delivery.
+
+  validation: Zod schema (sendEmailSchema)
+
+# -----------------------------------------------------------------------------
+# Processing Pipeline
+# -----------------------------------------------------------------------------
+
+pipeline:
+  - step: 1. Authenticate
+    action: Verify Bearer token via SHA-256 hash lookup
+    fail: 401 UNAUTHORIZED
+
+  - step: 2. Check Scope
+    action: Verify API key has "email:send" scope
+    fail: 403 FORBIDDEN
+
+  - step: 3. Load Organization
+    action: Fetch org by auth.organizationId
+    fail: 404 NOT_FOUND
+
+  - step: 4. Rate Limit Check
+    action: Sliding window check against plan limit (or key override)
+    fail: 429 RATE_LIMITED
+    headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
+
+  - step: 5. Monthly Quota Check
+    action: Compare emailsUsedThisMonth against plan.emailsPerMonth
+    fail: 429 QUOTA_EXCEEDED
+
+  - step: 6. Parse & Validate Body
+    action: Zod schema validation
+    fail: 400 VALIDATION_ERROR (with Zod error details)
+
+  - step: 7. Resolve Intent
+    action: Lookup by intentId or slug within organization
+    fail: 404 NOT_FOUND ("Intent not found")
+    note: Slug lookup enables developer-friendly API (e.g. intent="onboarding.welcome")
+
+  - step: 8. Resolve Brand
+    action: Use brandId if provided, otherwise org's default brand
+    fail: 404 NOT_FOUND ("No default brand configured")
+
+  - step: 9. Generate Email
+    action: |
+      a. Resolve subject via Handlebars template + data
+      b. Load template structure by intent.templateId
+      c. Generate slot content (static, Handlebars, or AI placeholder)
+      d. Render full HTML via brand-styled template
+      e. Generate plain text from HTML
+    fail: 500 INTERNAL_ERROR
+
+  - step: 10. Validate Email
+    action: |
+      Quality scoring (100-point scale):
+      - Blocking (-25): subject length, brand voice violations, corporate jargon, multiple CTAs, forbidden content
+      - Warning (-10): long paragraphs, passive voice, vague quantifiers, over 400 words
+      - Suggestion (-2): missing personalization, lack of specificity
+    note: Blocking issues logged but email still sent if only warnings
+
+  - step: 11. Send via Provider
+    action: |
+      a. Load default active provider for organization
+      b. Decrypt API key (AES-256-GCM)
+      c. Create provider instance (factory pattern)
+      d. Send via provider API
+    fail: 500 SEND_FAILED
+
+  - step: 12. Log & Update Stats
+    action: |
+      a. Create EmailLog record (status: SENT or FAILED)
+      b. On success: increment provider.emailsSent, org.emailsUsedThisMonth
+      c. On failure: update provider.lastErrorAt, lastErrorMsg
+
+# -----------------------------------------------------------------------------
+# Response
+# -----------------------------------------------------------------------------
+
+response:
+  success:
+    status: 200
+    body:
+      data:
+        messageId: string  # Provider's message ID
+        subject: string    # Generated/resolved subject
+        to: string         # Recipient
+        status: "sent"
+    headers:
+      X-RateLimit-Limit: number
+      X-RateLimit-Remaining: number
+      X-RateLimit-Reset: Unix timestamp
+
+  errors:
+    - code: UNAUTHORIZED
+      status: 401
+      cause: Invalid or missing API key
+    - code: FORBIDDEN
+      status: 403
+      cause: API key lacks email:send scope
+    - code: NOT_FOUND
+      status: 404
+      cause: Organization, intent, or brand not found
+    - code: RATE_LIMITED
+      status: 429
+      cause: Request rate exceeds plan limit
+    - code: QUOTA_EXCEEDED
+      status: 429
+      cause: Monthly email quota exhausted
+    - code: VALIDATION_ERROR
+      status: 400
+      cause: Invalid request body (Zod validation)
+    - code: SEND_FAILED
+      status: 500
+      cause: Provider delivery failure
+    - code: INTERNAL_ERROR
+      status: 500
+      cause: Unexpected server error
+
+# -----------------------------------------------------------------------------
+# Examples
+# -----------------------------------------------------------------------------
+
+examples:
+  minimal:
+    description: Send using intent slug (simplest form)
+    request:
+      headers:
+        Authorization: "Bearer im_live_abc123..."
+      body:
+        intent: "onboarding.welcome"
+        to: "user@example.com"
+        data:
+          firstName: "Alice"
+
+  full:
+    description: All options specified
+    request:
+      headers:
+        Authorization: "Bearer im_live_abc123..."
+      body:
+        brandId: "clxyz..."
+        intentId: "clxyz..."
+        to: "user@example.com"
+        subject: "Welcome aboard, Alice!"
+        data:
+          firstName: "Alice"
+          companyName: "Acme Inc"
+          dashboardUrl: "https://app.example.com/dashboard"
+        tags: ["onboarding", "welcome"]
+        metadata:
+          source: "signup-flow"
+          variant: "a"
+        scheduledFor: "2026-02-15T09:00:00Z"

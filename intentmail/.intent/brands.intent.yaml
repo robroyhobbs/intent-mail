@@ -1,0 +1,137 @@
+# =============================================================================
+# IntentMail - Brand Configuration Intent Specification
+# =============================================================================
+# Purpose: Define how brand configurations control email visual identity,
+#          voice, and sender information.
+
+intent:
+  name: Brand Configuration
+  description: >
+    Brands define the complete visual identity and voice for generated emails.
+    Each organization has at least one default brand. All email rendering uses
+    brand config to produce consistent, on-brand HTML output.
+  source: prisma/schema.prisma (Brand model), src/lib/email/types.ts (BrandConfig)
+
+# -----------------------------------------------------------------------------
+# Brand Config Structure
+# -----------------------------------------------------------------------------
+
+structure:
+  BrandConfig:
+    id: string (cuid)
+    name: string
+    tagline: string (optional)
+
+    colors:
+      description: 10-color palette applied to all email elements
+      properties:
+        primary: hex     # Main CTA buttons, links, accents
+        secondary: hex   # Supporting elements
+        success: hex     # Success info boxes
+        warning: hex     # Warning info boxes
+        error: hex       # Error info boxes
+        background: hex  # Email body background
+        surface: hex     # Content card background
+        text: hex        # Primary text color
+        textMuted: hex   # Secondary/footer text
+        border: hex      # Dividers, card borders
+      defaults:
+        primary: "#4598fa"
+        secondary: "#00b8db"
+        success: "#10b981"
+        warning: "#f59e0b"
+        error: "#ef4444"
+        background: "#f4f4f5"
+        surface: "#ffffff"
+        text: "#1f2937"
+        textMuted: "#6b7280"
+        border: "#e5e7eb"
+
+    typography:
+      headings: string   # Font family for H1-H6 (default: "'Inter', sans-serif")
+      body: string       # Font family for body text (default: "'Inter', sans-serif")
+      fontImportUrl: string (optional)  # Google Fonts or custom import URL
+
+    voice:
+      description: Brand voice constraints used by AI generation and validation
+      properties:
+        tone: string         # e.g. "Professional and friendly"
+        doSay: string[]      # Encouraged phrases/patterns
+        dontSay: string[]    # Banned phrases (validated as blocking issues)
+
+    logo:
+      description: Optional brand logo for email header
+      properties:
+        url: string
+        width: number (default 120)
+        altText: string (defaults to brand name)
+
+    links:
+      description: Standard footer links
+      properties:
+        home: string (optional)
+        privacy: string (optional)
+        unsubscribe: string (optional)
+        "[custom]": string   # Extensible via custom keys
+
+    fromEmail: string (optional)  # Sender email address
+    fromName: string (optional)   # Sender display name
+
+# -----------------------------------------------------------------------------
+# Behavior
+# -----------------------------------------------------------------------------
+
+behavior:
+  default_brand:
+    description: >
+      Each organization must have exactly one default brand (isDefault: true).
+      Auto-created when organization is provisioned. Used when API requests
+      omit brandId.
+
+  brand_to_email_mapping:
+    description: How brand properties map to rendered email HTML
+    mapping:
+      - colors.primary -> CTA button background, link color
+      - colors.background -> Email body background
+      - colors.surface -> Content card background
+      - colors.text -> Paragraph text color
+      - colors.textMuted -> Footer text, secondary text
+      - colors.border -> Divider lines, card borders
+      - colors.success/warning/error -> Info box styling by BoxStyle
+      - typography.headings -> H1-H6 font-family
+      - typography.body -> P, TD, LI font-family
+      - typography.fontImportUrl -> <style> @import in email head
+      - logo -> Header image (centered, linked to links.home)
+      - links.home -> Logo link, footer link
+      - links.privacy -> Footer privacy link
+      - links.unsubscribe -> Footer unsubscribe link
+      - fromEmail -> Sender address (fallback: noreply@recipient-domain)
+      - fromName -> Sender name (fallback: brand.name)
+
+  voice_in_validation:
+    description: >
+      Brand voice.dontSay phrases trigger blocking validation issues.
+      voice.tone informs AI content generation constraints.
+
+# -----------------------------------------------------------------------------
+# Constraints
+# -----------------------------------------------------------------------------
+
+constraints:
+  - unique(organizationId, name): No duplicate brand names per org
+  - Plan limits on brand count (FREE=1, STARTER=3, GROWTH=10, ENTERPRISE=unlimited)
+  - Brand deletion uses SetNull on Intent and EmailLog (preserves history)
+  - isDefault must be true for exactly one brand per org
+
+# -----------------------------------------------------------------------------
+# Conversion
+# -----------------------------------------------------------------------------
+
+conversion:
+  description: >
+    Database Brand model fields are flat (colorPrimary, colorSecondary, etc.)
+    and must be converted to nested BrandConfig interface for email rendering.
+  function: dbBrandToBrandConfig() in src/lib/email/client.ts
+  note: >
+    JSON fields (voiceDoSay, voiceDontSay, linkCustom) are cast from
+    Prisma's unknown type to their TypeScript array/object types.

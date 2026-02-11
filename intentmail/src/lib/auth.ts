@@ -102,12 +102,12 @@ export async function ensureOrganizationExists(): Promise<Organization> {
           tone: "Warm, friendly, encouraging",
           urgency: "NONE",
           subjectDefault: "Welcome to {{productName}}, {{firstName}}!",
-          subjectVariants: JSON.stringify([
+          subjectVariants: [
             "Your {{productName}} account is ready",
             "Let's get started, {{firstName}}",
-          ]),
+          ],
           templateId: "simple",
-          slots: JSON.stringify([
+          slots: [
             {
               id: "greeting",
               prompt: "Warm welcome greeting using their first name",
@@ -123,16 +123,13 @@ export async function ensureOrganizationExists(): Promise<Organization> {
               url: "{{dashboardUrl}}",
             },
             { id: "signoff", static: "The {{productName}} Team" },
-          ]),
+          ],
           contentGoal: "Get the user to click through to the dashboard",
-          contentMustInclude: JSON.stringify([
+          contentMustInclude: [
             "Confirmation they signed up",
             "Clear next step",
-          ]),
-          contentMustNotInclude: JSON.stringify([
-            "Pricing information",
-            "Feature lists",
-          ]),
+          ],
+          contentMustNotInclude: ["Pricing information", "Feature lists"],
           ctaText: "Go to Dashboard",
           ctaUrl: "{{dashboardUrl}}",
           ctaStyle: "STRONG",
@@ -146,12 +143,12 @@ export async function ensureOrganizationExists(): Promise<Organization> {
           tone: "Professional, reassuring, clear",
           urgency: "NONE",
           subjectDefault: "Order confirmed — #{{orderId}}",
-          subjectVariants: JSON.stringify([
+          subjectVariants: [
             "Your receipt from {{productName}}",
             "Thanks for your purchase, {{firstName}}",
-          ]),
+          ],
           templateId: "transactional",
-          slots: JSON.stringify([
+          slots: [
             { id: "greeting", prompt: "Brief thank you for their purchase" },
             {
               id: "details",
@@ -159,17 +156,14 @@ export async function ensureOrganizationExists(): Promise<Organization> {
             },
             { id: "cta", buttonText: "View Order", url: "{{orderUrl}}" },
             { id: "signoff", static: "The {{productName}} Team" },
-          ]),
+          ],
           contentGoal: "Confirm the purchase and provide receipt details",
-          contentMustInclude: JSON.stringify([
+          contentMustInclude: [
             "Order ID",
             "Amount paid",
             "What they purchased",
-          ]),
-          contentMustNotInclude: JSON.stringify([
-            "Upsell offers",
-            "Unrelated promotions",
-          ]),
+          ],
+          contentMustNotInclude: ["Upsell offers", "Unrelated promotions"],
           ctaText: "View Order",
           ctaUrl: "{{orderUrl}}",
           ctaStyle: "MEDIUM",
@@ -183,9 +177,9 @@ export async function ensureOrganizationExists(): Promise<Organization> {
           tone: "Direct, clear, helpful",
           urgency: "HIGH",
           subjectDefault: "Reset your {{productName}} password",
-          subjectVariants: JSON.stringify([]),
+          subjectVariants: [],
           templateId: "security",
-          slots: JSON.stringify([
+          slots: [
             {
               id: "greeting",
               prompt: "Brief acknowledgment of their password reset request",
@@ -197,16 +191,13 @@ export async function ensureOrganizationExists(): Promise<Organization> {
             },
             { id: "cta", buttonText: "Reset Password", url: "{{resetUrl}}" },
             { id: "signoff", static: "The {{productName}} Security Team" },
-          ]),
+          ],
           contentGoal: "Get the user to click the reset link quickly",
-          contentMustInclude: JSON.stringify([
+          contentMustInclude: [
             "Link expiration time",
             "Ignore if not requested",
-          ]),
-          contentMustNotInclude: JSON.stringify([
-            "Marketing content",
-            "Social links",
-          ]),
+          ],
+          contentMustNotInclude: ["Marketing content", "Social links"],
           ctaText: "Reset Password",
           ctaUrl: "{{resetUrl}}",
           ctaStyle: "STRONG",
@@ -221,12 +212,12 @@ export async function ensureOrganizationExists(): Promise<Organization> {
           tone: "Helpful, slightly urgent, value-focused",
           urgency: "MEDIUM",
           subjectDefault: "Your trial ends in {{daysLeft}} days",
-          subjectVariants: JSON.stringify([
+          subjectVariants: [
             "Don't lose access, {{firstName}}",
             "Upgrade before your trial ends",
-          ]),
+          ],
           templateId: "info-box",
-          slots: JSON.stringify([
+          slots: [
             {
               id: "greeting",
               prompt: "Friendly reminder about their trial ending",
@@ -242,17 +233,17 @@ export async function ensureOrganizationExists(): Promise<Organization> {
             },
             { id: "cta", buttonText: "Upgrade Now", url: "{{upgradeUrl}}" },
             { id: "signoff", static: "The {{productName}} Team" },
-          ]),
+          ],
           contentGoal: "Get the user to upgrade to a paid plan",
-          contentMustInclude: JSON.stringify([
+          contentMustInclude: [
             "Days remaining",
             "What they lose",
             "How to upgrade",
-          ]),
-          contentMustNotInclude: JSON.stringify([
+          ],
+          contentMustNotInclude: [
             "Guilt-tripping language",
             "Aggressive sales tactics",
-          ]),
+          ],
           ctaText: "Upgrade Now",
           ctaUrl: "{{upgradeUrl}}",
           ctaStyle: "STRONG",
@@ -266,12 +257,12 @@ export async function ensureOrganizationExists(): Promise<Organization> {
           tone: "Professional, concise",
           urgency: "NONE",
           subjectDefault: "Invoice #{{invoiceId}} — {{amount}}",
-          subjectVariants: JSON.stringify([
+          subjectVariants: [
             "Your {{productName}} receipt",
             "Payment received — thank you",
-          ]),
+          ],
           templateId: "transactional",
-          slots: JSON.stringify([
+          slots: [
             { id: "greeting", prompt: "Brief payment confirmation" },
             {
               id: "details",
@@ -279,15 +270,10 @@ export async function ensureOrganizationExists(): Promise<Organization> {
             },
             { id: "cta", buttonText: "View Invoice", url: "{{invoiceUrl}}" },
             { id: "signoff", static: "The {{productName}} Billing Team" },
-          ]),
+          ],
           contentGoal: "Provide a clear payment receipt",
-          contentMustInclude: JSON.stringify([
-            "Invoice number",
-            "Amount",
-            "Date",
-            "Plan name",
-          ]),
-          contentMustNotInclude: JSON.stringify(["Upsell offers"]),
+          contentMustInclude: ["Invoice number", "Amount", "Date", "Plan name"],
+          contentMustNotInclude: ["Upsell offers"],
           ctaText: "View Invoice",
           ctaUrl: "{{invoiceUrl}}",
           ctaStyle: "SOFT",
