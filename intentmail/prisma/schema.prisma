@@ -281,6 +281,11 @@ model EmailLog {
   providerMessageId String?
   status           EmailStatus @default(PENDING)
 
+  // Scheduling (QStash)
+  scheduledFor      DateTime?
+  scheduledRequest  Json?      // Original EmailRequest params for deferred send
+  qstashMessageId   String?
+
   // Delivery Events
   sentAt       DateTime?
   deliveredAt  DateTime?
@@ -315,17 +320,20 @@ model EmailLog {
   @@index([toEmail])
   @@index([status])
   @@index([createdAt])
+  @@index([scheduledFor])
 }
 
 enum EmailStatus {
   PENDING
   QUEUED
+  SCHEDULED
   SENT
   DELIVERED
   OPENED
   CLICKED
   BOUNCED
   COMPLAINED
+  CANCELLED
   FAILED
 }
 

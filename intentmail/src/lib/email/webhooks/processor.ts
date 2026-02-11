@@ -12,19 +12,18 @@ import type { EmailStatus } from "@prisma/client";
 const STATUS_ORDER: EmailStatus[] = [
   "PENDING",
   "QUEUED",
+  "SCHEDULED",
   "SENT",
   "DELIVERED",
   "OPENED",
   "CLICKED",
   "BOUNCED",
   "COMPLAINED",
+  "CANCELLED",
   "FAILED",
 ];
 
-function canAdvanceStatus(
-  current: EmailStatus,
-  next: EmailStatus,
-): boolean {
+function canAdvanceStatus(current: EmailStatus, next: EmailStatus): boolean {
   // Bounce and complaint can always override (they're terminal negative states)
   if (next === "BOUNCED" || next === "COMPLAINED" || next === "FAILED") {
     return true;
@@ -120,7 +119,8 @@ export async function processWebhookEvent(
       // Add error info for bounces
       if (event.eventType === "bounced" && event.metadata) {
         updateData.errorCode = event.metadata.bounceType ?? "BOUNCE";
-        updateData.errorMessage = event.metadata.bounceReason ?? "Email bounced";
+        updateData.errorMessage =
+          event.metadata.bounceReason ?? "Email bounced";
       }
 
       await db.emailLog.update({

@@ -1,45 +1,45 @@
-import Link from 'next/link'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { requireOrganization } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { formatDateTime } from '@/lib/utils'
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
-import type { EmailStatus } from '@prisma/client'
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { requireOrganization } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { formatDateTime } from "@/lib/utils";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import type { EmailStatus } from "@prisma/client";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 25
+const PAGE_SIZE = 25;
 
 export default async function EmailsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ page?: string; q?: string; status?: string }>
+  searchParams: Promise<{ page?: string; q?: string; status?: string }>;
 }) {
-  const org = await requireOrganization()
-  const params = await searchParams
-  const page = Math.max(1, Number(params.page) || 1)
-  const query = params.q ?? ''
-  const statusFilter = params.status ?? ''
+  const org = await requireOrganization();
+  const params = await searchParams;
+  const page = Math.max(1, Number(params.page) || 1);
+  const query = params.q ?? "";
+  const statusFilter = params.status ?? "";
 
   // Build where clause
-  const where: Record<string, unknown> = { organizationId: org.id }
+  const where: Record<string, unknown> = { organizationId: org.id };
   if (query) {
     where.OR = [
-      { toEmail: { contains: query, mode: 'insensitive' } },
-      { subject: { contains: query, mode: 'insensitive' } },
-    ]
+      { toEmail: { contains: query, mode: "insensitive" } },
+      { subject: { contains: query, mode: "insensitive" } },
+    ];
   }
   if (statusFilter) {
-    where.status = statusFilter as EmailStatus
+    where.status = statusFilter as EmailStatus;
   }
 
   const [emails, total] = await Promise.all([
     db.emailLog.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: {
@@ -49,31 +49,48 @@ export default async function EmailsPage({
       },
     }),
     db.emailLog.count({ where }),
-  ])
+  ]);
 
-  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const statusColors = {
-    PENDING: 'secondary',
-    QUEUED: 'secondary',
-    SENT: 'outline',
-    DELIVERED: 'success',
-    OPENED: 'success',
-    CLICKED: 'success',
-    BOUNCED: 'destructive',
-    COMPLAINED: 'destructive',
-    FAILED: 'destructive',
-  } as const
+    PENDING: "secondary",
+    QUEUED: "secondary",
+    SCHEDULED: "secondary",
+    SENT: "outline",
+    DELIVERED: "success",
+    OPENED: "success",
+    CLICKED: "success",
+    BOUNCED: "destructive",
+    COMPLAINED: "destructive",
+    CANCELLED: "outline",
+    FAILED: "destructive",
+  } as const;
 
-  const statuses: EmailStatus[] = ['SENT', 'DELIVERED', 'OPENED', 'CLICKED', 'BOUNCED', 'COMPLAINED', 'FAILED']
+  const statuses: EmailStatus[] = [
+    "SCHEDULED",
+    "SENT",
+    "DELIVERED",
+    "OPENED",
+    "CLICKED",
+    "BOUNCED",
+    "COMPLAINED",
+    "CANCELLED",
+    "FAILED",
+  ];
 
   function buildUrl(overrides: Record<string, string | undefined>) {
-    const p = new URLSearchParams()
-    const merged = { page: String(page), q: query, status: statusFilter, ...overrides }
+    const p = new URLSearchParams();
+    const merged = {
+      page: String(page),
+      q: query,
+      status: statusFilter,
+      ...overrides,
+    };
     for (const [k, v] of Object.entries(merged)) {
-      if (v) p.set(k, v)
+      if (v) p.set(k, v);
     }
-    return `/dashboard/emails?${p.toString()}`
+    return `/dashboard/emails?${p.toString()}`;
   }
 
   return (
@@ -88,7 +105,11 @@ export default async function EmailsPage({
 
       {/* Search & Filter */}
       <div className="flex flex-wrap items-center gap-3">
-        <form action="/dashboard/emails" method="GET" className="relative flex-1 min-w-[200px] max-w-sm">
+        <form
+          action="/dashboard/emails"
+          method="GET"
+          className="relative flex-1 min-w-[200px] max-w-sm"
+        >
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             name="q"
@@ -96,18 +117,23 @@ export default async function EmailsPage({
             defaultValue={query}
             className="pl-9"
           />
-          {statusFilter && <input type="hidden" name="status" value={statusFilter} />}
+          {statusFilter && (
+            <input type="hidden" name="status" value={statusFilter} />
+          )}
         </form>
         <div className="flex gap-1">
-          <Link href={buildUrl({ status: undefined, page: '1' })}>
-            <Badge variant={!statusFilter ? 'default' : 'outline'} className="cursor-pointer">
+          <Link href={buildUrl({ status: undefined, page: "1" })}>
+            <Badge
+              variant={!statusFilter ? "default" : "outline"}
+              className="cursor-pointer"
+            >
               All
             </Badge>
           </Link>
           {statuses.map((s) => (
-            <Link key={s} href={buildUrl({ status: s, page: '1' })}>
+            <Link key={s} href={buildUrl({ status: s, page: "1" })}>
               <Badge
-                variant={statusFilter === s ? 'default' : 'outline'}
+                variant={statusFilter === s ? "default" : "outline"}
                 className="cursor-pointer"
               >
                 {s.toLowerCase()}
@@ -119,7 +145,9 @@ export default async function EmailsPage({
 
       {/* Results count */}
       <p className="text-sm text-muted-foreground">
-        {total} email{total !== 1 ? 's' : ''}{query ? ` matching "${query}"` : ''}{statusFilter ? ` with status ${statusFilter.toLowerCase()}` : ''}
+        {total} email{total !== 1 ? "s" : ""}
+        {query ? ` matching "${query}"` : ""}
+        {statusFilter ? ` with status ${statusFilter.toLowerCase()}` : ""}
       </p>
 
       {/* Email List */}
@@ -127,7 +155,9 @@ export default async function EmailsPage({
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <p className="text-muted-foreground">
-              {query || statusFilter ? 'No emails match your search' : 'No emails sent yet'}
+              {query || statusFilter
+                ? "No emails match your search"
+                : "No emails sent yet"}
             </p>
           </CardContent>
         </Card>
@@ -138,18 +168,33 @@ export default async function EmailsPage({
               <table className="w-full">
                 <thead>
                   <tr className="border-b bg-muted/50">
-                    <th className="px-4 py-3 text-left text-sm font-medium">Recipient</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium">Subject</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium">Intent</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium">Sent</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium">
+                      Recipient
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium">
+                      Subject
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium">
+                      Intent
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium">
+                      Status
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium">
+                      Sent
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {emails.map((email) => (
-                    <tr key={email.id} className="border-b last:border-0 hover:bg-muted/30">
+                    <tr
+                      key={email.id}
+                      className="border-b last:border-0 hover:bg-muted/30"
+                    >
                       <td className="px-4 py-3">
-                        <div className="text-sm font-medium">{email.toEmail}</div>
+                        <div className="text-sm font-medium">
+                          {email.toEmail}
+                        </div>
                         {email.brand && (
                           <div className="text-xs text-muted-foreground">
                             {email.brand.name}
@@ -157,7 +202,9 @@ export default async function EmailsPage({
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <div className="max-w-[200px] truncate text-sm">{email.subject}</div>
+                        <div className="max-w-[200px] truncate text-sm">
+                          {email.subject}
+                        </div>
                       </td>
                       <td className="px-4 py-3">
                         {email.intent ? (
@@ -165,7 +212,9 @@ export default async function EmailsPage({
                             {email.intent.slug}
                           </code>
                         ) : (
-                          <span className="text-xs text-muted-foreground">—</span>
+                          <span className="text-xs text-muted-foreground">
+                            —
+                          </span>
                         )}
                       </td>
                       <td className="px-4 py-3">
@@ -173,7 +222,9 @@ export default async function EmailsPage({
                           {email.status.toLowerCase()}
                         </Badge>
                         {email.errorMessage && (
-                          <div className="mt-1 text-xs text-destructive">{email.errorMessage}</div>
+                          <div className="mt-1 text-xs text-destructive">
+                            {email.errorMessage}
+                          </div>
                         )}
                       </td>
                       <td className="px-4 py-3 text-sm text-muted-foreground">
@@ -225,5 +276,5 @@ export default async function EmailsPage({
         </div>
       )}
     </div>
-  )
+  );
 }
