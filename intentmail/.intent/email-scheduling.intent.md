@@ -65,11 +65,15 @@ prisma/schema.prisma                 ← Add qstashMessageId, scheduledFor to Em
 
 ### 3.1 QStash Integration
 
+> [!SYNCED] Last synced: 2026-02-11 from commit b0728ef
+
 ```typescript
 // src/lib/queue/qstash.ts
-import { Client } from "@upstash/qstash";
+import { Client, Receiver } from "@upstash/qstash";
 
-const qstash = new Client({ token: process.env.QSTASH_TOKEN! });
+// Lazy initialization — avoids crash if env vars missing at import time
+function getClient(): Client { ... }
+function getReceiver(): Receiver { ... }
 
 export async function publishScheduledEmail(
   emailLogId: string,
@@ -81,7 +85,7 @@ export async function publishScheduledEmail(
   );
   const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/internal/scheduled-send`;
 
-  const result = await qstash.publishJSON({
+  const result = await getClient().publishJSON({
     url: callbackUrl,
     body: { emailLogId },
     delay,
@@ -93,21 +97,34 @@ export async function publishScheduledEmail(
 export async function cancelScheduledEmail(
   qstashMessageId: string,
 ): Promise<void> {
-  await qstash.messages.delete(qstashMessageId);
+  // Silently succeeds on 404 (message already delivered/deleted)
+  await getClient().messages.delete(qstashMessageId);
+}
+
+export async function verifyQStashSignature(
+  signature: string,
+  body: string,
+): Promise<boolean> {
+  return getReceiver().verify({ signature, body });
 }
 ```
 
 ### 3.2 Scheduling Flow
 
-When `scheduledFor` is present in the send API:
+> [!SYNCED] Last synced: 2026-02-11 from commit b0728ef
+
+When `scheduledFor` is present and in the future in the send API:
 
 1. Validate brand, intent, provider exist (same as normal send)
 2. Check unsubscribe status (skip if unsubscribed now)
-3. Store the original EmailRequest params (brandId, intentId, to, data, etc.) as JSON on EmailLog
+3. Build `scheduledRequest` JSON from original params (brandId, intentId, to, data, etc.)
 4. Create EmailLog with `status: SCHEDULED`, `scheduledFor`, `scheduledRequest`
 5. Publish to QStash with delay
-6. Store `qstashMessageId` on EmailLog
-7. Return `{ success: true, messageId: emailLogId, scheduled: true }`
+6. Update EmailLog with `qstashMessageId`
+7. Return `{ data: { messageId, to, status: "scheduled", scheduled: true, scheduledFor } }`
+8. **On QStash failure:** delete orphaned EmailLog (rollback)
+
+Note: `scheduledFor` was removed from the `EmailRequest` type — scheduling is handled at the route level, not in the email client.
 
 ### 3.3 Callback Endpoint
 
@@ -124,27 +141,43 @@ When `scheduledFor` is present in the send API:
 
 ### 3.4 Cancel/Reschedule
 
+> [!SYNCED] Last synced: 2026-02-11 from commit b0728ef
+
 **Cancel:** `DELETE /api/v1/emails/scheduled/:id`
 
 1. Find EmailLog by id, verify organizationId, status === SCHEDULED
-2. Call `cancelScheduledEmail(qstashMessageId)`
+2. Call `cancelScheduledEmail(qstashMessageId)` — best-effort, logs warning on failure
 3. Update EmailLog: status → CANCELLED
+4. Response: `{ data: { id, status: "cancelled" } }`
 
-**Reschedule:** `PATCH /api/v1/emails/scheduled/:id`
+**Reschedule:** `PATCH /api/v1/emails/scheduled/:id` with `{ scheduledFor: ISO string }`
 
 1. Find EmailLog by id, verify organizationId, status === SCHEDULED
-2. Cancel old QStash message
-3. Publish new QStash message with new delay
-4. Update EmailLog: scheduledFor, qstashMessageId
+2. Validate new `scheduledFor` is in the future
+3. **Publish new QStash message first** (rollback safety — if this fails, old message stays)
+4. Cancel old QStash message (best-effort)
+5. Update EmailLog: scheduledFor, qstashMessageId
+6. Response: `{ data: { id, status: "scheduled", scheduledFor } }`
+
+**List:** `GET /api/v1/emails/scheduled?page=1&limit=20`
+
+1. API key auth with `email:send` scope
+2. Query SCHEDULED emails for organization, sorted by `scheduledFor ASC`
+3. Select excludes internal fields (scheduledRequest, qstashMessageId)
+4. Response: `{ data: [...], pagination: { page, limit, total, totalPages } }`
 
 ### 3.5 Dashboard UI
 
-`/dashboard/emails/scheduled` — table of pending scheduled emails with:
+> [!SYNCED] Last synced: 2026-02-11 from commit b0728ef
 
-- Recipient, subject, brand, scheduled time
-- Status filter (SCHEDULED only by default)
-- Cancel button (sets status → CANCELLED)
-- Reschedule action (date picker → PATCH)
+`/dashboard/emails/scheduled` — server-rendered page (force-dynamic) showing SCHEDULED emails:
+
+- Table columns: Recipient (+ intent slug), Subject, Brand, Scheduled For, Status badge, Actions
+- Empty state with Clock icon when no scheduled emails
+- Cancel button with `confirm()` dialog, calls DELETE endpoint, refreshes page
+- Reschedule: datetime-local input with client-side past-date validation, calls PATCH endpoint
+- Loading state on buttons prevents rapid double-clicks
+- Sidebar nav: "Scheduled" link with Clock icon between "Emails" and "Analytics"
 
 ### 3.6 Schema Changes
 
@@ -173,19 +206,20 @@ enum EmailStatus {
 
 ### 3.7 QStash Signature Verification
 
+> [!SYNCED] Last synced: 2026-02-11 from commit b0728ef
+
+Verification is handled via `verifyQStashSignature()` exported from `qstash.ts` (see 3.1).
+
+In the callback route:
+
 ```typescript
-import { Receiver } from "@upstash/qstash";
+const signature = request.headers.get("upstash-signature");
+if (!signature)
+  return NextResponse.json({ error: "Missing signature" }, { status: 401 });
 
-const receiver = new Receiver({
-  currentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY!,
-  nextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY!,
-});
-
-// In the callback route:
-const isValid = await receiver.verify({
-  signature: request.headers.get("upstash-signature")!,
-  body: rawBody,
-});
+const isValid = await verifyQStashSignature(signature, rawBody);
+if (!isValid)
+  return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
 ```
 
 ### 3.8 Error Handling
@@ -246,3 +280,48 @@ QSTASH_TOKEN=                    # QStash API token
 QSTASH_CURRENT_SIGNING_KEY=      # For callback verification
 QSTASH_NEXT_SIGNING_KEY=         # For key rotation
 ```
+
+## 8. Finalized Implementation Details
+
+> Synced on: 2026-02-11
+> From: commits 214870d..b0728ef (Phases 0-3)
+
+### Module Structure
+
+```
+src/lib/queue/
+├── qstash.ts                    # QStash client (publish/cancel/verify) — lazy init
+├── qstash.test.ts               # 20 unit tests
+├── scheduling.test.ts           # 25 tests (scheduling flow + callback)
+└── scheduled-api.test.ts        # 22 tests (list/cancel/reschedule API)
+
+src/app/api/internal/
+└── scheduled-send/route.ts      # QStash callback (signature-verified)
+
+src/app/api/v1/emails/scheduled/
+├── route.ts                     # GET list (paginated)
+└── [id]/route.ts                # DELETE cancel, PATCH reschedule
+
+src/app/(dashboard)/dashboard/emails/scheduled/
+└── page.tsx                     # Server-rendered scheduled emails table
+
+src/components/emails/
+└── scheduled-actions.tsx        # Client component (cancel/reschedule UI)
+```
+
+### Key Implementation Decisions
+
+| Decision                     | Final Choice                              | Rationale                                                |
+| ---------------------------- | ----------------------------------------- | -------------------------------------------------------- |
+| QStash client init           | Lazy via `getClient()`/`getReceiver()`    | Avoids crash if env vars missing at import               |
+| Reschedule order             | Publish new first, cancel old second      | Rollback safety: if publish fails, old stays             |
+| QStash cancel failure        | Best-effort, log warning, still update DB | Message may already be delivered                         |
+| scheduledFor in EmailRequest | Removed from type                         | Scheduling handled at route level, not client            |
+| Dashboard filter             | Always SCHEDULED, no toggle               | Simplest MVP; other statuses visible on main emails page |
+| Orphan cleanup               | Delete EmailLog on QStash publish failure | Prevents SCHEDULED records with no QStash message        |
+
+### Test Coverage
+
+- 67 total tests (20 + 25 + 22)
+- All 6 IDD categories covered per phase: Happy Path, Bad Path, Edge Cases, Security, Data Leak, Data Damage
+- Status: all passing
