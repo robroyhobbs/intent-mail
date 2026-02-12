@@ -114,53 +114,53 @@ Build the three reusable visual components that power the wizard's Step 2. These
 
 #### Happy Path
 
-- [ ] ChipSelector renders all provided options as clickable chips
-- [ ] ChipSelector single-select mode: clicking a chip selects it and deselects others
-- [ ] ChipSelector fires onChange with selected value on click
-- [ ] ChipSelector shows visual selected state (checkmark or highlight)
-- [ ] ChipSelector supports optional color prop per option (urgency colors)
-- [ ] TemplateCards renders card for each of the 7 templates
-- [ ] TemplateCards shows template name and slot count on each card
-- [ ] TemplateCards fires onSelect with templateId when card is clicked
-- [ ] TemplateCards shows selected state on active template
-- [ ] LivePreview renders iframe with structural HTML content
-- [ ] LivePreview shows slot placeholders as "[slot_id] prompt text"
-- [ ] LivePreview renders subject line with actual value
-- [ ] LivePreview renders CTA button with actual text and style
-- [ ] LivePreview applies brand primary color to header/CTA
-- [ ] LivePreview updates instantly when props change (no debounce)
+- [x] ChipSelector renders all provided options as clickable chips
+- [x] ChipSelector single-select mode: clicking a chip selects it and deselects others
+- [x] ChipSelector fires onChange with selected value on click
+- [x] ChipSelector shows visual selected state (checkmark or highlight)
+- [x] ChipSelector supports optional color prop per option (urgency colors)
+- [x] TemplateCards renders card for each of the 7 templates
+- [x] TemplateCards shows template name and slot count on each card
+- [x] TemplateCards fires onSelect with templateId when card is clicked
+- [x] TemplateCards shows selected state on active template
+- [x] LivePreview renders iframe with structural HTML content
+- [x] LivePreview shows slot placeholders as "[slot_id] prompt text"
+- [x] LivePreview renders subject line with actual value
+- [x] LivePreview renders CTA button with actual text and style
+- [x] LivePreview applies brand primary color to header/CTA
+- [x] LivePreview updates instantly when props change (no debounce)
 
 #### Bad Path
 
-- [ ] ChipSelector with empty options array renders nothing (no crash)
-- [ ] ChipSelector with undefined value shows no selection
-- [ ] TemplateCards with invalid templateId shows no selected card
-- [ ] LivePreview with empty slots array renders template skeleton only
-- [ ] LivePreview with missing brand colors uses default gray palette
+- [x] ChipSelector with empty options array renders nothing (no crash)
+- [x] ChipSelector with undefined value shows no selection
+- [x] TemplateCards with invalid templateId shows no selected card
+- [x] LivePreview with empty slots array renders template skeleton only
+- [x] LivePreview with missing brand colors uses default gray palette
 
 #### Edge Cases
 
-- [ ] ChipSelector with very long label text truncates gracefully
-- [ ] TemplateCards responsive: wraps cards on narrow containers
-- [ ] LivePreview on mobile viewport stacks below controls (CSS only)
-- [ ] LivePreview iframe resizes correctly when container width changes
-- [ ] ChipSelector keyboard accessible (Tab + Enter to select)
+- [x] ChipSelector with very long label text truncates gracefully
+- [x] TemplateCards responsive: wraps cards on narrow containers
+- [x] LivePreview on mobile viewport stacks below controls (CSS only)
+- [x] LivePreview iframe resizes correctly when container width changes
+- [x] ChipSelector keyboard accessible (Tab + Enter to select)
 
 #### Security
 
-- [ ] LivePreview iframe uses sandbox attribute to prevent script execution
-- [ ] LivePreview srcDoc content is escaped (no XSS from slot prompts)
-- [ ] Template card content comes from hardcoded templates only (no user HTML)
+- [x] LivePreview iframe uses sandbox attribute to prevent script execution
+- [x] LivePreview srcDoc content is escaped (no XSS from slot prompts)
+- [x] Template card content comes from hardcoded templates only (no user HTML)
 
 #### Data Leak
 
-- [ ] LivePreview doesn't expose raw slot config objects in rendered HTML
-- [ ] ChipSelector doesn't expose internal value mappings in DOM attributes
+- [x] LivePreview doesn't expose raw slot config objects in rendered HTML
+- [x] ChipSelector doesn't expose internal value mappings in DOM attributes
 
 #### Data Damage
 
-- [ ] ChipSelector onChange never fires with invalid/undefined value
-- [ ] TemplateCards onSelect only fires with valid template IDs from the template registry
+- [x] ChipSelector onChange never fires with invalid/undefined value
+- [x] TemplateCards onSelect only fires with valid template IDs from the template registry
 
 ### E2E Gate
 
