@@ -1,165 +1,195 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import type { Intent } from '@prisma/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
-import { Badge } from '@/components/ui/badge'
-import { Trash2, Plus, X } from 'lucide-react'
-import { listTemplates, getTemplate } from '@/lib/email/templates/slots'
-import { slugify } from '@/lib/utils'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import type { Intent } from "@prisma/client";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Trash2, Plus, X } from "lucide-react";
+import { listTemplates, getTemplate } from "@/lib/email/templates/slots";
+import { slugify } from "@/lib/utils";
 
 interface IntentFormProps {
-  organizationId: string
-  intent?: Intent
-  brands: { id: string; name: string }[]
+  organizationId: string;
+  intent?: Intent;
+  brands: { id: string; name: string }[];
 }
 
 interface SlotConfig {
-  id: string
-  prompt?: string
-  static?: string
-  url?: string
-  buttonText?: string
-  maxLength?: number
+  id: string;
+  prompt?: string;
+  static?: string;
+  url?: string;
+  buttonText?: string;
+  maxLength?: number;
 }
 
-export function IntentForm({ organizationId, intent, brands }: IntentFormProps) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+export function IntentForm({
+  organizationId,
+  intent,
+  brands,
+}: IntentFormProps) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const templates = listTemplates()
+  const templates = listTemplates();
 
   const [formData, setFormData] = useState({
-    name: intent?.name ?? '',
-    slug: intent?.slug ?? '',
-    description: intent?.description ?? '',
-    brandId: intent?.brandId ?? '',
-    purpose: intent?.purpose ?? '',
-    tone: intent?.tone ?? '',
-    urgency: intent?.urgency ?? 'NONE',
-    subjectDefault: intent?.subjectDefault ?? '',
-    subjectVariants: (intent?.subjectVariants as string[] | null)?.join('\n') ?? '',
+    name: intent?.name ?? "",
+    slug: intent?.slug ?? "",
+    description: intent?.description ?? "",
+    brandId: intent?.brandId ?? "",
+    purpose: intent?.purpose ?? "",
+    tone: intent?.tone ?? "",
+    urgency: intent?.urgency ?? "NONE",
+    subjectDefault: intent?.subjectDefault ?? "",
+    subjectVariants:
+      (intent?.subjectVariants as string[] | null)?.join("\n") ?? "",
     subjectMaxLength: intent?.subjectMaxLength ?? 50,
-    templateId: intent?.templateId ?? 'simple',
+    templateId: intent?.templateId ?? "simple",
     slots: (intent?.slots as unknown as SlotConfig[]) ?? [],
-    contentGoal: intent?.contentGoal ?? '',
-    contentMustInclude: (intent?.contentMustInclude as string[])?.join('\n') ?? '',
-    contentMustNotInclude: (intent?.contentMustNotInclude as string[])?.join('\n') ?? '',
-    ctaText: intent?.ctaText ?? '',
-    ctaUrl: intent?.ctaUrl ?? '',
-    ctaStyle: intent?.ctaStyle ?? 'MEDIUM',
+    contentGoal: intent?.contentGoal ?? "",
+    contentMustInclude:
+      (intent?.contentMustInclude as string[])?.join("\n") ?? "",
+    contentMustNotInclude:
+      (intent?.contentMustNotInclude as string[])?.join("\n") ?? "",
+    ctaText: intent?.ctaText ?? "",
+    ctaUrl: intent?.ctaUrl ?? "",
+    ctaStyle: intent?.ctaStyle ?? "MEDIUM",
     generationEnabled: intent?.generationEnabled ?? false,
-    generationConstraints: (intent?.generationConstraints as string[])?.join('\n') ?? '',
+    generationConstraints:
+      (intent?.generationConstraints as string[])?.join("\n") ?? "",
     isActive: intent?.isActive ?? true,
-  })
+  });
 
-  const selectedTemplate = getTemplate(formData.templateId)
+  const selectedTemplate = getTemplate(formData.templateId);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     try {
       const payload = {
         ...formData,
-        subjectVariants: formData.subjectVariants.split('\n').filter(Boolean),
-        contentMustInclude: formData.contentMustInclude.split('\n').filter(Boolean),
-        contentMustNotInclude: formData.contentMustNotInclude.split('\n').filter(Boolean),
-        generationConstraints: formData.generationConstraints.split('\n').filter(Boolean),
+        subjectVariants: formData.subjectVariants.split("\n").filter(Boolean),
+        contentMustInclude: formData.contentMustInclude
+          .split("\n")
+          .filter(Boolean),
+        contentMustNotInclude: formData.contentMustNotInclude
+          .split("\n")
+          .filter(Boolean),
+        generationConstraints: formData.generationConstraints
+          .split("\n")
+          .filter(Boolean),
         brandId: formData.brandId || null,
-      }
+      };
 
-      const url = intent ? `/api/v1/intents/${intent.id}` : '/api/v1/intents'
-      const method = intent ? 'PUT' : 'POST'
+      const url = intent ? `/api/v1/intents/${intent.id}` : "/api/v1/intents";
+      const method = intent ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      })
+      });
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error?.message ?? 'Failed to save intent')
+        const data = await response.json();
+        throw new Error(data.error?.message ?? "Failed to save intent");
       }
 
-      router.push('/dashboard/intents')
-      router.refresh()
+      router.push("/dashboard/intents");
+      router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleDelete = async () => {
-    if (!intent) return
-    if (!confirm('Are you sure you want to delete this intent?')) return
+    if (!intent) return;
+    if (!confirm("Are you sure you want to delete this intent?")) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await fetch(`/api/v1/intents/${intent.id}`, {
-        method: 'DELETE',
-      })
+        method: "DELETE",
+      });
 
       if (!response.ok) {
-        throw new Error('Failed to delete intent')
+        throw new Error("Failed to delete intent");
       }
 
-      router.push('/dashboard/intents')
-      router.refresh()
+      router.push("/dashboard/intents");
+      router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const updateField = (field: string, value: unknown) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const updateSlot = (slotId: string, field: string, value: string | number) => {
+  const updateSlot = (
+    slotId: string,
+    field: string,
+    value: string | number,
+  ) => {
     setFormData((prev) => ({
       ...prev,
       slots: prev.slots.map((slot) =>
-        slot.id === slotId ? { ...slot, [field]: value } : slot
+        slot.id === slotId ? { ...slot, [field]: value } : slot,
       ),
-    }))
-  }
+    }));
+  };
 
   // Auto-generate slug from name
   const handleNameChange = (name: string) => {
-    updateField('name', name)
+    updateField("name", name);
     if (!intent) {
-      updateField('slug', slugify(name))
+      updateField("slug", slugify(name));
     }
-  }
+  };
 
   // Initialize slots from template
   const initializeSlotsFromTemplate = (templateId: string) => {
-    const template = getTemplate(templateId)
+    const template = getTemplate(templateId);
     if (template) {
       const slots: SlotConfig[] = template.slots.map((slot) => ({
         id: slot.id,
-        prompt: slot.prompt ?? '',
-        static: slot.staticContent ?? '',
+        prompt: slot.prompt ?? "",
+        static: slot.staticContent ?? "",
         maxLength: slot.maxLength,
-      }))
-      updateField('slots', slots)
+      }));
+      updateField("slots", slots);
     }
-    updateField('templateId', templateId)
-  }
+    updateField("templateId", templateId);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -183,7 +213,9 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
           <Card>
             <CardHeader>
               <CardTitle>Intent Details</CardTitle>
-              <CardDescription>Basic information about this email intent</CardDescription>
+              <CardDescription>
+                Basic information about this email intent
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
@@ -202,12 +234,13 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   <Input
                     id="slug"
                     value={formData.slug}
-                    onChange={(e) => updateField('slug', e.target.value)}
+                    onChange={(e) => updateField("slug", e.target.value)}
                     placeholder="onboarding.welcome"
                     required
                   />
                   <p className="text-xs text-muted-foreground">
-                    Used in API calls: /api/v1/emails/send with intent=&quot;{formData.slug}&quot;
+                    Used in API calls: /api/v1/emails/send with intent=&quot;
+                    {formData.slug}&quot;
                   </p>
                 </div>
               </div>
@@ -217,7 +250,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => updateField('description', e.target.value)}
+                  onChange={(e) => updateField("description", e.target.value)}
                   placeholder="Brief description of this intent"
                   rows={2}
                 />
@@ -227,14 +260,16 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                 <div className="space-y-2">
                   <Label htmlFor="brandId">Brand</Label>
                   <Select
-                    value={formData.brandId}
-                    onValueChange={(value) => updateField('brandId', value)}
+                    value={formData.brandId || "none"}
+                    onValueChange={(value) =>
+                      updateField("brandId", value === "none" ? "" : value)
+                    }
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a brand" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">No specific brand</SelectItem>
+                      <SelectItem value="none">No specific brand</SelectItem>
                       {brands.map((brand) => (
                         <SelectItem key={brand.id} value={brand.id}>
                           {brand.name}
@@ -247,7 +282,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   <Label htmlFor="urgency">Urgency</Label>
                   <Select
                     value={formData.urgency}
-                    onValueChange={(value) => updateField('urgency', value)}
+                    onValueChange={(value) => updateField("urgency", value)}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -269,7 +304,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                 <Textarea
                   id="purpose"
                   value={formData.purpose}
-                  onChange={(e) => updateField('purpose', e.target.value)}
+                  onChange={(e) => updateField("purpose", e.target.value)}
                   placeholder="What should this email accomplish?"
                   rows={2}
                   required
@@ -281,7 +316,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                 <Input
                   id="tone"
                   value={formData.tone}
-                  onChange={(e) => updateField('tone', e.target.value)}
+                  onChange={(e) => updateField("tone", e.target.value)}
                   placeholder="Warm, excited, action-oriented"
                   required
                 />
@@ -303,22 +338,30 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                 <Input
                   id="subjectDefault"
                   value={formData.subjectDefault}
-                  onChange={(e) => updateField('subjectDefault', e.target.value)}
+                  onChange={(e) =>
+                    updateField("subjectDefault", e.target.value)
+                  }
                   placeholder="Welcome to {{productName}}, {{firstName}}!"
                   required
                 />
                 <p className="text-xs text-muted-foreground">
-                  Supports {'{{variables}}'} for personalization
+                  Supports {"{{variables}}"} for personalization
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="subjectVariants">Subject Variants (one per line)</Label>
+                <Label htmlFor="subjectVariants">
+                  Subject Variants (one per line)
+                </Label>
                 <Textarea
                   id="subjectVariants"
                   value={formData.subjectVariants}
-                  onChange={(e) => updateField('subjectVariants', e.target.value)}
-                  placeholder={"Your account is ready, {{firstName}}\nLet's get started!"}
+                  onChange={(e) =>
+                    updateField("subjectVariants", e.target.value)
+                  }
+                  placeholder={
+                    "Your account is ready, {{firstName}}\nLet's get started!"
+                  }
                   rows={3}
                 />
               </div>
@@ -329,7 +372,9 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   id="subjectMaxLength"
                   type="number"
                   value={formData.subjectMaxLength}
-                  onChange={(e) => updateField('subjectMaxLength', parseInt(e.target.value))}
+                  onChange={(e) =>
+                    updateField("subjectMaxLength", parseInt(e.target.value))
+                  }
                   min={20}
                   max={100}
                 />
@@ -343,21 +388,25 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
           <Card>
             <CardHeader>
               <CardTitle>Template & Slots</CardTitle>
-              <CardDescription>Choose a template and configure content slots</CardDescription>
+              <CardDescription>
+                Choose a template and configure content slots
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label>Template</Label>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {templates.map((templateId) => {
-                    const template = getTemplate(templateId)
-                    const isSelected = formData.templateId === templateId
+                    const template = getTemplate(templateId);
+                    const isSelected = formData.templateId === templateId;
                     return (
                       <div
                         key={templateId}
                         onClick={() => initializeSlotsFromTemplate(templateId)}
                         className={`cursor-pointer rounded-lg border p-4 transition-colors ${
-                          isSelected ? 'border-primary bg-primary/5' : 'hover:border-muted-foreground/50'
+                          isSelected
+                            ? "border-primary bg-primary/5"
+                            : "hover:border-muted-foreground/50"
                         }`}
                       >
                         <h4 className="font-medium">{template?.name}</h4>
@@ -366,13 +415,17 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                         </p>
                         <div className="mt-2 flex flex-wrap gap-1">
                           {template?.slots.map((slot) => (
-                            <Badge key={slot.id} variant="secondary" className="text-xs">
+                            <Badge
+                              key={slot.id}
+                              variant="secondary"
+                              className="text-xs"
+                            >
                               {slot.type}
                             </Badge>
                           ))}
                         </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -383,40 +436,64 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   <div className="space-y-4">
                     <h4 className="font-medium">Slot Configuration</h4>
                     {selectedTemplate.slots.map((slotDef) => {
-                      const slotConfig = formData.slots.find((s) => s.id === slotDef.id)
+                      const slotConfig = formData.slots.find(
+                        (s) => s.id === slotDef.id,
+                      );
                       return (
                         <div key={slotDef.id} className="rounded-lg border p-4">
                           <div className="flex items-center gap-2 mb-3">
                             <Badge>{slotDef.type}</Badge>
                             <span className="font-medium">{slotDef.id}</span>
                             {slotDef.required && (
-                              <Badge variant="destructive" className="text-xs">Required</Badge>
+                              <Badge variant="destructive" className="text-xs">
+                                Required
+                              </Badge>
                             )}
                           </div>
                           {slotDef.staticContent ? (
                             <div className="space-y-2">
                               <Label>Static Content</Label>
                               <Input
-                                value={slotConfig?.static ?? slotDef.staticContent}
-                                onChange={(e) => updateSlot(slotDef.id, 'static', e.target.value)}
+                                value={
+                                  slotConfig?.static ?? slotDef.staticContent
+                                }
+                                onChange={(e) =>
+                                  updateSlot(
+                                    slotDef.id,
+                                    "static",
+                                    e.target.value,
+                                  )
+                                }
                                 placeholder={slotDef.staticContent}
                               />
                             </div>
-                          ) : slotDef.type === 'cta-button' ? (
+                          ) : slotDef.type === "cta-button" ? (
                             <div className="grid gap-4 sm:grid-cols-2">
                               <div className="space-y-2">
                                 <Label>Button Text</Label>
                                 <Input
-                                  value={slotConfig?.buttonText ?? ''}
-                                  onChange={(e) => updateSlot(slotDef.id, 'buttonText', e.target.value)}
+                                  value={slotConfig?.buttonText ?? ""}
+                                  onChange={(e) =>
+                                    updateSlot(
+                                      slotDef.id,
+                                      "buttonText",
+                                      e.target.value,
+                                    )
+                                  }
                                   placeholder="Click here"
                                 />
                               </div>
                               <div className="space-y-2">
                                 <Label>URL</Label>
                                 <Input
-                                  value={slotConfig?.url ?? ''}
-                                  onChange={(e) => updateSlot(slotDef.id, 'url', e.target.value)}
+                                  value={slotConfig?.url ?? ""}
+                                  onChange={(e) =>
+                                    updateSlot(
+                                      slotDef.id,
+                                      "url",
+                                      e.target.value,
+                                    )
+                                  }
                                   placeholder="{{dashboardUrl}}"
                                 />
                               </div>
@@ -425,8 +502,16 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                             <div className="space-y-2">
                               <Label>Generation Prompt</Label>
                               <Textarea
-                                value={slotConfig?.prompt ?? slotDef.prompt ?? ''}
-                                onChange={(e) => updateSlot(slotDef.id, 'prompt', e.target.value)}
+                                value={
+                                  slotConfig?.prompt ?? slotDef.prompt ?? ""
+                                }
+                                onChange={(e) =>
+                                  updateSlot(
+                                    slotDef.id,
+                                    "prompt",
+                                    e.target.value,
+                                  )
+                                }
                                 placeholder={slotDef.prompt}
                                 rows={2}
                               />
@@ -438,7 +523,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                             </div>
                           )}
                         </div>
-                      )
+                      );
                     })}
                   </div>
                 </>
@@ -452,7 +537,9 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
           <Card>
             <CardHeader>
               <CardTitle>Content Rules</CardTitle>
-              <CardDescription>Define what should and shouldn&apos;t be in the email</CardDescription>
+              <CardDescription>
+                Define what should and shouldn&apos;t be in the email
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -460,28 +547,36 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                 <Input
                   id="contentGoal"
                   value={formData.contentGoal}
-                  onChange={(e) => updateField('contentGoal', e.target.value)}
+                  onChange={(e) => updateField("contentGoal", e.target.value)}
                   placeholder="Get user to click through to dashboard"
                 />
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="contentMustInclude">Must Include (one per line)</Label>
+                  <Label htmlFor="contentMustInclude">
+                    Must Include (one per line)
+                  </Label>
                   <Textarea
                     id="contentMustInclude"
                     value={formData.contentMustInclude}
-                    onChange={(e) => updateField('contentMustInclude', e.target.value)}
+                    onChange={(e) =>
+                      updateField("contentMustInclude", e.target.value)
+                    }
                     placeholder="Confirmation they signed up&#10;Clear next step&#10;Time expectation"
                     rows={4}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="contentMustNotInclude">Must NOT Include (one per line)</Label>
+                  <Label htmlFor="contentMustNotInclude">
+                    Must NOT Include (one per line)
+                  </Label>
                   <Textarea
                     id="contentMustNotInclude"
                     value={formData.contentMustNotInclude}
-                    onChange={(e) => updateField('contentMustNotInclude', e.target.value)}
+                    onChange={(e) =>
+                      updateField("contentMustNotInclude", e.target.value)
+                    }
                     placeholder="Feature lists&#10;Pricing information&#10;Multiple CTAs"
                     rows={4}
                   />
@@ -496,7 +591,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   <Input
                     id="ctaText"
                     value={formData.ctaText}
-                    onChange={(e) => updateField('ctaText', e.target.value)}
+                    onChange={(e) => updateField("ctaText", e.target.value)}
                     placeholder="Get Started →"
                   />
                 </div>
@@ -505,7 +600,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   <Input
                     id="ctaUrl"
                     value={formData.ctaUrl}
-                    onChange={(e) => updateField('ctaUrl', e.target.value)}
+                    onChange={(e) => updateField("ctaUrl", e.target.value)}
                     placeholder="{{dashboardUrl}}"
                   />
                 </div>
@@ -513,7 +608,7 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   <Label htmlFor="ctaStyle">CTA Style</Label>
                   <Select
                     value={formData.ctaStyle}
-                    onValueChange={(value) => updateField('ctaStyle', value)}
+                    onValueChange={(value) => updateField("ctaStyle", value)}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -535,7 +630,9 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
           <Card>
             <CardHeader>
               <CardTitle>AI Generation Settings</CardTitle>
-              <CardDescription>Configure AI-powered content generation</CardDescription>
+              <CardDescription>
+                Configure AI-powered content generation
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2">
@@ -543,19 +640,29 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
                   type="checkbox"
                   id="generationEnabled"
                   checked={formData.generationEnabled}
-                  onChange={(e) => updateField('generationEnabled', e.target.checked)}
+                  onChange={(e) =>
+                    updateField("generationEnabled", e.target.checked)
+                  }
                   className="rounded"
                 />
-                <Label htmlFor="generationEnabled">Enable AI generation for this intent</Label>
+                <Label htmlFor="generationEnabled">
+                  Enable AI generation for this intent
+                </Label>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="generationConstraints">Generation Constraints (one per line)</Label>
+                <Label htmlFor="generationConstraints">
+                  Generation Constraints (one per line)
+                </Label>
                 <Textarea
                   id="generationConstraints"
                   value={formData.generationConstraints}
-                  onChange={(e) => updateField('generationConstraints', e.target.value)}
-                  placeholder={"Keep it under 100 words\nOne clear action\nSound like a friend"}
+                  onChange={(e) =>
+                    updateField("generationConstraints", e.target.value)
+                  }
+                  placeholder={
+                    "Keep it under 100 words\nOne clear action\nSound like a friend"
+                  }
                   rows={4}
                 />
               </div>
@@ -590,10 +697,14 @@ export function IntentForm({ organizationId, intent, brands }: IntentFormProps) 
             Cancel
           </Button>
           <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Saving...' : intent ? 'Save Changes' : 'Create Intent'}
+            {isLoading
+              ? "Saving..."
+              : intent
+                ? "Save Changes"
+                : "Create Intent"}
           </Button>
         </div>
       </div>
     </form>
-  )
+  );
 }
