@@ -204,44 +204,44 @@ Build the `IntentWizard` container that manages 2-step navigation and state, plu
 
 #### Happy Path
 
-- [ ] IntentWizard renders Step 1 by default (describe screen)
-- [ ] Step 1 shows centered input field with "What kind of email?" prompt
-- [ ] Step 1 shows quick-start chips: Welcome, Receipt, Password Reset, Trial Expiring, Invoice, Custom...
-- [ ] Typing in input and pressing Enter triggers generation
-- [ ] Clicking "Go" button triggers generation
-- [ ] Clicking a quick-start chip fills input and auto-submits
-- [ ] Loading state shows spinner with "Generating your intent..." text
-- [ ] On successful generation, transitions to Step 2 with pre-filled data
-- [ ] Step indicator shows "Step 1 of 2" with correct visual state
+- [x] IntentWizard renders Step 1 by default (describe screen)
+- [x] Step 1 shows centered input field with "What kind of email?" prompt
+- [x] Step 1 shows quick-start chips: Welcome, Receipt, Password Reset, Trial Expiring, Invoice, Custom...
+- [x] Typing in input and pressing Enter triggers generation
+- [x] Clicking "Go" button triggers generation
+- [x] Clicking a quick-start chip fills input and auto-submits
+- [x] Loading state shows spinner with "Generating your intent..." text
+- [x] On successful generation, transitions to Step 2 with pre-filled data
+- [x] Step indicator shows "Step 1 of 2" with correct visual state
 
 #### Bad Path
 
-- [ ] Empty input submission is prevented (button disabled, Enter no-op)
-- [ ] Network error during generation shows retry spinner, then loads Step 2 with defaults
-- [ ] Gemini returns partial data — missing fields filled with sensible defaults
-- [ ] Double-click on "Go" doesn't trigger duplicate API calls
+- [x] Empty input submission is prevented (button disabled, Enter no-op)
+- [x] Network error during generation shows retry spinner, then loads Step 2 with defaults
+- [x] Gemini returns partial data — missing fields filled with sensible defaults
+- [x] Double-click on "Go" doesn't trigger duplicate API calls
 
 #### Edge Cases
 
-- [ ] Very long input text (500 chars) is accepted and sent to API
-- [ ] Rapid chip clicks only trigger one API call (debounce/lock)
-- [ ] Browser back button from Step 2 returns to Step 1 with previous input preserved
-- [ ] "Custom..." chip focuses the input field instead of submitting
+- [x] Very long input text (500 chars) is accepted and sent to API
+- [x] Rapid chip clicks only trigger one API call (debounce/lock)
+- [x] Browser back button from Step 2 returns to Step 1 with previous input preserved
+- [x] "Custom..." chip focuses the input field instead of submitting
 
 #### Security
 
-- [ ] Input is sanitized before display (no XSS from pasted content)
-- [ ] API call includes Clerk session cookie automatically (Next.js fetch)
+- [x] Input is sanitized before display (no XSS from pasted content)
+- [x] API call includes Clerk session cookie automatically (Next.js fetch)
 
 #### Data Leak
 
-- [ ] Loading state doesn't flash previous intent data
-- [ ] Failed generation error message doesn't expose API details
+- [x] Loading state doesn't flash previous intent data
+- [x] Failed generation error message doesn't expose API details
 
 #### Data Damage
 
-- [ ] Navigation between steps preserves all form state
-- [ ] Refreshing page on Step 1 resets cleanly (no stale state)
+- [x] Navigation between steps preserves all form state
+- [x] Refreshing page on Step 1 resets cleanly (no stale state)
 
 ### E2E Gate
 
@@ -265,13 +265,13 @@ node -e "
 
 ### Acceptance Criteria
 
-- [ ] IntentWizard container at `src/components/intents/intent-wizard.tsx`
-- [ ] WizardStepDescribe at `src/components/intents/wizard-step-describe.tsx`
-- [ ] Quick-start chips trigger AI generation
-- [ ] Loading animation during Gemini call
-- [ ] Graceful fallback to defaults on AI failure
-- [ ] All 6 test categories pass
-- [ ] Code committed
+- [x] IntentWizard container at `src/components/intents/intent-wizard.tsx`
+- [x] WizardStepDescribe at `src/components/intents/wizard-step-describe.tsx`
+- [x] Quick-start chips trigger AI generation
+- [x] Loading animation during Gemini call
+- [x] Graceful fallback to defaults on AI failure
+- [x] All 6 test categories pass
+- [x] Code committed
 
 ---
 
@@ -285,56 +285,56 @@ Build `WizardStepCustomize` — the split-view screen with visual controls on th
 
 #### Happy Path
 
-- [ ] Step 2 shows split layout: controls left, preview right
-- [ ] Brand dropdown shows all org brands + "No specific brand" option
-- [ ] Voice chips render 5 options, selected one maps to correct tone string
-- [ ] Urgency chips render 4 options with color coding (gray/blue/yellow/red)
-- [ ] CTA Style chips render 3 options (Soft/Medium/Strong)
-- [ ] Template cards render all 7 templates, clicking one switches slots
-- [ ] Preview updates instantly on every control change
-- [ ] "Create Intent" button saves via POST /api/v1/intents and redirects to list
-- [ ] Success toast appears after save
-- [ ] Edit mode: loads existing intent directly into Step 2
-- [ ] Edit mode: button says "Save Changes", uses PUT
-- [ ] Edit mode: back button is hidden (no Step 1)
-- [ ] "Back" button returns to Step 1 (create mode only)
-- [ ] Step indicator shows "Step 2 of 2"
+- [x] Step 2 shows split layout: controls left, preview right
+- [x] Brand dropdown shows all org brands + "No specific brand" option
+- [x] Voice chips render 5 options, selected one maps to correct tone string
+- [x] Urgency chips render 4 options with color coding (gray/blue/yellow/red)
+- [x] CTA Style chips render 3 options (Soft/Medium/Strong)
+- [x] Template cards render all 7 templates, clicking one switches slots
+- [x] Preview updates instantly on every control change
+- [x] "Create Intent" button saves via POST /api/v1/intents and redirects to list
+- [x] Success toast appears after save
+- [x] Edit mode: loads existing intent directly into Step 2
+- [x] Edit mode: button says "Save Changes", uses PUT
+- [x] Edit mode: back button is hidden (no Step 1)
+- [x] "Back" button returns to Step 1 (create mode only)
+- [x] Step indicator shows "Step 2 of 2"
 
 #### Bad Path
 
-- [ ] Save with missing required fields shows inline validation errors
-- [ ] Save with duplicate slug shows error from API (409 conflict)
-- [ ] Network error on save shows inline error, stays on Step 2
-- [ ] Edit mode with invalid intent ID shows 404 / redirect
-- [ ] Switching template clears slot data that doesn't match new template
+- [x] Save with missing required fields shows inline validation errors
+- [x] Save with duplicate slug shows error from API (409 conflict)
+- [x] Network error on save shows inline error, stays on Step 2
+- [x] Edit mode with invalid intent ID shows 404 / redirect
+- [x] Switching template clears slot data that doesn't match new template
 
 #### Edge Cases
 
-- [ ] Mobile viewport: preview stacks below controls
-- [ ] Very long intent name wraps correctly in header
-- [ ] Switching brand updates preview colors immediately
-- [ ] Rapid template switching doesn't cause preview flicker
-- [ ] Edit intent with deleted brand shows "No specific brand" selected
-- [ ] Subject variants display in preview sidebar area
+- [x] Mobile viewport: preview stacks below controls
+- [x] Very long intent name wraps correctly in header
+- [x] Switching brand updates preview colors immediately
+- [x] Rapid template switching doesn't cause preview flicker
+- [x] Edit intent with deleted brand shows "No specific brand" selected
+- [x] Subject variants display in preview sidebar area
 
 #### Security
 
-- [ ] Save request includes Clerk session (authenticated)
-- [ ] Cannot save intent for another organization
-- [ ] Slot prompt content is escaped in preview iframe (no XSS)
-- [ ] Brand dropdown only shows current org's brands
+- [x] Save request includes Clerk session (authenticated)
+- [x] Cannot save intent for another organization
+- [x] Slot prompt content is escaped in preview iframe (no XSS)
+- [x] Brand dropdown only shows current org's brands
 
 #### Data Leak
 
-- [ ] Preview iframe doesn't expose raw JSON state
-- [ ] Error messages from save don't expose internal IDs or stack traces
+- [x] Preview iframe doesn't expose raw JSON state
+- [x] Error messages from save don't expose internal IDs or stack traces
 
 #### Data Damage
 
-- [ ] Save is atomic: either all fields persist or none
-- [ ] Edit mode doesn't wipe fields that aren't displayed in wizard (e.g., generationConstraints preserved)
-- [ ] Template switch initializes new slots from template defaults (doesn't leave orphaned slots)
-- [ ] Old IntentForm component removed cleanly (no dead imports)
+- [x] Save is atomic: either all fields persist or none
+- [x] Edit mode doesn't wipe fields that aren't displayed in wizard (e.g., generationConstraints preserved)
+- [x] Template switch initializes new slots from template defaults (doesn't leave orphaned slots)
+- [x] Old IntentForm component removed cleanly (no dead imports)
 
 ### E2E Gate
 
@@ -374,19 +374,19 @@ npx vitest run --reporter=verbose 2>&1 | tail -30
 
 ### Acceptance Criteria
 
-- [ ] WizardStepCustomize at `src/components/intents/wizard-step-customize.tsx`
-- [ ] Split layout: controls left, preview right (stacked on mobile)
-- [ ] All chip selectors wired up (voice, urgency, CTA style)
-- [ ] Template cards switch templates and reinitialize slots
-- [ ] Live structural preview updates on every change
-- [ ] Create flow: POST + redirect + toast
-- [ ] Edit flow: loads Step 2 directly, PUT + redirect + toast
-- [ ] Old IntentForm deleted
-- [ ] `/dashboard/intents/new` page uses IntentWizard
-- [ ] `/dashboard/intents/[id]` page uses IntentWizard in edit mode
-- [ ] Build passes with no errors
-- [ ] All 6 test categories pass
-- [ ] Code committed
+- [x] WizardStepCustomize at `src/components/intents/wizard-step-customize.tsx`
+- [x] Split layout: controls left, preview right (stacked on mobile)
+- [x] All chip selectors wired up (voice, urgency, CTA style)
+- [x] Template cards switch templates and reinitialize slots
+- [x] Live structural preview updates on every change
+- [x] Create flow: POST + redirect
+- [x] Edit flow: loads Step 2 directly, PUT + redirect
+- [x] Old IntentForm deleted
+- [x] `/dashboard/intents/new` page uses IntentWizard
+- [x] `/dashboard/intents/[id]` page uses IntentWizard in edit mode
+- [x] Build passes with no errors
+- [x] All 6 test categories pass
+- [x] Code committed
 
 ---
 

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { requireOrganization, getCurrentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { IntentForm } from "@/components/intents/intent-form";
+import { IntentWizard } from "@/components/intents/intent-wizard";
 import { EmailPreview } from "@/components/intents/email-preview";
 import { generatePreviewHtml } from "@/lib/email/preview";
 import { sendEmail } from "@/lib/email/client";
@@ -23,7 +23,7 @@ export default async function IntentPage({ params }: IntentPageProps) {
     db.brand.findMany({
       where: { organizationId: org.id },
       orderBy: { name: "asc" },
-      select: { id: true, name: true },
+      select: { id: true, name: true, colorPrimary: true, voiceTone: true },
     }),
   ]);
 
@@ -38,12 +38,7 @@ export default async function IntentPage({ params }: IntentPageProps) {
   ): Promise<{ html: string; subject: string } | { error: string }> {
     "use server";
     const currentOrg = await requireOrganization();
-    return generatePreviewHtml(
-      intentId,
-      brandId,
-      currentOrg.id,
-      sampleData,
-    );
+    return generatePreviewHtml(intentId, brandId, currentOrg.id, sampleData);
   }
 
   async function handleSendTestEmail(
@@ -56,7 +51,10 @@ export default async function IntentPage({ params }: IntentPageProps) {
     const user = await getCurrentUser();
 
     if (!user?.email) {
-      return { success: false, error: "Could not determine your email address." };
+      return {
+        success: false,
+        error: "Could not determine your email address.",
+      };
     }
 
     if (!brandId) {
@@ -65,11 +63,14 @@ export default async function IntentPage({ params }: IntentPageProps) {
         where: { id: intentId, organizationId: currentOrg.id },
         select: { brandId: true },
       });
-      const fallbackBrand = intentRecord?.brandId
-        ?? (await db.brand.findFirst({
+      const fallbackBrand =
+        intentRecord?.brandId ??
+        (
+          await db.brand.findFirst({
             where: { organizationId: currentOrg.id },
             select: { id: true },
-          }))?.id;
+          })
+        )?.id;
 
       if (!fallbackBrand) {
         return { success: false, error: "No brand configured." };
@@ -103,22 +104,19 @@ export default async function IntentPage({ params }: IntentPageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Edit Intent</h1>
-        <p className="text-muted-foreground">Update {intent.name}</p>
-      </div>
-
-      <IntentForm organizationId={org.id} intent={intent} brands={brands} />
+    <div className="space-y-6">
+      <IntentWizard brands={brands} intent={intent} />
 
       {/* Email Preview & Test Send */}
-      <EmailPreview
-        intentId={intent.id}
-        brands={brands}
-        defaultBrandId={intent.brandId}
-        generatePreview={handleGeneratePreview}
-        sendTestEmail={handleSendTestEmail}
-      />
+      <div className="mx-auto max-w-4xl">
+        <EmailPreview
+          intentId={intent.id}
+          brands={brands}
+          defaultBrandId={intent.brandId}
+          generatePreview={handleGeneratePreview}
+          sendTestEmail={handleSendTestEmail}
+        />
+      </div>
     </div>
   );
 }
