@@ -13,7 +13,6 @@ interface ChipSelectorProps {
   options: ChipOption[];
   value: string;
   onChange: (value: string) => void;
-  mode?: "single";
   label?: string;
 }
 
