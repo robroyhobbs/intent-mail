@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -16,10 +15,18 @@ import { TemplateCards } from "./template-cards";
 import { LivePreview } from "./live-preview";
 import { TEMPLATES } from "@/lib/email/templates/slots";
 import type { GeneratedIntent } from "@/lib/ai/generate-intent";
-import { ArrowLeft, Loader2, Save } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+  Pencil,
+  Save,
+  Sparkles,
+} from "lucide-react";
 
 // =============================================================================
-// VOICE / URGENCY / CTA CHIP OPTIONS
+// CHIP OPTIONS (used in fine-tune section)
 // =============================================================================
 
 const VOICE_OPTIONS = [
@@ -42,6 +49,11 @@ const CTA_STYLE_OPTIONS = [
   { value: "MEDIUM", label: "Medium" },
   { value: "STRONG", label: "Strong" },
 ];
+
+// Map voice value to friendly label
+function getVoiceLabel(tone: string): string {
+  return VOICE_OPTIONS.find((o) => o.value === tone)?.label ?? tone;
+}
 
 // =============================================================================
 // TYPES
@@ -87,6 +99,7 @@ export function WizardStepCustomize({
   const [data, setData] = useState(initialData);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showFineTune, setShowFineTune] = useState(isEditMode);
 
   const selectedBrand = brands.find((b) => b.id === data.brandId);
   const brandColor = selectedBrand?.colorPrimary || "#4598fa";
@@ -100,7 +113,6 @@ export function WizardStepCustomize({
     if (!template) return;
 
     const newSlots = template.slots.map((slot) => {
-      // Preserve existing slot data if it matches
       const existing = data.slots.find((s) => s.id === slot.id);
       return existing || {
         id: slot.id,
@@ -118,7 +130,6 @@ export function WizardStepCustomize({
     setIsSaving(true);
 
     try {
-      // Build the payload matching the existing Intent API schema
       const payload: Record<string, unknown> = {
         name: data.name,
         slug: data.slug,
@@ -138,7 +149,6 @@ export function WizardStepCustomize({
         ctaText: data.ctaText || undefined,
         ctaUrl: data.ctaUrl || undefined,
         ctaStyle: data.ctaStyle,
-        // Preserve existing fields in edit mode
         ...(isEditMode && existingIntent
           ? {
               generationEnabled: existingIntent.generationEnabled,
@@ -157,26 +167,34 @@ export function WizardStepCustomize({
     }
   }
 
+  const templateName = TEMPLATES[data.templateId]?.name ?? data.templateId;
+
   return (
     <div className="flex flex-col gap-6 lg:flex-row">
-      {/* Left Panel: Controls */}
-      <div className="flex-1 space-y-6 lg:max-w-md">
-        {/* Header */}
-        <div>
-          <h2 className="text-xl font-bold">
-            {isEditMode ? "Edit Intent" : data.name || "New Intent"}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Customize your email intent with visual controls
-          </p>
-        </div>
+      {/* Left Panel: Summary + Fine-tune */}
+      <div className="flex-1 space-y-5 lg:max-w-md">
+        {/* AI Summary Card */}
+        <div className="rounded-xl border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+              <Sparkles className="h-4 w-4 text-primary" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold">
+                {isEditMode ? "Edit Intent" : "AI Generated"}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {isEditMode ? "Modify your intent below" : "Review and save, or fine-tune details"}
+              </p>
+            </div>
+          </div>
 
-        {/* Name & Slug */}
-        <div className="space-y-3">
-          <div>
-            <Label htmlFor="name">Name</Label>
+          {/* Name - editable */}
+          <div className="mb-3">
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              Name
+            </label>
             <Input
-              id="name"
               value={data.name}
               onChange={(e) => {
                 const name = e.target.value;
@@ -188,109 +206,149 @@ export function WizardStepCustomize({
                 setData((prev) => ({ ...prev, name, slug }));
               }}
               placeholder="Welcome Email"
+              className="h-9"
             />
           </div>
-          <div>
-            <Label htmlFor="slug">Slug</Label>
+
+          {/* Subject - editable */}
+          <div className="mb-4">
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+              Subject Line
+            </label>
             <Input
-              id="slug"
-              value={data.slug}
-              onChange={(e) => update("slug", e.target.value.toLowerCase().replace(/[^a-z0-9.-]/g, ""))}
-              placeholder="welcome-email"
-              className="font-mono text-sm"
+              value={data.subjectDefault}
+              onChange={(e) => update("subjectDefault", e.target.value)}
+              placeholder="Welcome to {{productName}}, {{firstName}}!"
+              className="h-9"
             />
+          </div>
+
+          {/* AI-chosen settings - read-only summary chips */}
+          <div className="flex flex-wrap gap-1.5">
+            <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {getVoiceLabel(data.tone)}
+            </span>
+            <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {data.urgency === "NONE" ? "No urgency" : `${data.urgency} urgency`}
+            </span>
+            <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {templateName}
+            </span>
+            {data.ctaText && (
+              <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                CTA: {data.ctaText}
+              </span>
+            )}
+            {selectedBrand && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                <span
+                  className="inline-block h-2 w-2 rounded-full"
+                  style={{ backgroundColor: selectedBrand.colorPrimary }}
+                />
+                {selectedBrand.name}
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Purpose */}
-        <div>
-          <Label htmlFor="purpose">Purpose</Label>
-          <Input
-            id="purpose"
-            value={data.purpose}
-            onChange={(e) => update("purpose", e.target.value)}
-            placeholder="What this email achieves"
-          />
-        </div>
+        {/* Fine-tune toggle */}
+        <button
+          type="button"
+          onClick={() => setShowFineTune(!showFineTune)}
+          className="flex w-full items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Pencil className="h-3.5 w-3.5" />
+          Fine-tune details
+          {showFineTune ? (
+            <ChevronUp className="ml-auto h-4 w-4" />
+          ) : (
+            <ChevronDown className="ml-auto h-4 w-4" />
+          )}
+        </button>
 
-        {/* Subject */}
-        <div>
-          <Label htmlFor="subject">Subject Line</Label>
-          <Input
-            id="subject"
-            value={data.subjectDefault}
-            onChange={(e) => update("subjectDefault", e.target.value)}
-            placeholder="Welcome to {{productName}}, {{firstName}}!"
-          />
-        </div>
+        {/* Fine-tune section (collapsed by default for new, open for edit) */}
+        {showFineTune && (
+          <div className="space-y-4 rounded-lg border border-dashed border-border/60 p-4">
+            {/* Brand */}
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Brand</label>
+              <Select
+                value={data.brandId || "none"}
+                onValueChange={(value) => update("brandId", value === "none" ? "" : value)}
+              >
+                <SelectTrigger className="h-9">
+                  <SelectValue placeholder="Select a brand" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">No specific brand</SelectItem>
+                  {brands.map((brand) => (
+                    <SelectItem key={brand.id} value={brand.id}>
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="inline-block h-3 w-3 rounded-full"
+                          style={{ backgroundColor: brand.colorPrimary }}
+                        />
+                        {brand.name}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-        {/* Brand */}
-        <div>
-          <Label>Brand</Label>
-          <Select
-            value={data.brandId || "none"}
-            onValueChange={(value) => update("brandId", value === "none" ? "" : value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select a brand" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">No specific brand</SelectItem>
-              {brands.map((brand) => (
-                <SelectItem key={brand.id} value={brand.id}>
-                  <span className="flex items-center gap-2">
-                    <span
-                      className="inline-block h-3 w-3 rounded-full"
-                      style={{ backgroundColor: brand.colorPrimary }}
-                    />
-                    {brand.name}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+            {/* Purpose */}
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">Purpose</label>
+              <Input
+                value={data.purpose}
+                onChange={(e) => update("purpose", e.target.value)}
+                placeholder="What this email achieves"
+                className="h-9"
+              />
+            </div>
 
-        {/* Voice */}
-        <ChipSelector
-          label="Voice"
-          options={VOICE_OPTIONS}
-          value={data.tone}
-          onChange={(value) => update("tone", value)}
-        />
+            {/* CTA Text */}
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">CTA Button Text</label>
+              <Input
+                value={data.ctaText}
+                onChange={(e) => update("ctaText", e.target.value)}
+                placeholder="Get Started"
+                className="h-9"
+              />
+            </div>
 
-        {/* Urgency */}
-        <ChipSelector
-          label="Urgency"
-          options={URGENCY_OPTIONS}
-          value={data.urgency}
-          onChange={(value) => update("urgency", value as typeof data.urgency)}
-        />
+            {/* Voice */}
+            <ChipSelector
+              label="Voice"
+              options={VOICE_OPTIONS}
+              value={data.tone}
+              onChange={(value) => update("tone", value)}
+            />
 
-        {/* CTA Style */}
-        <ChipSelector
-          label="CTA Style"
-          options={CTA_STYLE_OPTIONS}
-          value={data.ctaStyle}
-          onChange={(value) => update("ctaStyle", value as typeof data.ctaStyle)}
-        />
+            {/* Urgency */}
+            <ChipSelector
+              label="Urgency"
+              options={URGENCY_OPTIONS}
+              value={data.urgency}
+              onChange={(value) => update("urgency", value as typeof data.urgency)}
+            />
 
-        {/* CTA Text */}
-        <div>
-          <Label htmlFor="ctaText">CTA Button Text</Label>
-          <Input
-            id="ctaText"
-            value={data.ctaText}
-            onChange={(e) => update("ctaText", e.target.value)}
-            placeholder="Get Started"
-          />
-        </div>
+            {/* CTA Style */}
+            <ChipSelector
+              label="CTA Style"
+              options={CTA_STYLE_OPTIONS}
+              value={data.ctaStyle}
+              onChange={(value) => update("ctaStyle", value as typeof data.ctaStyle)}
+            />
 
-        {/* Template */}
-        <TemplateCards
-          value={data.templateId}
-          onSelect={handleTemplateChange}
-        />
+            {/* Template */}
+            <TemplateCards
+              value={data.templateId}
+              onSelect={handleTemplateChange}
+            />
+          </div>
+        )}
 
         {/* Error */}
         {error && (
